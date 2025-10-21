@@ -1,0 +1,47 @@
+{
+  "name": "Product (pre-order)",
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title"
+        },
+        "price": {
+          "type": "price"
+        },
+        "vendor": {
+          "type": "vendor"
+        },
+        "divider": {
+          "type": "divider"
+        },
+        "variant-picker": {
+          "type": "variant-picker"
+        },
+        "buy-buttons": {
+          "type": "buy-buttons"
+        },
+        "description": {
+          "type": "description"
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "vendor",
+        "divider",
+        "variant-picker",
+        "buy-buttons",
+        "description"
+      ]
+    },
+    "related-products": {
+      "type": "related-products"
+    }
+  },
+  "order": [
+    "main",
+    "related-products"
+  ]
+}
