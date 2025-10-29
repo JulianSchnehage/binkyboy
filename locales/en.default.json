@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "localization": {
@@ -117,7 +126,7 @@
       "sold_out": "Sold out",
       "value_reduction_html": "{{ amount }} off",
       "vendor": "By",
-      "view_details": "View details",
+      "view_details": "More Details",
       "xr_button": "View in your space"
     },
     "filtering": {
@@ -219,8 +228,8 @@
   },
   "newsletter": {
     "label": "Email",
-    "placeholder": "Your email",
-    "button_label": "Subscribe",
+    "placeholder": "Enter email",
+    "button_label": "Sign up",
     "success": "Thank you for subscribing."
   },
   "contact": {
@@ -303,7 +312,7 @@
     },
     "summary": {
       "subtotal": "Subtotal",
-      "checkout": "Checkout",
+      "checkout": "Proceed to Checkout",
       "continue_shopping": "Continue shopping"
     },
     "terms": {

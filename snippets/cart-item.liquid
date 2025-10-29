@@ -46,6 +46,25 @@
               </div>
             {%- endfor -%}
           {%- endif -%}
+          {%- for p in item.properties -%}
+            {% unless p.last == blank %}
+              <div class="line-item-property">{{ p.first }}:
+                {% if p.last contains '/uploads/' %}
+                <a href="{{ p.last }}">
+{% assign file_type = p.last | split: '.' | last | downcase %}
+{% assign file_types = 'jpg,jpeg,webp,gif,png,apng,avif,svg,bmp,ico,tiff' | split: ',' %}
+{% if file_types contains file_type %}
+<div class="bcpo-cart-file"><img src="{{ p.last }}" style="max-width: 50px; height: auto;"></div>
+{% else %}
+<span class="bcpo-cart-file">Uploaded file</span>
+{% endif %}
+</a>
+                {% else %}
+                {{ p.last }}
+                {% endif %}
+              </div>
+            {% endunless %}
+          {%- endfor -%}
 
           {%- for property in item.properties -%}
             {%- assign property_first_char = property.first | slice: 0 -%}
@@ -111,13 +130,51 @@
       </div>
     </div>
 
+                  {% if wpddrawer == true %} 
+  <input type="hidden" data-wpd-cart-drawer-product-handle="{{ item.product.handle }}" 
+data-wpd-cart-drawer-variant-id="{{ item.variant.id }}"
+ data-wpd-cart-drawer-variant-price="{{ item.variant.price }}" 
+data-wpd-cart-drawer-variant-compare-at-price="{{ item.variant.compare_at_price }}" 
+data-wpd-cart-drawer-product-collection-ids="
+{{ wpdProductCollectionIds | join:',' }}" 
+data-wpd-cart-drawer-product-id="{{ item.product.id }}" 
+data-wpd-cart-drawer-line-price 
+data-wpd-cart-drawer-item="{{ item.key }}" 
+data-wpd-cart-drawer-quantity="{{ item.quantity }}" />
+{% endif %}
 
     <div class="cart-item__column cart-item__price">
-      <span class="theme-money cart-item__selling-price">{{ item.final_price | money }}</span>
+      <span class="theme-money cart-item__selling-price"
+        {% if wpddrawer == true %} 
+          data-wpd-cart-drawer-product-handle="{{ item.product.handle }}" 
+          data-wpd-cart-drawer-variant-id="{{ item.variant.id }}" 
+          data-wpd-cart-drawer-variant-price="{{ item.variant.price }}"
+          data-wpd-cart-drawer-variant-compare-at-price="{{ item.variant.compare_at_price }}"
+          data-wpd-cart-drawer-product-collection-ids="{% assign wpdProductCollectionIds =       item.product.collections | map:'id' %}{{ wpdProductCollectionIds | join:',' }}"
+          data-wpd-cart-drawer-product-id="{{ item.product.id }}"
+          data-wpd-cart-drawer-line-price
+          data-wpd-cart-drawer-item="{{ item.key }}"
+          data-wpd-cart-drawer-quantity="{{ item.quantity }}"
+           {% endif %}
+          data-wpd-cart-variant-id="{{ item.variant.id }}"                                
+          data-wpd-cart-item="{{ item.key }}">{{ item.final_price | money }}</span>
       {% if item.variant.compare_at_price > item.variant.price %}
-        <span class="struck-out-price small-text"><span class="theme-money">{{ item.variant.compare_at_price | money }}</span></span>
+        <span class="struck-out-price small-text data-wpd-hide"><span class="theme-money">{{ item.variant.compare_at_price | money }}</span></span>
       {% elsif item.original_line_price > item.final_line_price %}
-        <span class="struck-out-price small-text"><span class="theme-money">{{ item.original_price | money }}</span></span>
+        <span class="struck-out-price small-text"
+           {% if wpddrawer == true %} 
+          data-wpd-cart-drawer-product-handle="{{ item.product.handle }}" 
+          data-wpd-cart-drawer-variant-id="{{ item.variant.id }}" 
+          data-wpd-cart-drawer-variant-price="{{ item.variant.price }}"
+          data-wpd-cart-drawer-variant-compare-at-price="{{ item.variant.compare_at_price }}"
+          data-wpd-cart-drawer-product-collection-ids="{% assign wpdProductCollectionIds =       item.product.collections | map:'id' %}{{ wpdProductCollectionIds | join:',' }}"
+          data-wpd-cart-drawer-product-id="{{ item.product.id }}"
+          data-wpd-cart-drawer-line-price
+          data-wpd-cart-drawer-item="{{ item.key }}"
+          data-wpd-cart-drawer-quantity="{{ item.quantity }}"
+           {% endif %}
+          data-wpd-cart-variant-id="{{ item.variant.id }}"                                
+          data-wpd-cart-item="{{ item.key }}"><span class="theme-money">{{ item.original_price | money }}</span></span>
       {% endif %}
 
       {% render 'unit-price', variant: item %}
@@ -167,11 +224,17 @@
 
     {%- unless drawer -%}
       <div class="cart-item__column cart-item__total">
-        <span class="theme-money cart-item__selling-total">{{ item.final_line_price | money }}</span>
+        <span class="theme-money cart-item__selling-total"
+          data-wpd-cart-variant-id="{{ item.variant.id }}"   
+data-wpd-cart-item="{{ item.key }}"                                
+data-wpd-cart-line-price>{{ item.final_line_price | money }}</span>
         {% if item.variant.compare_at_price > item.variant.price %}
-          <div class="theme-money struck-out-price small-text">{{ item.variant.compare_at_price | times: item.quantity | money }}</div>
+          <div class="theme-money struck-out-price small-text data-wpd-hide">{{ item.variant.compare_at_price | times: item.quantity | money }}</div>
         {% elsif item.original_line_price != item.final_line_price %}
-          <div class="theme-money struck-out-price small-text">{{ item.original_line_price | money }}</div>
+          <div class="theme-money struck-out-price small-text"
+            data-wpd-cart-variant-id="{{ item.variant.id }}"   
+data-wpd-cart-item="{{ item.key }}"                                
+data-wpd-cart-line-price>{{ item.original_line_price | money }}</div>
         {% endif %}
       </div>
     {%- endunless -%}

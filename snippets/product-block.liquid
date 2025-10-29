@@ -70,7 +70,7 @@ Parameters:
   endif
 -%}
 
-<product-block class="product-block{% if compact %} product-block--compact{% endif %}{% if card_layout == 'landscape' %} product-block--landscape{% endif %}" data-product-id="{{ product.id }}">
+<product-block class="product-block{% if compact %} product-block--compact{% endif %}{% if card_layout == 'landscape' %} product-block--landscape{% endif %}" data-product-id="{{ product.id }}" variant-id="{{ product.selected_or_first_available_variant.id | default: "null" | json }}" vairant-qty="{{ product.selected_or_first_available_variant.inventory_quantity | default: 0 | json }}">
   <div class="block-inner"{% if animate %}{%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}{% endif %}>
     <div class="block-inner-inner">
       {% if product.featured_media %}
@@ -165,6 +165,7 @@ Parameters:
       <div class="product-block__detail align-ltr-{{ settings.prod_thumb_text_align }}">
         <div class="inner">
           <div class="innerer">
+            
             <a class="product-link{% if settings.quickbuy_style == 'whole' %}{% unless no_quick_buy %} quickbuy-toggle{% endunless %}{% endif %}" href="{{ product_url }}">
               {%- if show_vendor -%}
                 <div class="vendor">{{ product.vendor | escape }}</div>
@@ -182,6 +183,61 @@ Parameters:
                 </div>
               {%- endif -%}
             </a>
+
+    <div style='{{ jm_style }}' class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}' data-auto-install='false'>
+        {{ product.metafields.judgeme.badge }}
+    </div>
+
+            {%if filter_value_show%}
+              {%- for option in product.options_with_values -%}
+                {%- if option.name == "Size" -%}
+                  <div class="wrapper-sizes">
+                    {%- for value in option.values -%}
+                      {%- assign is_available = false -%}
+                      
+                      {%- for variant in product.variants -%}
+                        {%- if variant.available and variant.option1 == value -%}
+                          {%- assign is_available = true -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      
+                      <div class="label-filter-sizes {% unless is_available %}unavailable{% endunless %}">
+                        {{ value }}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+              
+          {%endif%}
+          
+          {% if filter_value_show_color %}
+            {%- for option in product.options_with_values -%}
+              {%- if option.name == "Color" -%}
+                <div class="wrapper-sizes colors">
+                  {%- for value in option.values -%}
+                    {%- liquid
+                      assign swatch_file_extension = 'png'
+                      assign cdn_base_url = 'https://cdn.shopify.com/s/files/1/1412/5622/files/'
+                      assign color_file_name = value | handle| append: '_36x' | append: '.' | append: swatch_file_extension
+                      assign color_image = cdn_base_url | append: color_file_name
+                      assign color_swatch_fallback = value | split: ' ' | last | handle
+                      assign fallback_image = cdn_base_url | append: 'default-swatch.png'
+                    -%}
+                    <span 
+                      class="filter-group__item__swatch{% if settings.swatch_images %} lazyload{% endif %}" 
+                      style="
+                        background-color: {{ color_swatch_fallback }};
+                        background-image: url({{ color_image }}), url({{ fallback_image }});
+                        background-size: cover;
+                      "
+                    ></span>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {% endif %}
+          
 
             {%- if settings.swatch_source != 'none' and settings.prod_thumb_show_options and hide_swatches == blank -%}
               {%- liquid

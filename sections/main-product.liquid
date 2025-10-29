@@ -27,6 +27,8 @@
   endif
 -%}
 
+
+
 {%- if product.media.size > 1 -%}
   <script src="{{ 'slideshow.js' | asset_url }}" defer></script>
 {%- endif -%}
@@ -166,7 +168,7 @@
             <ul class="slider__grid">
               {% for media in product.media %}
                 <li class="slider__item{% if forloop.index0 == initial_slide %} is-active{% endif %}" data-media-id="{{ media.id }}">
-                  <a class="thumbnail thumbnail--media-{{ media.media_type }}" href="{% if section.settings.enable_zoom %}{{ media.preview_image | image_url: width: zoom_size }}{% else %}#{% endif %}">
+                  <a aria-label="{{ product.title }}" class="thumbnail thumbnail--media-{{ media.media_type }}" href="{% if section.settings.enable_zoom %}{{ media.preview_image | image_url: width: zoom_size }}{% else %}#{% endif %}">
                     {%- liquid
                       assign custom_aspect_ratio = media.preview_image.aspect_ratio | at_least: min_aspect_ratio
                       render 'image' with media.preview_image, sizes: '65px', widths: '65px, 130px', custom_aspect_ratio: custom_aspect_ratio, custom_crop: 'contain'
@@ -257,7 +259,7 @@
 
           {% when 'title' %}
             <div class="title-row" {{ block.shopify_attributes }}>
-              <h1 class="product-title">{{ product.title | escape }}</h1>
+              <h1 class="product-title capitalize">{{ product.title | escape }}</h1>
             </div>
 
           {% when 'price' %}
@@ -427,14 +429,15 @@
                     {% if block.settings.show_quantity_selector %}
                       <label class="label" for="quantity">{{ 'products.product.quantity' | t }}</label>
                       <quantity-wrapper class="quantity-wrapper">
-                        <a href="#" data-quantity="down" aria-label="{{ 'cart.items.decrease_quantity' | t }}">{% render 'icon-minus' %}</a>
-                        <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" type="number" name="quantity" value="1" />
-                        <a href="#" data-quantity="up" aria-label="{{ 'cart.items.increase_quantity' | t }}">{% render 'icon-plus' %}</a>
+                        <a href="#" data-quantity="down" class="quantity-decrease" aria-label="{{ 'cart.items.decrease_quantity' | t }}">{% render 'icon-minus' %}</a>
+                        <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" type="number" name="quantity" value="1"   min="0"
+                        max="100"/>
+                        <a href="#" data-quantity="up" class="quantity-increase" aria-label="{{ 'cart.items.increase_quantity' | t }}">{% render 'icon-plus' %}</a>
                       </quantity-wrapper>
                     {% endif %}
 
                     <div class="quantity-submit-row__submit input-row">
-                      <div class="js-form-error lightly-spaced-row" role="alert" hidden></div>
+                      <div class="js-form-error lightly-spaced-row variant-inventory-disclaimer" role="alert" hidden></div>
 
                       {%- capture add_to_cart_text -%}
                         {%- if product.template_suffix contains 'preorder' -%}
@@ -480,6 +483,7 @@
               {%- endif -%}
             </buy-buttons>
 
+            <div id='wcp_vd_table'></div>
           {% when 'inventory-level' %}
             <div {% unless block.settings.show_in_quickbuy %}class="not-in-quickbuy"{% endunless %} {{ block.shopify_attributes }}>
               {%- render 'product-inventory', product: product, current_variant: current_variant, block: block -%}
@@ -944,6 +948,28 @@
 {%- if section.settings.enable_sticky_atc -%}
   {%- render 'sticky-atc', product: product, current_variant: current_variant -%}
 {%- endif -%}
+<script>
+  // VARIANT JSON CREATE - STOCK INVENTORY
+  document.addEventListener("DOMContentLoaded", function(event) {
+    let productJSON = {
+      variantId: {{ product.selected_or_first_available_variant.id | default: "null" | json }},
+      variantName: {{ product.selected_or_first_available_variant.title | default: "Unknown Variant" | json }},
+      variantInventoryQuantity: {{ product.selected_or_first_available_variant.inventory_quantity | default: 0 | json }}
+    };
+
+    // console.log("Product JSON:", productJSON); // Debugging
+
+    let scriptTag = document.getElementById("product-variant-data");
+    if (!scriptTag) {
+      scriptTag = document.createElement("script");
+      scriptTag.id = "product-variant-data";
+      scriptTag.type = "application/json";
+      document.body.appendChild(scriptTag);
+    }
+    
+    scriptTag.textContent = JSON.stringify(productJSON); // Ensures proper formatting
+  });
+</script>
 
 {% schema %}
 {

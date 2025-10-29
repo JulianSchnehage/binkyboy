@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -16,10 +25,9 @@
         "collapse_tag_sidebar_by_default": true,
         "collapse_filters_method": "none",
         "show_filter_counts": true,
-        "show_disabled_filters": false,
+        "filter_two_columns": true,
         "auto_apply_hide_unavailable": false,
         "enable_sticky_filter": true,
-        "filter_two_columns": true,
         "show_sort": true,
         "sort_show_featured": false,
         "sort_show_best": true,
@@ -77,8 +85,7 @@
       "blocks": {
         "template--20584682389527__4357caea-ebf4-4bbf-8a42-7d1b728c0c58-title-1": {
           "type": "title",
-          "settings": {
-          }
+          "settings": {}
         },
         "template--20584682389527__4357caea-ebf4-4bbf-8a42-7d1b728c0c58-price-1": {
           "type": "price",
@@ -89,13 +96,11 @@
         },
         "template--20584682389527__4357caea-ebf4-4bbf-8a42-7d1b728c0c58-vendor-1": {
           "type": "vendor",
-          "settings": {
-          }
+          "settings": {}
         },
         "template--20584682389527__4357caea-ebf4-4bbf-8a42-7d1b728c0c58-divider-1": {
           "type": "divider",
-          "settings": {
-          }
+          "settings": {}
         },
         "template--20584682389527__4357caea-ebf4-4bbf-8a42-7d1b728c0c58-variant-picker-1": {
           "type": "variant-picker",

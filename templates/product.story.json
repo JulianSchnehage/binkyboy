@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_with_text_overlay_TphAMP": {
@@ -5,8 +14,7 @@
       "blocks": {
         "subheading_TnRGyL": {
           "type": "subheading",
-          "settings": {
-          }
+          "settings": {}
         },
         "heading_fYVzid": {
           "type": "heading",
@@ -107,27 +115,25 @@
       "type": "scrolling-banner",
       "blocks": {
         "text_dBUpAq": {
-          "type": "text"
+          "type": "text",
+          "settings": {}
         }
       },
       "block_order": [
         "text_dBUpAq"
       ],
-      "settings": {
-      }
+      "settings": {}
     },
     "main": {
       "type": "main-product",
       "blocks": {
         "vendor": {
           "type": "vendor",
-          "settings": {
-          }
+          "settings": {}
         },
         "title": {
           "type": "title",
-          "settings": {
-          }
+          "settings": {}
         },
         "price": {
           "type": "price",
@@ -257,8 +263,7 @@
       "blocks": {
         "subheading_DwKKyH": {
           "type": "subheading",
-          "settings": {
-          }
+          "settings": {}
         },
         "heading_w8PTUK": {
           "type": "heading",
@@ -309,8 +314,7 @@
         },
         "subheading_iGR97U": {
           "type": "subheading",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -398,8 +402,7 @@
       "type": "product-template-product-list",
       "settings": {
         "title": "More from the designer",
-        "product_list": [
-        ],
+        "product_list": [],
         "hide_if_empty": true,
         "show_vendor": true,
         "enable_carousel": false,

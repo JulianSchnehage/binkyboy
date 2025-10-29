@@ -1,0 +1,48 @@
+{%- comment -%}
+# Caution! Please read https://help.shopify.com/en/manual/promoting-marketing/seo/editing-s-txt before proceeding to make changes to this file.
+{%- endcomment -%}
+
+{% for group in s.default_groups %}
+  {{- group.user_agent -}}
+
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- if group.user_agent.value == '*' -%}
+    # Block thin content pages
+    Disallow: /collections/vendors*
+    Disallow: /collections/types*
+    Disallow: /collections/all
+    Disallow: /blogs/*/tagged/*
+    
+    # Control faceted navigation
+    Disallow: /collections/*?*filter*
+    Disallow: /collections/*?*sort_by*
+    Disallow: /collections/*?*constraint*
+    Disallow: /collections/*?*pf_*
+    Disallow: /collections/*/*
+    Disallow: /collections/*%2B*
+    Disallow: /collections/*?*view*
+    Disallow: /collections/*?*grid_list*
+    Disallow: /collections/?page=*
+    
+    # Block internal search
+    Disallow: /search*
+    Disallow: */search?*
+  {%- endif -%}
+
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
+
+# LLM Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /

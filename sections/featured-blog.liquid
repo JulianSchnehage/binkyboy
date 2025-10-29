@@ -11,14 +11,14 @@
 
       {% else %}
 
-        <div class="article-list article-layout--columns article-layout--one-row">
+        <div class="article-list article-layout--columns article-layout--one-row {% if section.settings.enable_slider %}slider_mobile{% endif %}">
           {% for article in blog.articles limit: section.settings.post_limit %}
           {%- assign animation_delay = forloop.index | times: 0.15 | append: 's' -%}
           {%- assign animation_attrs = 'data-cc-animate data-cc-animate-delay="' | append: animation_delay | append: '"' -%}
           <div class="article" {%- render 'animation-attrs', attrs: animation_attrs -%}>
             <div class="article__inner">
               {% if article.image %}
-                <div class="article-image">
+                <div class="article-image"> 
                   <a href="{{ article.url }}">
                     {%- render 'image' with article.image, sizes: '(min-width: 1024px) 440px, (min-width: 768px) 50vw, 100vw', custom_aspect_ratio: section.settings.crop_ratio -%}
                   </a>
@@ -171,6 +171,12 @@
         }
       ],
       "default": "1.78"
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_slider",
+      "label":"Enable slider on mobile",
+      "default": true
     },
     {
       "type": "select",

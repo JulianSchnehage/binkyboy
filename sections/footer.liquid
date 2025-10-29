@@ -12,7 +12,7 @@
           <div class="section-footer__row__col section-footer__menu-block" role="navigation" aria-label="{{ 'accessibility.secondary_navigation' | t }}" {{ block.shopify_attributes }}>
             {% if block.settings.title != blank %}
               {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
-              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+              <div role="heading" aria-level="2" class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
                 {{- block.settings.title | escape -}}
               </div>
             {% endif %}
@@ -34,7 +34,7 @@
           <div class="section-footer__row__col section-footer__text-block {% if block.settings.text != blank %}section-footer__text-block--with-text{% endif %}" {{ block.shopify_attributes }}>
             {% if block.settings.title != blank %}
               {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
-              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+              <div role="heading" aria-level="2" class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
                 {{- block.settings.title | escape -}}
               </div>
             {% endif %}
@@ -85,7 +85,7 @@
           <div class="section-footer__row__col section-footer__newsletter-block" {{ block.shopify_attributes }}>
             {% if block.settings.title != blank %}
               {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
-              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+              <div role="heading" aria-level="2" class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
                 {{- block.settings.title | escape -}}
               </div>
             {% endif %}
@@ -122,7 +122,7 @@
           <div class="section-footer__row__col section-footer__custom-liquid-block" {{ block.shopify_attributes }}>
             {% if block.settings.title != blank %}
               {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
-              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+              <div role="heading" aria-level="2" class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
                 {{- block.settings.title | escape -}}
               </div>
             {% endif %}

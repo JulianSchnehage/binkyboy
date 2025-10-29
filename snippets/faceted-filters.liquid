@@ -8,7 +8,7 @@
   {% render 'faceted-filters', filter_context: collection, clear_url: collection.url, current_sort: current_sort %}
 {%- endcomment -%}
 
-<a class="filter-shade" href="#" data-toggle-filters></a>
+<a aria-label="Toggle filters" class="filter-shade" href="#" data-toggle-filters></a>
 <div class="filters{% if section.settings.enable_filtering == false or filter_context.filters == empty %} mobile-only{% endif %}"
     data-auto-apply-hide-unavailable="{{ section.settings.auto_apply_hide_unavailable }}"
     {%- if settings.swatch_option_name != blank %} data-swatch-option-name="{{ settings.swatch_option_name | escape }}"{% endif %}
@@ -155,13 +155,13 @@
               endif
             -%}
             {%- if filter_values_to_show_count > 0 -%}
-              <div class="filter-group{% if filter_group_is_swatch %} filter-group--swatch filter-group--layout-{{ settings.filter_swatch_layout }}{% elsif filter_group_is_button_grid %} filter-group--button-grid filter-group--layout-three-column{% elsif section.settings.filter_two_columns %}{% if filter.type == 'boolean' or filter.type == 'list' %} filter-group--layout-two-column{% endif %}{% endif %}">
+              <div class="{%if filter.label == 'Color' or filter.label == 'color'%}itg_color {%if color_swatches%}color_swatches_custom{%endif%}{%endif%} filter-group{% if filter_group_is_swatch %} filter-group--swatch filter-group--layout-{{ settings.filter_swatch_layout }}{% elsif filter_group_is_button_grid %} filter-group--button-grid filter-group--layout-three-column{% elsif section.settings.filter_two_columns %}{% if filter.type == 'boolean' or filter.type == 'list' %} filter-group--layout-two-column{% endif %}{% endif %}">
                 <toggle-target role="button" tabindex="0" class="filter-group__heading{% if collapse_filters %} toggle-target-toggler--is-hidden{% endif %}" data-toggle-target=".filter-group--{{ forloop.index | plus: 1 }}">
                   <div class="filter-group__heading__text">{{ filter.label | escape }}</div>
                   <span class="filter-group__heading__indicator">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
                 </toggle-target>
                 <div class="filter-group__items filter-group--{{ forloop.index | plus: 1 }} toggle-target{% if collapse_filters %} toggle-target--hidden{% endif %}">
-                  <div class="toggle-target-container">
+                  <div class="toggle-target-container red">
                     {% case filter.type %}
                     {% when 'boolean' or 'list' %}
                       {%- for value in filter.values -%}
@@ -181,11 +181,22 @@
                             value="{{ value.value | escape }}"
                             {% if value.active %}checked{% endif %}
                             {% if value.count == 0 and value.active == false %}disabled{% endif %}>
-                          <span class="filter-group__item__text">
-                            {{ value.label | escape }}
-                            {% unless filter_group_is_swatch or filter_group_is_button_grid %}
+                            {%if color_swatches%}
+                            {% if filter.label == 'Color' or filter.label == 'color' or filter.label == 'COLOR' %}
+                            {%- liquid
+                                      assign swatch_file_extension = 'png'
+                                      assign cdn_base_url = 'https://cdn.shopify.com/s/files/1/1412/5622/files/'
+                                      assign color_file_name = value.value | handle | append: '_36x' | append: '.' | append: swatch_file_extension
+                                      assign color_image = cdn_base_url | append: color_file_name
+                                      assign color_swatch_fallback = value.value | split: ' ' | last | handle
+                                      assign fallback_image = cdn_base_url | append: 'default-swatch.png'
+                                    -%}
+                               <span class="filter-group__item__swatch{% if settings.swatch_images %} lazyload{% endif %}" {% if settings.swatch_images %}data-bgset="{{ value.label | handle | append: '.png' | file_img_url: '48x48', crop: 'center' }}"{% else %}style="background:{{ color_swatch_fallback }}; background-image: url({{ color_image }});"{% endif %}></span>
+                            {% endif %}
+                            {%endif%}
+                          <span class="filter-group__item__text red">
+                           <span class="extra-label"> {{ value.label | escape }}</span>
                               <svg class="filter-tick" role="presentation" viewBox="0 0 20 20"><path d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0"></path></svg>
-                            {% endunless %}
                           </span>
                           {% if section.settings.show_filter_counts %}
                             {% unless filter_group_is_swatch or filter_group_is_button_grid %}

@@ -84,7 +84,7 @@
       </svg>
     </button>
     <ul class="custom-select__listbox absolute invisible" role="listbox" tabindex="-1"
-        aria-hidden="true" hidden{% if selected_value %} aria-activedescendant="{{ selected_id }}"{% endif %}>
+        aria-hidden="true" hidden>
       {%- if selected_value == blank -%}
         <li class="custom-select__option js-option" id="{{ id }}-opt-default" role="option" data-value="">
           <span class="pointer-events-none">{{- default_option -}}</span>

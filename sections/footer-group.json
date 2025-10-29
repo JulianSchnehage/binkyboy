@@ -1,40 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer Group",
   "sections": {
+    "newsletter_tVKaLp": {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": {
+        "title": "Join the Family",
+        "subheading": "<p>Sign up for exclusive offers, original stories, activism awareness, events and more.</p>",
+        "color_scheme": "1"
+      }
+    },
     "cross-page-promos": {
       "type": "cross-page-promos",
       "blocks": {
         "1478526632862": {
           "type": "icon",
           "settings": {
-            "icon": "truck",
-            "text": "Free delivery!",
-            "link_url": ""
+            "icon": "heart",
+            "svg": "",
+            "text": "IVF Scholarships",
+            "link_url": "https://www.legendsareborneveryday.org/"
           }
         },
         "1478526645605": {
           "type": "icon",
           "settings": {
             "icon": "map_pin",
-            "text": "Your nearest store",
-            "link_url": ""
+            "svg": "",
+            "text": "Local Pick Up",
+            "link_url": "https://binkybro.com/pages/local-pickup"
           }
         },
         "1478526647261": {
           "type": "icon",
           "settings": {
-            "icon": "price_tag",
+            "icon": "gift",
+            "svg": "",
             "text": "Gift cards",
-            "link_url": ""
+            "link_url": "shopify://collections/gift-cards-1"
           }
         },
         "1478527611164": {
           "type": "icon",
           "settings": {
-            "icon": "heart",
-            "text": "Student discount",
-            "link_url": ""
+            "icon": "chat_bubble",
+            "image": "shopify://shop_images/svgviewer-output.svg",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-users\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>",
+            "text": "Meet the Team",
+            "link_url": "https://binkybro.com/pages/meet-the-team"
           }
         }
       },
@@ -45,7 +68,9 @@
         "1478527611164"
       ],
       "settings": {
-        "visibility": "all"
+        "cross_page_promo_bg": "#000000",
+        "cross_page_promo_color": "#ffffff",
+        "show_on_home_page": true
       }
     },
     "footer": {
@@ -54,37 +79,54 @@
         "1601308717434": {
           "type": "text",
           "settings": {
-            "image_width": 150,
+            "title": "",
+            "text": "<p>From <strong>2015</strong> to now, BinkyBro has lived by the motto, <strong>”SURF, SNOW, SKATE.</strong>” Everything done is built with that attitude. From snapbacks, to Sun Hats, Beanies, and EVEN socks...everything is made to make sure your little dude is making a statement.</p><p></p><p>BinkyBro is not only apparel but rather a lifestyle. <strong>GO BIG. BE EPIC.</strong> WEAR BinkyBro!</p><p></p><p>Don't forget to join our family and receive exclusive deals and discounts.</p><p></p><p>And THANK YOU for supporting small business!</p>",
+            "image": "shopify://shop_images/header.png",
+            "image_width": 185,
             "show_social_icons": true,
-            "soc_icons_large": false
+            "soc_icons_large": true,
+            "enable_follow_on_shop": false
+          }
+        },
+        "menu_8z8JGA": {
+          "type": "menu",
+          "settings": {
+            "title": "Shop",
+            "menu": "2025-footer-shop-menu"
           }
         },
         "1601308671932": {
           "type": "menu",
           "settings": {
-            "menu": "footer"
+            "title": "Info",
+            "menu": "2025-footer-info"
           }
         },
-        "1601308656020": {
-          "type": "newsletter",
+        "menu_K6qdQF": {
+          "type": "menu",
           "settings": {
-            "show_social_icons": false,
-            "soc_icons_large": false
+            "title": "Support",
+            "menu": "2025-footer-support"
           }
         }
       },
       "block_order": [
         "1601308717434",
+        "menu_8z8JGA",
         "1601308671932",
-        "1601308656020"
+        "menu_K6qdQF"
       ],
       "settings": {
-        "lower_menu": "",
-        "show_payment_icons": true
+        "lower_menu": "2025-subfooter",
+        "show_powered_by": false,
+        "show_payment_icons": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true
       }
     }
   },
   "order": [
+    "newsletter_tVKaLp",
     "cross-page-promos",
     "footer"
   ]

@@ -1,159 +1,207 @@
 {%- if section.settings.video_shopify != blank or section.settings.video_external != blank -%}
-{%- liquid
-  assign using_video_tag = false
-  if section.settings.video_shopify != blank
-    assign using_video_tag = true
-  endif
+  {%- liquid
+    assign using_video_tag = false
+    if section.settings.video_shopify != blank
+      assign using_video_tag = true
+    endif
 
-  if section.settings.placeholder_image
-    assign placeholder_image = section.settings.placeholder_image
-  elsif section.settings.video_shopify
-    assign placeholder_image = section.settings.video_shopify.preview_image
-  endif
--%}
+    if section.settings.placeholder_image
+      assign placeholder_image = section.settings.placeholder_image
+    elsif section.settings.video_shopify
+      assign placeholder_image = section.settings.video_shopify.preview_image
+    endif
+  -%}
 
-<link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
-<script src="{{ 'video.js' | asset_url }}" defer></script>
+  <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+  <script src="{{ 'video.js' | asset_url }}" defer></script>
 
-<div id="section-id-{{ section.id }}" class="{% unless section.settings.full_width %}container fully-spaced-row{% endunless %} video-section video-section--background" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
-  {% style %}
-    #section-id-{{ section.id }} .height--fixed {
-      --image-height: {{ section.settings.height_mobile }}px;
-    }
-
-    @media (min-width: 768px) {
+  <div
+    id="section-id-{{ section.id }}"
+    class="{% unless section.settings.full_width %}container fully-spaced-row{% endunless %} video-section video-section--background"
+    {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}
+  >
+    {% style %}
       #section-id-{{ section.id }} .height--fixed {
-        --image-height: {{ section.settings.height_desktop }}px;
+        --image-height: {{ section.settings.height_mobile }}px;
       }
-    }
 
-    {%- for block in section.blocks -%}
-      {% if block.type == 'heading' %}
-        #section-id-{{ section.id }} .block-{{ block.id }} {
-          --heading-max-width: {{ block.settings.heading_max_width }}em;
-          font-size: {{ block.settings.title_size_mobile }}px;
-          {%- if block.settings.title_size_mobile >= 90 -%}
-          line-height: 1em;
-          {%- endif %}
+      @media (min-width: 768px) {
+        #section-id-{{ section.id }} .height--fixed {
+          --image-height: {{ section.settings.height_desktop }}px;
         }
+      }
 
-        @media (min-width: 768px) {
+      {%- for block in section.blocks -%}
+        {% if block.type == 'heading' %}
           #section-id-{{ section.id }} .block-{{ block.id }} {
-            {%- assign title_size_medium = block.settings.title_size | times: 0.7 | at_least: block.settings.title_size_mobile -%}
-            font-size: {{ title_size_medium }}px;
-            {%- if title_size_medium >= 90 -%}
+            --heading-max-width: {{ block.settings.heading_max_width }}em;
+            font-size: {{ block.settings.title_size_mobile }}px;
+            {%- if block.settings.title_size_mobile >= 90 -%}
             line-height: 1em;
             {%- endif %}
           }
-        }
 
-        @media (min-width: 1100px) {
-          #section-id-{{ section.id }} .block-{{ block.id }} {
-            font-size: {{ block.settings.title_size }}px;
-            {%- if block.settings.title_size >= 90 -%}
-            line-height: 1em;
-            {%- endif %}
+          @media (min-width: 768px) {
+            #section-id-{{ section.id }} .block-{{ block.id }} {
+              {%- assign title_size_medium = block.settings.title_size | times: 0.7 | at_least: block.settings.title_size_mobile -%}
+              font-size: {{ title_size_medium }}px;
+              {%- if title_size_medium >= 90 -%}
+              line-height: 1em;
+              {%- endif %}
+            }
           }
-        }
-      {% endif %}
-    {%- endfor -%}
-  {% endstyle %}
 
-  <div class="height--fixed image-overlay image-overlay--bg-{{ section.settings.overlay_style }}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
-    <div class="image-overlay__image height__image">
-      <div class="{% unless using_video_tag %}video-section__bg-iframe-video{% endunless %}">
-        <deferred-media>
-          <template>
-            <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %}"
-              {%- unless using_video_tag %} data-video-url="{{ section.settings.video_external | escape }}"{% endunless %}
-                            data-video-id="{{ section.id }}"
-                            data-autoplay="true"
-                            data-background="true"
-                            data-description="{{ section.settings.video_description | escape }}">
-              {%- if using_video_tag -%}
-                {{ section.settings.video_shopify | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
-              {%- else -%}
-                <div></div>
-              {%- endif -%}
-            </video-component>
-          </template>
-        </deferred-media>
+          @media (min-width: 1100px) {
+            #section-id-{{ section.id }} .block-{{ block.id }} {
+              font-size: {{ block.settings.title_size }}px;
+              {%- if block.settings.title_size >= 90 -%}
+              line-height: 1em;
+              {%- endif %}
+            }
+          }
+        {% endif %}
+      {%- endfor -%}
+    {% endstyle %}
+
+    <div
+      class="height--fixed image-overlay image-overlay--bg-{{ section.settings.overlay_style }}"
+      {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}
+    >
+      <div class="image-overlay__image height__image">
+        <div class="{% unless using_video_tag %}video-section__bg-iframe-video{% endunless %}">
+          <deferred-media>
+            <template>
+
+              <video-component
+                class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %}"
+                {%- unless using_video_tag %}
+                  data-video-url="{{ section.settings.video_external | escape }}"
+                {% endunless %}
+                data-video-id="{{ section.id }}"
+                data-autoplay="true"
+                data-background="true"
+                data-description="{{ section.settings.video_description | escape }}"
+              >
+                {%- if using_video_tag -%}
+                  {{
+                    section.settings.video_shopify
+                    | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: ''
+                    | replace: '<img ', '<img loading="lazy" hidden '
+                  }}
+                {%- else -%}
+                  <div></div>
+                {%- endif -%}
+              </video-component>
+            </template>
+          </deferred-media>
+        </div>
+
+        {% if placeholder_image %}
+          {%- render 'image' with placeholder_image, class: 'video-played-hidden' -%}
+        {% endif %}
       </div>
 
-      {% if placeholder_image %}
-        {%- render 'image' with placeholder_image, class: 'video-played-hidden' -%}
-      {% endif %}
-    </div>
+      {%- if section.blocks != empty -%}
+        <div class="text-overlay text-overlay--for-banner text-overlay--v-{{ section.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ section.settings.text_alignment | split: ' ' | last }} image-overlay__over">
+          <div class="text-overlay__inner">
+            <div
+              class="text-overlay__text fade-in-up"
+              {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.5s"' -%}
+            >
+              {% assign skip_block_count = 0 %}
+              {% for block in section.blocks %}
+                {%- liquid
+                  if skip_block_count > 0
+                    assign skip_block_count = skip_block_count | minus: 1
+                    continue
+                  endif
+                -%}
+                {% case block.type %}
+                  {% when 'heading' %}
+                    {% if block.settings.use_h1 %}
+                      <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>
+                        {% render 'multiline-text' with block.settings.title %}
+                      </h1>
+                    {% else %}
+                      <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>
+                        {% render 'multiline-text' with block.settings.title %}
+                      </h2>
+                    {% endif %}
 
-    {%- if section.blocks != empty -%}
-      <div class="text-overlay text-overlay--for-banner text-overlay--v-{{ section.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ section.settings.text_alignment | split: ' ' | last }} image-overlay__over">
-        <div class="text-overlay__inner">
-          <div class="text-overlay__text fade-in-up" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.5s"' -%}>
-            {% assign skip_block_count = 0 %}
-            {% for block in section.blocks %}
-              {%- liquid
-                if skip_block_count > 0
-                  assign skip_block_count = skip_block_count | minus: 1
-                  continue
-                endif
-              -%}
-              {% case block.type %}
-                {% when 'heading' %}
-                  {% if block.settings.use_h1 %}
-                    <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h1>
-                  {% else %}
-                    <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h2>
-                  {% endif %}
+                  {% when 'subheading' %}
+                    <div
+                      class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above"
+                      {{ block.shopify_attributes }}
+                    >
+                      {{ block.settings.subheading | escape }}
+                    </div>
 
-                {% when 'subheading' %}
-                  <div class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above" {{ block.shopify_attributes }}>{{ block.settings.subheading | escape }}</div>
+                  {% when 'text' %}
+                    <div
+                      class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}"
+                      {{ block.shopify_attributes }}
+                    >
+                      {{ block.settings.text }}
+                    </div>
 
-                {% when 'text' %}
-                  <div class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+                  {% when 'button' %}
+                    <div
+                      class="text-overlay__button-row button-row lightish-spaced-row-above"
+                      {{ block.shopify_attributes }}
+                    >
+                      <a
+                        class="text-overlay__button button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}"
+                        href="{{ block.settings.button_link }}"
+                      >
+                        {{- block.settings.button_label | escape -}}
+                      </a>
+                      {%- assign skip_block_count = 0 -%}
+                      {%- for next_block in section.blocks offset: forloop.index -%}
+                        {%- if next_block.type == 'button' -%}
+                          {%- assign skip_block_count = skip_block_count | plus: 1 -%}
+                          <a
+                            class="text-overlay__button button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}"
+                            href="{{ next_block.settings.button_link }}"
+                            {{ block.shopify_attributes }}
+                          >
+                            {{- next_block.settings.button_label | escape -}}
+                          </a>
+                        {%- else -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
 
-                {% when 'button' %}
-                  <div class="text-overlay__button-row button-row lightish-spaced-row-above" {{ block.shopify_attributes }}>
-                    <a class="text-overlay__button button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
-                    {%- assign skip_block_count = 0 -%}
-                    {%- for next_block in section.blocks offset: forloop.index -%}
-                      {%- if next_block.type == 'button' -%}
-                        {%- assign skip_block_count = skip_block_count | plus: 1 -%}
-                        <a class="text-overlay__button button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ next_block.settings.button_link }}" {{ block.shopify_attributes }}>{{ next_block.settings.button_label | escape }}</a>
-                      {%- else -%}
-                        {%- break -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </div>
+                  {%- when 'countdown' -%}
+                    <script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
+                    {% style %}
+                      .block-id-{{ block.id }} .countdown {
+                        --countdown-desktop-size: {{ block.settings.number_size }}px;
+                      }
+                    {% endstyle %}
 
-                {%- when 'countdown' -%}
-                  <script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
-                  {% style %}
-                    .block-id-{{ block.id }} .countdown {
-                      --countdown-desktop-size: {{ block.settings.number_size }}px;
-                    }
-                  {% endstyle %}
-
-                  <div class="block-id-{{ block.id }} lightly-spaced-row lightish-spaced-row-above countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}" {{ block.shopify_attributes }}>
-                    {% render 'countdown-timer',
-                      end_date: block.settings.end_date,
-                      end_time: block.settings.end_time,
-                      end_text: block.settings.end_text,
-                      end_midnight: true,
-                      hide_on_end: block.settings.hide_on_end,
-                      show_labels: block.settings.show_timer_labels
-                    %}
-                  </div>
-
-              {% endcase %}
-            {% endfor %}
+                    <div
+                      class="block-id-{{ block.id }} lightly-spaced-row lightish-spaced-row-above countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}"
+                      {{ block.shopify_attributes }}
+                    >
+                      {% render 'countdown-timer',
+                        end_date: block.settings.end_date,
+                        end_time: block.settings.end_time,
+                        end_text: block.settings.end_text,
+                        end_midnight: true,
+                        hide_on_end: block.settings.hide_on_end,
+                        show_labels: block.settings.show_timer_labels
+                      %}
+                    </div>
+                {% endcase %}
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+    </div>
   </div>
-</div>
 {% endif %}
-
 
 {% schema %}
 {

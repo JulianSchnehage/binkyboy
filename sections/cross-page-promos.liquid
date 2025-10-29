@@ -59,7 +59,11 @@
                         {%- render 'icon', icon: block.settings.icon, size: 'medium' -%}
                       {%- else -%}
                         <div class="icon-with-caption__image-icon">
+                          {% if block.settings.svg != blank %}
+                            <span class="svg-counters">{{ block.settings.svg }}</span>
+                          {%else%}
                           {%- render 'image' with block.settings.image, sizes: '34px', widths: '34, 68', loading: 'lazy' -%}
+                          {%endif%}
                         </div>
                       {%- endif -%}
                     </div>
@@ -310,6 +314,11 @@
           "id": "image",
           "label": "Custom icon",
           "info": "Replaces icon above"
+        },
+        {
+          "type":"html",
+          "id":"svg",
+          "label":"Enter html"
         },
         {
           "type": "text",

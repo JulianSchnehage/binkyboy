@@ -143,14 +143,16 @@
       </div>
       <div class="text-overlay text-overlay--inline text-overlay--v-center text-overlay--h-center image-overlay__over" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
         <div class="text-overlay__inner">
-          <div class="text-overlay__text">
+          <div class="text-overlay__text container">
             {%- if section.settings.show_title -%}
               <h1 class="text-overlay__title super-large-text">{{ collection.title | escape }}</h1>
             {%- endif -%}
 
+           
             {% if collection.description != blank and section.settings.coll_desc_pos == 'above' %}
               <div class="text-overlay__rte rte cf align-center reading-width large-text">{{ collection.description }}</div>
             {% endif %}
+          
 
             {%- if related_collections_count > 0 and section.settings.related_collections_style == 'buttons' -%}
               {{ related_collection_html }}
@@ -177,9 +179,10 @@
         {%- if section.settings.show_title -%}
           <h1 class="pagetitle h3">{{ collection.title | escape }}</h1>
         {%- endif -%}
-
+         {%if section.settings.enable_description%}
         {% if collection.description != blank and section.settings.coll_desc_pos == 'above' %}
-          <div class="rte cf align-center reading-width">{{ collection.description }}</div>
+          <div class="red rte cf align-center reading-width">{{ collection.description }}</div>
+        {% endif %}
         {% endif %}
       </div>
     </div>
@@ -191,7 +194,7 @@
   {%- endif -%}
 
   <div class="container{% if settings.use_fullwidth_layout %} container--no-max{% endif %}{% if show_header == false %} lightly-spaced-row-above{% endif %}">
-    <div class="utility-bar" data-ajax-container data-ajax-scroll-to>
+    <div class="utility-bar bar-filter" data-ajax-container data-ajax-scroll-to>
       <div class="utility-bar__left">
         {% if section.settings.show_sort or show_filters %}
           <a href="#" class="toggle-btn utility-bar__item{% if section.settings.collapse_tag_sidebar_by_default == false %} toggle-btn--revealed-desktop{% endif %}{% if show_filters == false %} mobile-only{% endif %}" data-toggle-filters>
@@ -283,7 +286,7 @@
 
     <filter-container class="filter-container filter-container--side{% if section.settings.collapse_tag_sidebar_by_default == false %} filter-container--show-filters-desktop{% endif %}" data-ajax-filtering="{{ settings.ajax_products }}" data-filter-section-id="{{ section.id }}">
       {% if section.settings.show_sort or show_filters %}
-        {% render 'faceted-filters', filter_context: collection, clear_url: collection.url, current_sort: current_sort %}
+        {% render 'faceted-filters', filter_context: collection, clear_url: collection.url, current_sort: current_sort, color_swatches: section.settings.enable_color %}
       {% endif %}
 
       <div class="filters-adjacent collection-listing" data-ajax-container>
@@ -292,17 +295,17 @@
         {% else %}
           <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ settings.prod_thumb_mob_per_row }} product-grid--per-row-mob-{{ settings.prod_thumb_mob_per_row }}">
             {%- liquid
-              if settings.prod_thumb_shape == 'portrait-23'
+              if section.settings.prod_thumb_shape == 'portrait-23'
                 assign chosen_aspect_ratio = 0.67
-              elsif settings.prod_thumb_shape == 'portrait-45'
+              elsif section.settings.prod_thumb_shape == 'portrait-45'
                 assign chosen_aspect_ratio = 0.8
-              elsif settings.prod_thumb_shape == 'square'
+              elsif section.settings.prod_thumb_shape == 'square'
                 assign chosen_aspect_ratio = 1.0
-              elsif settings.prod_thumb_shape == 'landscape-54'
+              elsif section.settings.prod_thumb_shape == 'landscape-54'
                 assign chosen_aspect_ratio = 1.25
-              elsif settings.prod_thumb_shape == 'landscape-32'
+              elsif section.settings.prod_thumb_shape == 'landscape-32'
                 assign chosen_aspect_ratio = 1.50
-              elsif settings.prod_thumb_shape == 'tallest'
+              elsif section.settings.prod_thumb_shape == 'tallest'
                 assign chosen_aspect_ratio = 99
                 for product in collection.products
                   if product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
@@ -323,7 +326,7 @@
                 if forloop.index0 < section.settings.grid
                   assign prioritised_loading = true
                 endif
-                render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, animate: true, prioritised_loading: prioritised_loading
+                render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, animate: true, prioritised_loading: prioritised_loading, filter_value_show: section.settings.enable_filter_size, filter_value_show_color: section.settings.enable_color_swatches_filter
               endfor
             -%}
           </div>
@@ -363,6 +366,12 @@
       "id": "show_image_behind_heading",
       "label": "Show collection image behind title",
       "default": true
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_description",
+      "label":"Enable collection description",
+      "default": false
     },
     {
       "type": "select",
@@ -417,6 +426,42 @@
       ]
     },
     {
+        "type": "select",
+        "id": "prod_thumb_shape",
+        "label": "Image shape",
+        "options": [
+          {
+            "value": "shortest",
+            "label": "Automatic (shortest image)"
+          },
+          {
+            "value": "tallest",
+            "label": "Automatic (tallest image)"
+          },
+          {
+            "value": "landscape-32",
+            "label": "Landscape (3:2)"
+          },
+          {
+            "value": "landscape-54",
+            "label": "Landscape (5:4)"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "portrait-45",
+            "label": "Portrait (4:5)"
+          },
+          {
+            "value": "portrait-23",
+            "label": "Portrait (2:3)"
+          }
+        ],
+        "default": "shortest"
+      },
+    {
       "type": "select",
       "id": "coll_desc_pos",
       "label": "Description position",
@@ -453,6 +498,18 @@
       "max": 5,
       "step": 1,
       "default": 4
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_filter_size",
+      "label":"Enable size filter",
+      "default": true
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_color_swatches_filter",
+      "label":"Enable color swatchs in product",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -510,6 +567,12 @@
           "label": "All rows"
         }
       ]
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_color",
+      "label":"Enable color swatchs",
+      "default": false
     },
     {
       "type": "checkbox",

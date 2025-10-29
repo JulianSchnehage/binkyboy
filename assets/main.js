@@ -959,6 +959,16 @@ const CartForm = class extends HTMLElement {
   }
 
   refreshFromHtml(html) {
+       setTimeout(function(){
+    document.querySelectorAll("[data-wpd-cart-drawer-line-price].wpd-processed").forEach(function(element) {
+      element.classList.remove("wpd-processed");
+    });
+
+       let wpd_emptyspan = document.createElement("span");
+        document.querySelector("body").append(wpd_emptyspan);
+      
+    },1000);
+    
     const frag = document.createDocumentFragment();
     const newContent = document.createElement('div');
     frag.appendChild(newContent);
@@ -2463,6 +2473,49 @@ const MediaGallery = class extends HTMLElement {
       // default to first visible image, if group changed and current variant has no related image
       this.setActiveMedia(this.querySelector('.thumbnails .slider__item:not([hidden])').dataset.mediaId, true);
     }
+
+
+      // VARIANT JSON UPDATE - STOCK INVENTORY
+      let variantInventoryDisclaimer = document.querySelector('.variant-inventory-disclaimer');
+      variantInventoryDisclaimer.setAttribute('hidden',true);
+      
+      let productQtyInput = document.querySelector('.quantity-wrapper input');
+      if(productQtyInput){
+        productQtyInput.value = 1;
+        document.querySelector('.quantity-increase').classList.remove('disabled');
+      }
+      
+
+      let productVariantJSONData = document.getElementById("product-variant-data");
+  
+      if (productVariantJSONData) {
+          try {
+              let productVariantData = JSON.parse(productVariantJSONData.textContent || "{}");
+  
+              if (evt?.detail?.variant) {
+                  productVariantData.variantId = evt.detail.variant.id;
+                  productVariantData.variantName = evt.detail.variant.title;
+                  productVariantData.variantInventoryQuantity = evt.detail.variant.inventory_quantity;
+  
+                  productVariantJSONData.textContent = JSON.stringify(productVariantData);
+                  console.log("Updated JSON:", productVariantData);
+              }
+          } catch (error) {
+              console.error("Error parsing product variant JSON:", error);
+          }
+      } else {
+          console.warn("Product variant script tag not found!");
+      }
+
+  
+    
+    // console.log('variant-change - ',evt);
+    // let productJSON = {
+    //   variantId: evt?.detail?.variant.id ,
+    //   variantName: evt?.detail?.variant.name ,
+    //   variantInventoryQuantity: evt?.detail?.variant.inventory_quantity ,
+    // }
+    // document.body.insertAdjacentHTML('beforeend', `<script id="product-variant-data" type="application/json">${JSON.stringify(productJSON)}</script>`);
   }
 
   /**
@@ -2669,6 +2722,48 @@ const ProductForm = class extends HTMLElement {
         this.submitBtn = this.querySelector('[name="add"]');
         this.form.addEventListener('submit', this.handleSubmit.bind(this));
       }
+
+      let productQtyInput = this.querySelector('.quantity-wrapper input');
+      if(productQtyInput){
+          productQtyInput.addEventListener('input', () => {
+              qtyInputEvent(productQtyInput);
+              console.log('input changes...');
+          });
+      }
+      
+      function getUpdatedVariantData() {
+        let productVariantJSONData = document.getElementById('product-variant-data');
+        
+        if (productVariantJSONData) {
+            try {
+                return JSON.parse(productVariantJSONData.textContent || "{}");
+            } catch (error) {
+                console.error("Error parsing variant JSON:", error);
+                return {};
+            }
+        }
+        return {};
+    }
+
+      function qtyInputEvent(productQtyInput){
+        let productVariantData = getUpdatedVariantData(); // Get the latest JSON
+        let qtyInputValue = Number(productQtyInput.value);
+        let variantQty = productVariantData.variantInventoryQuantity || 0;
+        let variantTitle = productVariantData.variantName;
+    
+        if (qtyInputValue > variantQty) {
+            // qtyButtonHas == true ? productQtyInput.value = variantQty - 1 : productQtyInput.value = variantQty;
+            productQtyInput.value = variantQty;
+            // console.log("Adjusted to Max Available:", variantQty);
+            let disclaimerMsg = `You can only add up to ${variantQty} units of ${variantTitle} to the cart.`;
+            let variantInventoryDisclaimer = document.querySelector('.variant-inventory-disclaimer');
+            variantInventoryDisclaimer.innerHTML = disclaimerMsg;
+            variantInventoryDisclaimer.removeAttribute('hidden');
+            document.querySelector('.quantity-increase').classList.add('disabled');
+            }else{
+                document.querySelector('.quantity-increase').classList.remove('disabled');
+            }
+        }
     }
   }
 
@@ -2709,6 +2804,12 @@ const ProductForm = class extends HTMLElement {
       const response = await fetch(theme.routes.cartAdd, fetchRequestOpts);
       const data = await response.json();
       let error = typeof data.description === 'string' ? data.description : data.message;
+      // console.log('error - ',error);
+      if (data.status) {
+        this.setErrorMsgState(error);
+        throw new Error(error); // This stops execution
+      }
+      
       if (data.errors && typeof data.errors === 'object') {
         error = Object.entries(data.errors).map((item) => item[1].join(', '));
       }
@@ -2748,6 +2849,10 @@ const ProductForm = class extends HTMLElement {
           document.querySelector('.js-cart-drawer').open();
         }
       }
+      const getResponse = await fetch(theme.routes.cartAdd, fetchRequestOpts);
+      const getData = await getResponse.json();
+      let getError = typeof getData.description === 'string' ? getData.description : getData.message;
+      console.log('getError - ',getError);
 
       this.dispatchEvent(new CustomEvent('on:cart:add', {
         bubbles: true,
@@ -2945,6 +3050,47 @@ if (!customElements.get('quantity-wrapper')) {
         input.dispatchEvent(
           new CustomEvent('change', { bubbles: true, cancelable: false })
         );
+        // console.log('evt - ',input);
+
+
+         // VARIANT JSON GET - STOCK INVENTORY
+         function getUpdatedVariantData() {
+            let productVariantJSONData = document.getElementById('product-variant-data');
+            
+            if (productVariantJSONData) {
+                try {
+                    return JSON.parse(productVariantJSONData.textContent || "{}");
+                } catch (error) {
+                    console.error("Error parsing variant JSON:", error);
+                    return {};
+                }
+            }
+            return {};
+         }
+
+          function qtyInputEvent(productQtyInput){
+                let productVariantData = getUpdatedVariantData(); // Get the latest JSON
+                let qtyInputValue = Number(productQtyInput.value);
+                let variantQty = productVariantData.variantInventoryQuantity || 0;
+                let variantTitle = productVariantData.variantName;
+            
+                console.log('disable is enable - ',variantTitle)
+                if (qtyInputValue > variantQty) {
+                    // qtyButtonHas == true ? productQtyInput.value = variantQty - 1 : productQtyInput.value = variantQty;
+                    productQtyInput.value = variantQty;
+                    // console.log("Adjusted to Max Available:", variantQty);
+                    let disclaimerMsg = `You can only add ${variantQty} ${variantTitle} to the cart.`;
+                    let variantInventoryDisclaimer = document.querySelector('.variant-inventory-disclaimer');
+                    variantInventoryDisclaimer.innerHTML = disclaimerMsg;
+                    variantInventoryDisclaimer.removeAttribute('hidden');
+                    document.querySelector('.quantity-increase').classList.add('disabled');
+                }else{
+                    document.querySelector('.quantity-increase').classList.remove('disabled');
+                }
+            }
+            qtyInputEvent(input);
+ 
+
       }
     }
   }
@@ -2967,6 +3113,30 @@ if (theme.settings.quickbuyStyle !== 'off') {
 
       theme.addDelegateEventListener(document, 'click', '.quickbuy-toggle', (evt, delEl) => {
         const productUrl = delEl.href;
+
+        // let variantID = evt.closest.querySelector('.product-block').getAttribute('variant-id');
+        let variantID = evt.target.closest('.product-block').getAttribute('data-product-id');
+        let variantQty = evt.target.closest('.product-block').getAttribute('vairant-qty');
+
+        console.log('variantID -', variantID,variantQty);
+
+        let productJSON = {
+          variantId: variantID,
+          variantInventoryQuantity: variantQty
+        };
+    
+        // console.log("Product JSON:", productJSON); // Debugging
+    
+        let scriptTag = document.getElementById("product-variant-data");
+        if (!scriptTag) {
+          scriptTag = document.createElement("script");
+          scriptTag.id = "product-variant-data";
+          scriptTag.type = "application/json";
+          document.body.appendChild(scriptTag);
+        }
+        
+        scriptTag.textContent = JSON.stringify(productJSON); // Ensures proper formatting
+
 
         // Only show dropdown if screen is large enough for it to be useful
         if (window.innerWidth >= 768) {
@@ -4133,3 +4303,20 @@ window.onpageshow = () => {
       console.log(error.message);
     });
 };
+
+
+// sticky menu js
+window.addEventListener("scroll", function () {
+  const header = document.querySelector(".pageheader");
+  const stickyHeader = document.querySelector(".sticky-menu");
+
+  if (header && stickyHeader) {
+    const headerHeight = header.offsetHeight;
+
+    if (window.scrollY > headerHeight) {
+      stickyHeader.classList.add("fixed");
+    } else {
+      stickyHeader.classList.remove("fixed");
+    }
+  }
+});

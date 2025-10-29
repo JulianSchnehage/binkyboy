@@ -277,3 +277,132 @@
  *
  * Have fun! - The Clean Canvas Development Team.
  */
+
+
+
+// window.addEventListener('DOMContentLoaded',function () {
+
+//     function rebuyFun() {
+//         let rebuyButtonAll = document.querySelectorAll('.rebuy-button');
+//         let cartItemQtyButtonAll = document.querySelectorAll('.rebuy-cart__flyout-item-quantity-widget-button');
+//             rebuyButtonAll.forEach((rebuyButton)=>{
+//                 rebuyButton.addEventListener('click',()=>{
+//                      setTimeout(cartLength, 2000);
+//                 });
+//             });
+//             cartItemQtyButtonAll.forEach((cartItemQtyButton)=>{
+//                 cartItemQtyButton.addEventListener('click',()=>{
+//                      setTimeout(cartLength, 2000);
+//                 });
+//             });
+//             function cartLength(){ 
+//                 // console.log('cliked --');
+//                 fetch('/cart.js')
+//                 .then(response => response.json())
+//                 .then(cart => {
+//                     let cartBubleCount = 0;
+//                     console.log('cart data - ',cart)
+//                     cart.items.map((cartItem)=>{
+//                         cartBubleCount += cartItem.quantity;
+//                     });
+//                     console.log(cartBubleCount);
+//                     document.querySelector('.cart-link__count').innerHTML = cartBubleCount;
+//                 });
+//             }
+//     } 
+
+//     setTimeout(rebuyFun, 4000);
+
+// }); 
+
+
+window.addEventListener('DOMContentLoaded', function () {
+    function updateCartBubble() {
+        fetch('/cart.js')
+            .then(response => response.json())
+            .then(cart => {
+                let cartBubbleCount = cart.items.reduce((total, item) => total + item.quantity, 0);
+                document.querySelector('.cart-link__count').innerHTML = cartBubbleCount;
+            })
+            .catch(error => console.error('Error fetching cart:', error));
+            // console.log('buble update')
+    }
+
+    function observeCartChanges() {
+        const cartDrawer = document.querySelector('.rebuy-cart__flyout');
+        
+        if (!cartDrawer) return;
+
+        const observer = new MutationObserver(() => {
+            updateCartBubble();
+        });
+
+        observer.observe(cartDrawer, { childList: true, subtree: true });
+    }
+
+    function initRebuyObserver() {
+        observeCartChanges(); // Start observing cart updates
+        updateCartBubble(); // Initial update
+    }
+
+    setTimeout(initRebuyObserver, 4000); // Delay to allow Rebuy to load
+
+
+    // VARIANT JSON GET - STOCK INVENTORY
+
+    function getUpdatedVariantData() {
+        let productVariantJSONData = document.getElementById('product-variant-data');
+        
+        if (productVariantJSONData) {
+            try {
+                return JSON.parse(productVariantJSONData.textContent || "{}");
+            } catch (error) {
+                console.error("Error parsing variant JSON:", error);
+                return {};
+            }
+        }
+        return {};
+    }
+    
+
+    let productQtyInput = document.querySelector('.quantity-wrapper input');
+    if(productQtyInput){
+        productQtyInput.addEventListener('input', () => {
+            qtyInputEvent(productQtyInput);
+        });
+    }
+    
+
+    // let quantityButtonAll = document.querySelectorAll('.quantity-wrapper a');
+    // quantityButtonAll.forEach((quantityButton) => {
+    //     quantityButton.addEventListener('click',()=>{
+    //         let qtyButtonHas = true;
+    //         qtyInputEvent(productQtyInput);
+    //     });
+    // });
+    
+    function qtyInputEvent(productQtyInput){
+        let productVariantData = getUpdatedVariantData(); // Get the latest JSON
+        let qtyInputValue = Number(productQtyInput.value);
+        let variantQty = productVariantData.variantInventoryQuantity || 0;
+        let variantTitle = productVariantData.variantName;
+    
+        if (qtyInputValue > variantQty) {
+            // qtyButtonHas == true ? productQtyInput.value = variantQty - 1 : productQtyInput.value = variantQty;
+            productQtyInput.value = variantQty;
+            // console.log("Adjusted to Max Available:", variantQty);
+            let disclaimerMsg = `You can only add up to ${variantQty} units of ${variantTitle} to the cart.`;
+            let variantInventoryDisclaimer = document.querySelector('.variant-inventory-disclaimer');
+            variantInventoryDisclaimer.innerHTML = disclaimerMsg;
+            variantInventoryDisclaimer.removeAttribute('hidden');
+            document.querySelector('.quantity-increase').classList.add('disabled');
+        }else{
+            document.querySelector('.quantity-increase').classList.remove('disabled');
+        }
+    }
+    
+
+    // document.addEventListener('rebuy:cart.change', (event) => { 
+    // console.log('rebuy:cart.change event', event.detail); 
+    // });
+});

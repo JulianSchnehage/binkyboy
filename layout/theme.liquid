@@ -39,6 +39,24 @@
     {%- render 'doc-head-styles' -%}
   </style>
 
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NP4NT2V');</script>
+  <!-- End Google Tag Manager -->
+    
+  <!-- Global site tag (gtag.js) - Google Ads: 10788575104 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10788575104"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'AW-10788575104', {'allow_enhanced_conversions': true});
+  </script>
+
   {{ 'main.css' | asset_url | stylesheet_tag: preload: true }}
 
   {%- if settings.swatch_source == 'theme' and settings.swatch_value_list != blank -%}
@@ -169,14 +187,54 @@
     {{- settings.custom_html_head -}}
     <!-- CC Custom Head End -->
   {%- endif -%}
+
+  {% render 'social-meta-tags' %}
+
+ {% comment %} <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ shop.name }}",
+        "url": "{{ shop.url }}",
+        "description": "{{ shop.description }}",
+        "telephone": "{{ shop.phone }}",
+        "logo": "https://binkybro.com/cdn/shop/files/header_820x.png?v=1739256515",
+        "image": "https://binkybro.com/cdn/shop/files/header_820x.png?v=1739256515",
+        "sameAs": [
+              "{{ settings.social_twitter_url }}",
+              "{{ settings.social_facebook_url }}",
+              "{{ settings.social_pinterest_url }}",
+              "{{ settings.social_instagram_url }}",
+              "{{ settings.social_tiktok_url }}",
+              "{{ settings.social_tumblr_url }}",
+              "{{ settings.social_snapchat_url }}",
+              "{{ settings.social_youtube_url }}",
+              "{{ settings.social_vimeo_url }}"
+            ],
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ shop.address.street }}",
+            "addressLocality": "{{ shop.address.city }}",
+            "addressRegion": "{{ shop.address.province }}",
+            "postalCode": "{{ shop.address.zip }}",
+            "addressCountry": "{{ shop.address.country }}"
+        }
+      }
+    </script> {% endcomment %}
+<meta name="google-site-verification" content="I69wurf_8AAgLAuj09keD-Dtq_RcDDI9Ue2faH17Ms8" />
 </head>
 
-<body class="template-{{ template | split: '.' | first | handle }}
+<body class="{% if customer and customer.tags contains 'b2b' %}wholesale-customer-b2b{% endif %} {% if customer and customer.tags contains 'wholesale' %}wholesale-customer{% endif %} test template-{{ template | split: '.' | first | handle }}
     {%- if template.suffix %} template-suffix-{{ template.suffix }}{% endif -%}
     {%- if settings.swatch_source == 'native' %} swatch-source-native swatch-method-swatches swatch-style-{{ settings.swatch_style }}
     {%- elsif settings.swatch_source == 'theme' %} swatch-source-theme swatch-method-{{ settings.swatch_method }} swatch-style-{{ settings.swatch_style }}{% endif -%}
     {%- if settings.animations_enabled_desktop %} cc-animate-enabled{% endif -%}
     ">
+
+     <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NP4NT2V"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
   <a class="skip-link visually-hidden" href="#content" data-cs-role="skip">{{ 'accessibility.skip_to_content' | t }}</a>
 
@@ -189,6 +247,8 @@
 
     </div>
   </main>
+
+  {% render 'adroll' %}
 
   {%- if request.path != '/challenge' -%}
     <div id="pagefooter">
@@ -218,5 +278,283 @@
       </added-notification>
     </template>
   {%- endif -%}
-</body>
+  <!-- Rebuy START -->
+{% unless customer.tags contains 'b2b' %}
+  <script async src="https://cdn.rebuyengine.com/onsite/js/rebuy.js?shop={{ shop.permanent_domain }}"></script>
+ {% render 'rebuy-extensions' %}
+ {% render 'rebuy-cart-template' %}
+{% endunless %}
+
+{% comment %}
+    {% unless customer.tags contains 'b2b' %}
+ <script async src="https://cdn.rebuyengine.com/onsite/js/rebuy.js?shop={{ shop.permanent_domain }}"></script>
+  {% endcomment %}
+
+      {% comment %}
+{% endunless %}
+<!-- Rebuy END -->
+ <!-- if a tagged B2B user logs in, render file to update Rebuy widget prices -->
+  {% if customer.tags contains "b2b" %}
+    {% render "rebuy-b2b" %}
+  {% endif %}
+      {% endcomment %}
+
+<script>
+  setTimeout(() =>{
+    let a11ySize = document.querySelectorAll(".clickyboxes li a");
+    let a11ySale = document.querySelector(".was-price");
+    let a11yCurrent = document.querySelector(".current-price");
+    let a11yClick = document.querySelectorAll(".rebuy-product-title");
+    let a11yRebuy = document.querySelectorAll(".rebuy-product-grid");
+    let a11yGrid = document.querySelectorAll(".rebuy-product-title");
+
+    if(a11ySale){
+      a11ySale.innerHTML += "<span class='sr-only'>Previously</span>";
+    }
+    if(a11yCurrent){
+      a11yCurrent.innerHTML += "<span class='sr-only'>On sale</span>";
+    }
+
+    for(let i = 0; i < a11ySize.length; i++){
+      a11ySize[i].setAttribute("aria-selected", "false");
+      a11ySize[i].setAttribute("role","option")
+    } 
+    
+    for(let i = 0; i < a11yClick.length; i++){
+      a11yClick[i].setAttribute("role", "heading");
+    } 
+    
+    for(let i = 0; i < a11yRebuy.length; i++){
+      a11yRebuy[i].setAttribute("role", "button");
+    }
+    
+    for(let i = 0; i < a11yGrid.length; i++){
+      a11yGrid[i].setAttribute("aria-level", "2");
+    }
+
+
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('role', 'status');
+    liveRegion.classList.add("sr-only");
+    document.body.appendChild(liveRegion);
+    
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === "Enter" || event.key === " ") { // Space or Enter keys
+        const activeElement = document.activeElement;
+
+        if (activeElement.hasAttribute('aria-selected')) {
+            // Toggle the aria-selected state
+            const isSelected = activeElement.getAttribute('aria-selected') === 'true';
+            const newState = !isSelected;
+            activeElement.setAttribute('aria-selected', newState.toString());
+
+            // Announce the change
+            const variantName = activeElement.textContent.trim();
+            if (activeElement.classList.contains("unavailable")) {
+                liveRegion.textContent = `Alert: ${variantName} is out of stock.`;
+            } else {
+                liveRegion.textContent = `${variantName} is now ${newState ? 'selected' : 'deselected'}.`;
+            }
+        }
+    }
+});
+  },1200)
+
+</script>
+<script src="{{ 'custom.js' | asset_url }}" defer></script>
+
+  <!-- WPD Start -->
+  {% if customer.tags.size > 0 and template != 'cart' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          let checkoutbtninterval = setInterval(function(){
+            var x=document.querySelectorAll("input[name='checkout'], button[name='checkout'], input[name='goto_pp'], button[name='goto_pp'], input[name='goto_gc'], button[name='goto_gc'], [href$='checkout']");
+            var WPD_RedirectToCart = function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                window.location = '/cart';
+                };
+                for (var i = 0; i < x.length; i++) {
+                    x[i].addEventListener('click', WPD_RedirectToCart, false);
+                }
+},500)
+    });
+  </script>
+   {% endif %}
+
+   {% render 'cookie-monster' %}
+
+<!--  VIA EXIT POPUP SCRIPT  -->
+<script>
+    (function (d, w, c) {
+        w.ViaExitPopupToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0bmFtZSI6ImJpbmt5YnJvLmNvbSIsImxvY2F0aW9uSWQiOiI1ZmJjODA0ZGIxMDVjZTAwMDdmNzhlOGQiLCJpYXQiOjE2MDYyNzY1MzB9.ZAz2n1vLSrsLoilyDNHSZu3sMDPvS1NcFA9dyIvC-tami_UzEfpJh3OgjHVsp8xEXaf4Uhx3U3XFJWd6MedB5ia8EbsarleV3JaCZOGJ6wZa2CfnIlHOIiwnX6WqRv0anF0gsjPN05I3URQpEm_XLZkYObqKf6twIu60QdjbckI';
+        w.ViaStoreType = 'shopify';
+        var s = d.createElement('script');
+        w[c] = w[c] || function () {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://pg-exit-popup.viacustomers.com/via_exit_popup.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'ViaExitPopup');
+</script>
+<!--  END VIA EXIT POPUP SCRIPT  -->
+
+<script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+<script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+        account: "RLWt4z",
+        list: "VfbrfW",
+        platform: "shopify"
+    });
+    klaviyo.enable("backinstock",{ 
+    trigger: {
+      product_page_text: "Notify Me When Available",
+      product_page_class: "button",
+      product_page_text_align: "center",
+      product_page_margin: "0px",
+      replace_anchor: false
+    },
+    modal: {
+     newsletter_subscribe_label: "Add me to your email list.",
+     subscribe_checked: true,
+     headline: "{product_name}",
+     body_content: "Register to receive a notification when this item comes back in stock.",
+     email_field_label: "Email",
+     button_label: "Notify me when available",
+     subscription_success_label: "You're in! We'll let you know when it's back.",
+     footer_content: '',
+     additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+     drop_background_color: "#000",
+     background_color: "#fff",
+     text_color: "#222",
+     button_text_color: "#fff",
+     button_background_color: "#439fdb",
+     close_button_color: "#ccc",
+     error_background_color: "#fcd6d7",
+     error_text_color: "#C72E2F",
+     success_background_color: "#d3efcd",
+     success_text_color: "#1B9500"
+    }
+  });
+</script>
+{% if customer.tags contains 'b2b' %}
+  {% render 'rebuy-b2b' %}
+  <script>
+    document.addEventListener('rebuy:smartcart.ready', (event) => {
+      Rebuy.SmartCart.destroy();
+      document.querySelector('body').classList.remove('smart-cart--enabled');
+    });
+  </script>
+{% endif %}
+
+    <!-- wpd_app_integration start -->
+      <script>
+      function wpd_includefile(filename) {
+                       var head = document.getElementsByTagName("head")[0];
+                       var script = document.createElement("script");
+                       script.src = filename;
+                       script.type = "text/javascript";
+                       head.appendChild(script)
+                   }
+       {% if customer.tags.size > 0 %}
+             window.shopifyCustomer = "{{ customer.tags | join: "," }}";
+             wpd_includefile("/apps/wpdapp/integration/build/app.bundle.js?v="+Math.random());
+        {% endif %}
+     </script>
+{% assign wcp_wholesale_customer = false %}
+{% if shop.metafields.wcp_status.wcp_status != 'disabled' and customer %}
+{% assign active_discounts = shop.metafields.wcp_active_discounts.wcp_active_discounts %}
+{% assign active_discounts_array = active_discounts | split: ',' %}
+{% assign customer_tags = blank %}
+{% for tag in customer.tags %}
+{% assign tempTag = tag | downcase %}
+{% assign customer_tags = customer_tags | prepend:tempTag %}
+{% unless forloop.last %}
+{% assign customer_tags = customer_tags | prepend:','  %}
+{% endunless %}
+{% endfor %}
+{% assign customer_tags = customer_tags | split:',' %}
+{% assign active_discounts = active_discounts | downcase %}
+{% for discount_key in active_discounts_array %}
+{% assign key_split = discount_key | split: '-' %}
+{% assign key_split_length = key_split | size %}
+{% if key_split_length > 2 %}
+{% assign removeable_key = key_split.last | prepend: '-' %}
+{% assign wcp_customer_tag = discount_key | remove_last: removeable_key %}
+{% else %}
+{% assign wcp_customer_tag = key_split[0] %}
+{% endif %}
+{% assign wcp_customer_tag = wcp_customer_tag | downcase %}
+{% if customer_tags contains wcp_customer_tag %}
+{% assign wcp_wholesale_customer = true %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if wcp_wholesale_customer == true %}
+   {% if template != 'cart' %}
+   <script>
+     document.addEventListener('DOMContentLoaded', function() {
+       console.log("WPD REBUY CHECKOUT")
+       let MaxCheck = 0;
+       let rebuyCheckoutButtonInterval = setInterval(function(){
+         MaxCheck++;
+         if(MaxCheck > 25){clearInterval(rebuyCheckoutButtonInterval);}
+         // if(document.getElementsByClassName("rebuy-cart__flyout-actions").length > 0){
+         if(document.getElementsByClassName("rebuy-cart__checkout-button").length > 0){
+            clearInterval(rebuyCheckoutButtonInterval);
+            const WPDCheckout = document.createElement("button");                
+    		WPDCheckout.innerHTML='Checkout';
+            WPDCheckout.setAttribute("onclick","window.location.href='/cart'");
+            WPDCheckout.setAttribute("class","rebuy-button block");
+            WPDCheckout.setAttribute("type","button");
+            WPDCheckout.setAttribute("style","cursor: pointer;");
+    		document.getElementsByClassName("rebuy-cart__checkout-button")[0].after(WPDCheckout);
+            document.getElementsByClassName("rebuy-cart__checkout-button")[0].style.display = "none";
+         }
+       },500);      
+     });
+    </script>
+   {% endif %}
+{% endif %}
+     <!-- wpd_app_integration end -->
+
+{% comment %} <!-- WPD Start -->
+                {% if customer.tags.size > 0 and template != 'cart' %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      let checkoutbtninterval = setInterval(function(){
+                        var x=document.querySelectorAll("input[name='checkout'], button[name='checkout'], input[name='goto_pp'], button[name='goto_pp'], input[name='goto_gc'], button[name='goto_gc'], [href$='checkout']");
+                        var WPD_RedirectToCart = function(e) {
+                          	e.stopPropagation();
+                            e.preventDefault();
+                            window.location = '/cart';
+                            };
+                            for (var i = 0; i < x.length; i++) {
+                                x[i].addEventListener('click', WPD_RedirectToCart, false);
+                            }
+                        },500)
+                });
+              </script>
+               {% endif %}
+         
+
+               {% if customer.tags.size > 0 and template == 'cart' %}
+                 {% include 'wcp_cart' %}
+               {% endif %}
+               <!-- WPD End --> {% endcomment %}
+
+              {% comment %} MS CLARITY {% endcomment %}
+              <script type="text/javascript">
+              (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "tkkzwrxpyj");
+              </script>
+
+                   </body>
 </html>
