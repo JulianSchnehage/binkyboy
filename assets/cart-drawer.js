@@ -52,3 +52,4 @@ class CartDrawer extends SideDrawer {
 }
 
 window.customElements.define('cart-drawer', CartDrawer);
+

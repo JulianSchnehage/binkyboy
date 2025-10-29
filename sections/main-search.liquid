@@ -172,7 +172,7 @@
             -%}
             {% for item in search.results %}
               {% if item.object_type == 'product' %}
-                {% render 'product-block', product: item, custom_aspect_ratio: chosen_product_aspect_ratio, animate: true %}
+                {% render 'product-block', product: item, custom_aspect_ratio: chosen_product_aspect_ratio, animate: true, filter_value_show: section.settings.enable_filter_size, filter_value_show_color: section.settings.enable_color_swatches_filter %}
               {% elsif item.object_type == 'collection' %}
                 {% render 'collection-block', collection: item, custom_aspect_ratio: chosen_collection_aspect_ratio, animate: true %}
               {% else %}
@@ -251,6 +251,18 @@
       "id": "enable_filtering",
       "label": "Enable filtering",
       "info": "[Customize filters](/admin/menus)",
+      "default": true
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_filter_size",
+      "label":"Enable product size",
+      "default": true
+    },
+    {
+      "type":"checkbox",
+      "id":"enable_color_swatches_filter",
+      "label":"Enable color swatchs in product",
       "default": true
     },
     {

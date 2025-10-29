@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  
+  <!-- Symmetry 5.0.1 -->
+  
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NP4NT2V');</script>
+<!-- End Google Tag Manager -->
+  
+  <!-- Global site tag (gtag.js) - Google Ads: 10788575104 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-10788575104"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-10788575104');
+</script>
+
+  <link rel="preload" href="{{ 'styles.css' | asset_url }}" as="style">
+  
+  <meta name="theme-color" content="{{ settings.btn_col }}">
+
+  <title>
+    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  <script>
+    window.theme = window.theme || {};
+    theme.money_format = {{ shop.money_format | json }};
+    theme.strings = {
+      previous: {{ 'general.accessibility_labels.previous' | t | json }},
+      next: {{ 'general.accessibility_labels.next' | t | json }},
+      addressError: {{ 'map.errors.address_error' | t | json }},
+      addressNoResults: {{ 'map.errors.address_no_results' | t | json }},
+      addressQueryLimit: {{ 'map.errors.address_query_limit_html' | t | json }},
+      authError: {{ 'map.errors.auth_error' | t | json }},
+      icon_labels_left: {{ 'general.icon_labels.left' | t | escape | json }},
+      icon_labels_right: {{ 'general.icon_labels.right' | t | escape | json }},
+      icon_labels_down: {{ 'general.icon_labels.down' | t | escape | json }},
+      icon_labels_close: {{ 'general.icon_labels.close' | t | escape | json }},
+      icon_labels_plus: {{ 'general.icon_labels.plus' | t | escape | json }},
+      cart_terms_confirmation: {{ 'cart.terms.confirmation' | t | json }},
+      products_listing_from: {{ 'products.listing.from' | t | json }},
+      layout_live_search_see_all: {{ 'layout.live_search.see_all' | t | json }},
+      products_product_add_to_cart: {{ 'products.product.add_to_cart' | t | json }},
+      products_variant_no_stock: {{ 'products.variant.no_stock' | t | json }},
+      products_variant_non_existent: {{ 'products.variant.non_existent' | t | json }},
+      onlyXLeft: {{ 'products.labels.only_x_left' | t: quantity: '[[ quantity ]]' | json }},
+      products_product_unit_price_separator: {{ 'products.product.unit_price_separator' | t | json }},
+      general_navigation_menu_toggle_aria_label: {{ 'general.navigation.menu_toggle_aria_label' | t | json }},
+      general_accessibility_labels_close: {{ 'general.accessibility_labels.close' | t | json }},
+      products_added_notification_title: {{ 'products.added_notification.title' | t | json }},
+      products_added_notification_item: {{ 'products.added_notification.item' | t | json }},
+      products_added_notification_unit_price: {{ 'products.added_notification.unit_price' | t | json }},
+      products_added_notification_quantity: {{ 'products.added_notification.quantity' | t | json }},
+      products_added_notification_total_price: {{ 'products.added_notification.total_price' | t | json }},
+      products_added_notification_shipping_note: {{ 'products.added_notification.shipping_note' | t | json }},
+      products_added_notification_keep_shopping: {{ 'products.added_notification.keep_shopping' | t | json }},
+      products_added_notification_cart: {{ 'products.added_notification.cart' | t | json }},
+      products_product_adding_to_cart: {{ 'products.product.adding_to_cart' | t | json }},
+      products_product_added_to_cart: {{ 'products.product.added_to_cart' | t | json }},
+      products_product_unit_price_separator: {{ 'products.product.unit_price_separator' | t | json }},
+      products_added_notification_subtotal: {{ 'products.added_notification.subtotal' | t | json }},
+      products_labels_sold_out: {{ 'products.labels.sold_out' | t | json }},
+      products_labels_sale: {{ 'products.labels.sale' | t | json }},
+      products_labels_percent_reduction: {{ 'products.labels.percent_reduction' | t: amount: '[[ amount ]]' | json }},
+      products_labels_value_reduction_html: {{ 'products.labels.value_reduction_html' | t: amount: '[[ amount ]]' | json }},
+      products_product_preorder: {{ 'products.product.preorder' | t | json }},
+      general_quick_search_pages: {{ 'general.quick_search.pages' | t | json }},
+      general_quick_search_no_results: {{ 'general.quick_search.no_results' | t | json }},
+      collections_general_see_all_subcollections: {{ 'collections.general.see_all_subcollections' | t | json }}
+    };
+    theme.routes = {
+      search_url: '{{ routes.search_url }}',
+      cart_url: '{{ routes.cart_url }}',
+      cart_add_url: '{{ routes.cart_add_url }}',
+      cart_change_url: '{{ routes.cart_change_url }}'
+    };
+    theme.settings = {
+      cart_type: {{ settings.cart_type | json }},
+      quickbuy_style: {{ settings.quickbuy_style | json }}
+    };
+    document.documentElement.classList.add('js');
+  </script>
+
+  {{ content_for_header }}
+  <script src="//cdata.mpio.io/js/E354AF45BE12B1.js" async defer></script>
+
+  {% render 'shogun-head' %}
+</head>
+
+<body class="wholesale-set template-{{ template | split: '.' | first }}{% if template.suffix %} template-suffix-{{ template.suffix }}{% endif %}" data-cc-animate-timeout="0">
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NP4NT2V"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  {%- if settings.animations_enabled_desktop -%}
+    <script>
+      if ('IntersectionObserver' in window) {
+        document.body.classList.add("cc-animate-enabled");
+      }
+    </script>
+  {%- endif -%}
+
+  <a class="skip-link visually-hidden" href="#content">{{ 'general.accessibility_labels.skip_to_content' | t }}</a>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+  {% section 'store-messages' %}
+
+  <main id="content" role="main">
+    <div class="container cf">
+
+      {{ content_for_layout }}
+
+    </div><!-- /.container -->
+  </main><!-- /#content -->
+
+  {% if request.path != '/challenge' %}
+    <div id="pagefooter">
+      {% section 'cross-page-promos' %}
+      {% section 'footer' %}
+
+    <script src="//cdn.codeblackbelt.com/js/modules/frequently-bought-together/main.min.js?shop=binky-bro.myshopify.com" defer></script>
+    </div>
+
+    {% comment %} {% section 'popup' %} {% endcomment %}
+  {% endif %}
+
+  {{ 'vendor.js'  | asset_url | script_tag }}
+  {{ 'theme.js'  | asset_url | script_tag }}
+{% include 'adroll' %}
+  
+{{ 'custom-styles.css' | asset_url | stylesheet_tag }}
+  
+</body>
+</html>

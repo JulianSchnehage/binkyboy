@@ -31,12 +31,18 @@
   <div class="price__default">
     {%- if product.price_varies -%}
       {%- if for_variant_picker == false -%}
-        <span class="price__from">{{ 'products.product.from' | t }}</span>
+        <span class="price__from data-wpd-hide ">{{ 'products.product.from' | t }}</span>
       {%- elsif for_variant_picker and current_variant == false -%}
-        <span class="price__from">{{ 'products.product.from' | t }}</span>
+        <span class="price__from data-wpd-hide ">{{ 'products.product.from' | t }}</span>
       {%- endif -%}
     {%- endif %}
-    <span class="price__current">
+    <span class="price__current"
+      data-wpd-product-handle="{{ product.handle }}"         
+      data-wpd-variant-id="{{ product.selected_or_first_available_variant.id }}"         
+      data-wpd-variant-price="{{ product.selected_or_first_available_variant.price }}"        
+      data-wpd-variant-compare-at-price="{{ product.selected_or_first_available_variant.compare_at_price }}"
+      data-wpd-product-collection-ids="{% assign wpdProductCollectionIds = product.collections | map:'id' %}{{ wpdProductCollectionIds | join:',' }}"        
+      data-wpd-product-id="{{ product.id }}">
       {%- if show_currency_code -%}
         {{ price | money_with_currency }}
       {%- else -%}
@@ -44,7 +50,7 @@
       {%- endif -%}
     </span>
     {% if for_variant_picker or compare_at_price > price -%}
-      <span class="price__was">
+      <span class="price__was data-wpd-hide">
         {%- if compare_at_price > price -%}
           {{- compare_at_price | money -}}
         {%- endif -%}
@@ -58,7 +64,7 @@
     {% elsif settings.prod_pre_order_label_show and product.template_suffix contains 'preorder' %}
       <span class="price-label price-label--preorder">{{ 'products.product.preorder' | t }}</span>
     {% elsif settings.prod_sale_show and variant.compare_at_price > variant.price %}
-      <span class="price-label price-label--sale">{{ 'products.product.sale' | t }}</span>
+      <span class="price-label price-label--sale data-wpd-hide">{{ 'products.product.sale' | t }}</span>
     {% endif %}
   {% endif %}
 

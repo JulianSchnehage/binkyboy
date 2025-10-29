@@ -1,0 +1,479 @@
+{%- liquid
+  assign rtl_langs = 'ar,arc,dv,fa,ha,he,khw,ks,ku,ps,ur,yi' | split: ','
+  assign current_lang = localization.language.iso_code | split: '-' | first
+  if rtl_langs contains current_lang
+    assign lang_dir = 'rtl'
+  else
+    assign lang_dir = 'ltr'
+  endif
+-%}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ lang_dir }}">
+<head>
+  {%- render 'doc-head-core' -%}
+  {%- render 'doc-head-social' -%}
+
+  {%- liquid
+    assign base_font = settings.type_base_font
+    assign base_font_bold = base_font | font_modify: 'weight', 'bolder'
+    assign base_font_medium = base_font | font_modify: 'weight', '500'
+    assign base_font_italic = base_font | font_modify: 'style', 'italic'
+    assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic'
+    assign heading_font = settings.type_heading_font
+    assign logo_font = settings.type_logo_font
+    assign nav_font = settings.type_nav_font
+    assign nav_font_600 = nav_font | font_modify: 'weight', '600'
+  -%}
+
+  <style>
+    {{- base_font | font_face: font_display: 'fallback' -}}
+    {{- base_font_bold | font_face: font_display: 'fallback' -}}
+    {{- base_font_medium | font_face: font_display: 'fallback' -}}
+    {{- base_font_italic | font_face: font_display: 'fallback' -}}
+    {{- base_font_bold_italic | font_face: font_display: 'fallback' -}}
+    {{- heading_font | font_face: font_display: 'fallback' -}}
+    {{- logo_font | font_face: font_display: 'fallback' -}}
+    {{- nav_font | font_face: font_display: 'fallback' -}}
+    {{- nav_font_600 | font_face: font_display: 'fallback' -}}
+
+    {%- render 'doc-head-styles' -%}
+  </style>
+
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NP4NT2V');</script>
+  <!-- End Google Tag Manager -->
+    
+  <!-- Global site tag (gtag.js) - Google Ads: 10788575104 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10788575104"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'AW-10788575104', {'allow_enhanced_conversions': true});
+  </script>
+
+  {{ 'main.css' | asset_url | stylesheet_tag: preload: true }}
+
+  {%- if settings.swatch_source == 'theme' and settings.swatch_value_list != blank -%}
+    <link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}"></noscript>
+  {%- endif -%}
+
+  {%- unless base_font.system? -%}
+    <link rel="preload" as="font" href="{{ base_font | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
+  {%- unless heading_font.system? -%}
+    <link rel="preload" as="font" href="{{ heading_font | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+    window.theme = {
+      info: {
+        name: 'Symmetry',
+        version: '7.4.0'
+      },
+      device: {
+        hasTouch: window.matchMedia('(any-pointer: coarse)').matches,
+        hasHover: window.matchMedia('(hover: hover)').matches
+      },
+      mediaQueries: {
+        md: '(min-width: 768px)',
+        productMediaCarouselBreak: '(min-width: 1041px)'
+      },
+      routes: {
+        base: '{{ shop.url }}',
+        cart: '{{ routes.cart_url }}',
+        cartAdd: '{{ routes.cart_add_url }}.js',
+        cartUpdate: '{{ routes.cart_update_url }}.js',
+        predictiveSearch: '{{ routes.predictive_search_url }}'
+      },
+      strings: {
+        cartTermsConfirmation: {{ 'cart.terms.confirmation' | t | json }},
+        cartItemsQuantityError: {{ 'cart.items.quantity_error' | t: quantity: '[QUANTITY]' | json }},
+        generalSearchViewAll: {{ 'general.search.view_all' | t | json }},
+        noStock: {{ 'products.variant.no_stock' | t | json }},
+        noVariant: {{ 'products.variant.non_existent' | t | json }},
+        productsProductChooseA: {{ 'products.product.choose_a' | t | json }},
+        generalSearchPages: {{ 'general.search.pages' | t | json }},
+        generalSearchNoResultsWithoutTerms: {{ 'general.search.no_results_without_terms' | t | json }},
+        shippingCalculator: {
+          singleRate: {{ 'cart.shipping_calculator.single_rate' | t | json }},
+          multipleRates: {{ 'cart.shipping_calculator.multiple_rates' | t | json }},
+          noRates: {{ 'cart.shipping_calculator.no_rates' | t | json }}
+        }
+      },
+      settings: {
+        moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }},
+        cartType: {{ settings.cart_type | json }},
+        afterAddToCart: {{ settings.after_add_to_cart | json }},
+        quickbuyStyle: {{ settings.quickbuy_style | json }},
+        externalLinksNewTab: {{ settings.external_links_new_tab | json }},
+        internalLinksSmoothScroll: {{ settings.internal_links_smooth_scroll | json }}
+      }
+    }
+
+    theme.inlineNavigationCheck = function() {
+      var pageHeader = document.querySelector('.pageheader'),
+          inlineNavContainer = pageHeader.querySelector('.logo-area__left__inner'),
+          inlineNav = inlineNavContainer.querySelector('.navigation--left');
+      if (inlineNav && getComputedStyle(inlineNav).display != 'none') {
+        var inlineMenuCentered = document.querySelector('.pageheader--layout-inline-menu-center'),
+            logoContainer = document.querySelector('.logo-area__middle__inner');
+        if(inlineMenuCentered) {
+          var rightWidth = document.querySelector('.logo-area__right__inner').clientWidth,
+              middleWidth = logoContainer.clientWidth,
+              logoArea = document.querySelector('.logo-area'),
+              computedLogoAreaStyle = getComputedStyle(logoArea),
+              logoAreaInnerWidth = logoArea.clientWidth - Math.ceil(parseFloat(computedLogoAreaStyle.paddingLeft)) - Math.ceil(parseFloat(computedLogoAreaStyle.paddingRight)),
+              availableNavWidth = logoAreaInnerWidth - Math.max(rightWidth, middleWidth) * 2 - 40;
+          inlineNavContainer.style.maxWidth = availableNavWidth + 'px';
+        }
+
+        var firstInlineNavLink = inlineNav.querySelector('.navigation__item:first-child'),
+            lastInlineNavLink = inlineNav.querySelector('.navigation__item:last-child');
+        if (lastInlineNavLink) {
+          var inlineNavWidth = null;
+          if(document.querySelector('html[dir=rtl]')) {
+            inlineNavWidth = firstInlineNavLink.offsetLeft - lastInlineNavLink.offsetLeft + firstInlineNavLink.offsetWidth;
+          } else {
+            inlineNavWidth = lastInlineNavLink.offsetLeft - firstInlineNavLink.offsetLeft + lastInlineNavLink.offsetWidth;
+          }
+          if (inlineNavContainer.offsetWidth >= inlineNavWidth) {
+            pageHeader.classList.add('pageheader--layout-inline-permitted');
+            var tallLogo = logoContainer.clientHeight > lastInlineNavLink.clientHeight + 20;
+            if (tallLogo) {
+              inlineNav.classList.add('navigation--tight-underline');
+            } else {
+              inlineNav.classList.remove('navigation--tight-underline');
+            }
+          } else {
+            pageHeader.classList.remove('pageheader--layout-inline-permitted');
+          }
+        }
+      }
+    };
+
+    theme.setInitialHeaderHeightProperty = () => {
+      const section = document.querySelector('.section-header');
+      if (section) {
+        document.documentElement.style.setProperty('--theme-header-height', Math.ceil(section.clientHeight) + 'px');
+      }
+    };
+  </script>
+
+  <script src="{{ 'main.js' | asset_url }}" defer></script>
+
+  {%- if request.design_mode -%}
+    <script src="{{ 'theme-editor.js' | asset_url }}" defer data-contact="{{ shop.email | escape }}"></script>
+  {%- endif -%}
+
+  {% if settings.animations_enabled_desktop %}
+    <script src="{{ 'animate-on-scroll.js' | asset_url }}" defer></script>
+    {{ 'animate-on-scroll.css' | asset_url | stylesheet_tag: preload: true }}
+  {% endif %}
+
+  {{ content_for_header }}
+
+  {%- if settings.custom_html_head -%}
+    <!-- CC Custom Head Start -->
+    {{- settings.custom_html_head -}}
+    <!-- CC Custom Head End -->
+  {%- endif -%}
+
+  {% render 'social-meta-tags' %}
+
+ {% comment %} <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ shop.name }}",
+        "url": "{{ shop.url }}",
+        "description": "{{ shop.description }}",
+        "telephone": "{{ shop.phone }}",
+        "logo": "https://binkybro.com/cdn/shop/files/header_820x.png?v=1739256515",
+        "image": "https://binkybro.com/cdn/shop/files/header_820x.png?v=1739256515",
+        "sameAs": [
+              "{{ settings.social_twitter_url }}",
+              "{{ settings.social_facebook_url }}",
+              "{{ settings.social_pinterest_url }}",
+              "{{ settings.social_instagram_url }}",
+              "{{ settings.social_tiktok_url }}",
+              "{{ settings.social_tumblr_url }}",
+              "{{ settings.social_snapchat_url }}",
+              "{{ settings.social_youtube_url }}",
+              "{{ settings.social_vimeo_url }}"
+            ],
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "{{ shop.address.street }}",
+            "addressLocality": "{{ shop.address.city }}",
+            "addressRegion": "{{ shop.address.province }}",
+            "postalCode": "{{ shop.address.zip }}",
+            "addressCountry": "{{ shop.address.country }}"
+        }
+      }
+    </script> {% endcomment %}
+
+</head>
+
+<body class="{% if customer and customer.tags contains 'b2b' %}wholesale-customer-b2b{% endif %} {% if customer and customer.tags contains 'wholesale' %}wholesale-customer{% endif %} test template-{{ template | split: '.' | first | handle }}
+    {%- if template.suffix %} template-suffix-{{ template.suffix }}{% endif -%}
+    {%- if settings.swatch_source == 'native' %} swatch-source-native swatch-method-swatches swatch-style-{{ settings.swatch_style }}
+    {%- elsif settings.swatch_source == 'theme' %} swatch-source-theme swatch-method-{{ settings.swatch_method }} swatch-style-{{ settings.swatch_style }}{% endif -%}
+    {%- if settings.animations_enabled_desktop %} cc-animate-enabled{% endif -%}
+    ">
+
+     <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NP4NT2V"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <a class="skip-link visually-hidden" href="#content" data-cs-role="skip">{{ 'accessibility.skip_to_content' | t }}</a>
+
+  {%- sections 'header-group' -%}
+
+  <main id="content" role="main">
+    <div class="container cf">
+
+      {{ content_for_layout }}
+
+    </div>
+  </main>
+
+  {% render 'adroll' %}
+
+  {%- if request.path != '/challenge' -%}
+    <div id="pagefooter">
+      {%- sections 'footer-group' -%}
+    </div>
+
+    {%- sections 'overlay-group' -%}
+  {%- endif -%}
+
+
+  <a href="#" class="page-shade" aria-label="{{ 'general.navigation.close' | t }}"></a>
+  <div class="overlay fixed top-0 right-0 bottom-0 left-0 js-overlay"></div>
+
+  {%- if settings.after_add_to_cart == 'notification' -%}
+    <script src="{{ 'added-notification.js' | asset_url }}" defer></script>
+    <template id="AddedNotification">
+      <added-notification class="added-notification added-notification--hidden">
+        <div class="added-notification__message-area">
+          <div class="added-notification__message-title"></div>
+          <div class="added-notification__message-text underline-child">{{ 'products.product.added_to_cart_with_link_html' | t: cart_url: routes.cart_url }}</div>
+        </div>
+        <div class="added-notification__button-area">
+          <button type="button" class="added-notification__close" aria-label="{{ 'general.icon_labels.close' | t | escape }}">
+            {%- render 'icon-close' -%}
+          </button>
+        </div>
+      </added-notification>
+    </template>
+  {%- endif -%}
+  <!-- Rebuy START -->
+{% unless customer.tags contains 'b2b' %}
+  <script async src="https://cdn.rebuyengine.com/onsite/js/rebuy.js?shop={{ shop.permanent_domain }}"></script>
+ {% render 'rebuy-extensions' %}
+ {% render 'rebuy-cart-template' %}
+{% endunless %}
+
+{% comment %}
+    {% unless customer.tags contains 'b2b' %}
+ <script async src="https://cdn.rebuyengine.com/onsite/js/rebuy.js?shop={{ shop.permanent_domain }}"></script>
+  {% endcomment %}
+
+      {% comment %}
+{% endunless %}
+<!-- Rebuy END -->
+ <!-- if a tagged B2B user logs in, render file to update Rebuy widget prices -->
+  {% if customer.tags contains "b2b" %}
+    {% render "rebuy-b2b" %}
+  {% endif %}
+      {% endcomment %}
+
+<script>
+  setTimeout(() =>{
+    let a11ySize = document.querySelectorAll(".clickyboxes li a");
+    let a11ySale = document.querySelector(".was-price");
+    let a11yCurrent = document.querySelector(".current-price");
+    let a11yClick = document.querySelectorAll(".rebuy-product-title");
+    let a11yRebuy = document.querySelectorAll(".rebuy-product-grid");
+    let a11yGrid = document.querySelectorAll(".rebuy-product-title");
+
+    if(a11ySale){
+      a11ySale.innerHTML += "<span class='sr-only'>Previously</span>";
+    }
+    if(a11yCurrent){
+      a11yCurrent.innerHTML += "<span class='sr-only'>On sale</span>";
+    }
+
+    for(let i = 0; i < a11ySize.length; i++){
+      a11ySize[i].setAttribute("aria-selected", "false");
+      a11ySize[i].setAttribute("role","option")
+    } 
+    
+    for(let i = 0; i < a11yClick.length; i++){
+      a11yClick[i].setAttribute("role", "heading");
+    } 
+    
+    for(let i = 0; i < a11yRebuy.length; i++){
+      a11yRebuy[i].setAttribute("role", "button");
+    }
+    
+    for(let i = 0; i < a11yGrid.length; i++){
+      a11yGrid[i].setAttribute("aria-level", "2");
+    }
+
+
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('role', 'status');
+    liveRegion.classList.add("sr-only");
+    document.body.appendChild(liveRegion);
+    
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === "Enter" || event.key === " ") { // Space or Enter keys
+        const activeElement = document.activeElement;
+
+        if (activeElement.hasAttribute('aria-selected')) {
+            // Toggle the aria-selected state
+            const isSelected = activeElement.getAttribute('aria-selected') === 'true';
+            const newState = !isSelected;
+            activeElement.setAttribute('aria-selected', newState.toString());
+
+            // Announce the change
+            const variantName = activeElement.textContent.trim();
+            if (activeElement.classList.contains("unavailable")) {
+                liveRegion.textContent = `Alert: ${variantName} is out of stock.`;
+            } else {
+                liveRegion.textContent = `${variantName} is now ${newState ? 'selected' : 'deselected'}.`;
+            }
+        }
+    }
+});
+  },1200)
+
+</script>
+<script src="{{ 'custom.js' | asset_url }}" defer></script>
+
+  <!-- WPD Start -->
+  {% if customer.tags.size > 0 and template != 'cart' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          let checkoutbtninterval = setInterval(function(){
+            var x=document.querySelectorAll("input[name='checkout'], button[name='checkout'], input[name='goto_pp'], button[name='goto_pp'], input[name='goto_gc'], button[name='goto_gc'], [href$='checkout']");
+            var WPD_RedirectToCart = function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                window.location = '/cart';
+                };
+                for (var i = 0; i < x.length; i++) {
+                    x[i].addEventListener('click', WPD_RedirectToCart, false);
+                }
+},500)
+    });
+  </script>
+   {% endif %}
+
+   {% render 'cookie-monster' %}
+
+<!--  VIA EXIT POPUP SCRIPT  -->
+<script>
+    (function (d, w, c) {
+        w.ViaExitPopupToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0bmFtZSI6ImJpbmt5YnJvLmNvbSIsImxvY2F0aW9uSWQiOiI1ZmJjODA0ZGIxMDVjZTAwMDdmNzhlOGQiLCJpYXQiOjE2MDYyNzY1MzB9.ZAz2n1vLSrsLoilyDNHSZu3sMDPvS1NcFA9dyIvC-tami_UzEfpJh3OgjHVsp8xEXaf4Uhx3U3XFJWd6MedB5ia8EbsarleV3JaCZOGJ6wZa2CfnIlHOIiwnX6WqRv0anF0gsjPN05I3URQpEm_XLZkYObqKf6twIu60QdjbckI';
+        w.ViaStoreType = 'shopify';
+        var s = d.createElement('script');
+        w[c] = w[c] || function () {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://pg-exit-popup.viacustomers.com/via_exit_popup.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'ViaExitPopup');
+</script>
+<!--  END VIA EXIT POPUP SCRIPT  -->
+
+<script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+<script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+        account: "RLWt4z",
+        list: "VfbrfW",
+        platform: "shopify"
+    });
+    klaviyo.enable("backinstock",{ 
+    trigger: {
+      product_page_text: "Notify Me When Available",
+      product_page_class: "button",
+      product_page_text_align: "center",
+      product_page_margin: "0px",
+      replace_anchor: false
+    },
+    modal: {
+     newsletter_subscribe_label: "Add me to your email list.",
+     subscribe_checked: true,
+     headline: "{product_name}",
+     body_content: "Register to receive a notification when this item comes back in stock.",
+     email_field_label: "Email",
+     button_label: "Notify me when available",
+     subscription_success_label: "You're in! We'll let you know when it's back.",
+     footer_content: '',
+     additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+     drop_background_color: "#000",
+     background_color: "#fff",
+     text_color: "#222",
+     button_text_color: "#fff",
+     button_background_color: "#439fdb",
+     close_button_color: "#ccc",
+     error_background_color: "#fcd6d7",
+     error_text_color: "#C72E2F",
+     success_background_color: "#d3efcd",
+     success_text_color: "#1B9500"
+    }
+  });
+</script>
+  {% if customer.tags contains 'b2b' %}
+  {% render 'rebuy-b2b' %}
+  <script>
+    document.addEventListener('rebuy:smartcart.ready', (event) => {
+      Rebuy.SmartCart.destroy();
+      document.querySelector('body').classList.remove('smart-cart--enabled');
+    });
+  </script>
+{% endif %}
+
+{% comment %} <!-- WPD Start -->
+                {% if customer.tags.size > 0 and template != 'cart' %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      let checkoutbtninterval = setInterval(function(){
+                        var x=document.querySelectorAll("input[name='checkout'], button[name='checkout'], input[name='goto_pp'], button[name='goto_pp'], input[name='goto_gc'], button[name='goto_gc'], [href$='checkout']");
+                        var WPD_RedirectToCart = function(e) {
+                          	e.stopPropagation();
+                            e.preventDefault();
+                            window.location = '/cart';
+                            };
+                            for (var i = 0; i < x.length; i++) {
+                                x[i].addEventListener('click', WPD_RedirectToCart, false);
+                            }
+                        },500)
+                });
+              </script>
+               {% endif %}
+         
+
+               {% if customer.tags.size > 0 and template == 'cart' %}
+                 {% include 'wcp_cart' %}
+               {% endif %}
+               <!-- WPD End --> {% endcomment %}
+  </body>
+</html>

@@ -1,0 +1,289 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_page_title": true,
+        "full_width": false
+      }
+    },
+    "custom_content_hDYFhA": {
+      "type": "custom-content",
+      "blocks": {
+        "image_mn3bb7": {
+          "type": "image",
+          "settings": {
+            "width": "three-quarters",
+            "image": "shopify://shop_images/31.0_1024x1024_893c6e06-236b-4e5b-ba77-f4d7362bf243.png",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "button_style": "primary",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "no_background"
+          }
+        },
+        "text_cdUAth": {
+          "type": "text",
+          "settings": {
+            "width": "three-quarters",
+            "subheading": "",
+            "title": "OUR STORY",
+            "text": "<p>BinkyBro is a family-owned and operated business.</p><p>The idea for BinkyBro came after the founders (Matt and Rachel) had their first-born son, Jordy-James, in 2015 through IVF. Matt & Rachel quickly realized that finding hats for an infant was a challenge. It wasn’t that hats didn’t exist--its that the ones that did exist looked terrible. The sizing was always wrong, caricatures dominated the fabrics, and the coolness factor was at a point of non-existence.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "left"
+          }
+        },
+        "image_rPYRjb": {
+          "type": "image",
+          "settings": {
+            "width": "three-quarters",
+            "image": "shopify://shop_images/32.0_1024x1024_04b59229-c6a2-49c0-9597-57d5d887247f.png",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "button_style": "primary",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "no_background"
+          }
+        },
+        "text_FFgV9n": {
+          "type": "text",
+          "settings": {
+            "width": "three-quarters",
+            "subheading": "",
+            "title": "",
+            "text": "<p>The solution—make their own.The name BinkyBro was an easy decision. The Bro style was loved and Jordy didn’t go anywhere without his Binky.The pineapple logo, was chosen for a couple of reasons. First, it is the longstanding symbol for infertility. Second, it fit the surf/skate branding. Overall—it just made sense.  To this day, every box that is shipped has a pineapple on it. </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "image_mn3bb7",
+        "text_cdUAth",
+        "image_rPYRjb",
+        "text_FFgV9n"
+      ],
+      "name": "Custom content",
+      "settings": {
+        "alignment": "middle"
+      }
+    },
+    "custom_content_dff48z": {
+      "type": "custom-content",
+      "blocks": {
+        "image_kQhcT6": {
+          "type": "image",
+          "settings": {
+            "width": "three-quarters",
+            "image": "shopify://shop_images/33.0_1024x1024_98388e7c-0244-40bc-b925-0b379a52c1ba.png",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "button_style": "primary",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "no_background"
+          }
+        },
+        "text_yxG6nc": {
+          "type": "text",
+          "settings": {
+            "width": "three-quarters",
+            "subheading": "",
+            "title": "",
+            "text": "<p>From 2015 to now, BinkyBro has lived by the motto, ”SURF, SNOW, SKATE.” Everything done is built with that attitude. From toddler snapbacks, to Sun Hats, Beanies, and EVEN socks...everything is made to make sure your little dude is making a statement.</p><p>BinkyBro is not only apparel but rather a lifestyle. GO BIG. BE EPIC. WEAR BinkyBro!</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "left"
+          }
+        },
+        "text_Jgz8VJ": {
+          "type": "text",
+          "settings": {
+            "width": "three-quarters",
+            "subheading": "",
+            "title": "",
+            "text": "<p>Our MISSION at BinkyBro is to authentically deliver surf, snow, and skate headwear and apparel to infants, toddlers, and the youth. BinkyBro represents a culture, a lifestyle, and a commitment to the broader surf/snow/skate community — which we are very much a part of every day! Below are a few shots of Matt from his latest excursions. </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "left"
+          }
+        },
+        "image_R4jN8T": {
+          "type": "image",
+          "settings": {
+            "width": "three-quarters",
+            "image": "shopify://shop_images/34.0_1024x1024_a06055b2-89ec-4dbf-a6ea-940dcda7cc24.png",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "button_style": "primary",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "no_background"
+          }
+        },
+        "text_qH76UQ": {
+          "type": "text",
+          "settings": {
+            "width": "three-quarters",
+            "subheading": "",
+            "title": "",
+            "text": "<p>We hope that with a promotion of this style we will ultimately  be encouraging parents to make a dedicated effort to introduce their  kids to the things that we have ultimately grown to love —surfing, snowboarding, and skating.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "image_kQhcT6",
+        "text_yxG6nc",
+        "text_Jgz8VJ",
+        "image_R4jN8T",
+        "text_qH76UQ"
+      ],
+      "name": "Custom content",
+      "settings": {
+        "alignment": "middle"
+      }
+    },
+    "custom_content_bKUW4b": {
+      "type": "custom-content",
+      "blocks": {
+        "image_f6JBPj": {
+          "type": "image",
+          "settings": {
+            "width": "three-quarters",
+            "image": "shopify://shop_images/35.0_1024x1024_53c45e22-e13b-43e2-9895-69c22230b477.png",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "button_style": "primary",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "no_background"
+          }
+        },
+        "text_LTBqmT": {
+          "type": "text",
+          "settings": {
+            "width": "three-quarters",
+            "subheading": "",
+            "title": "BinkyBro's \"LEGENDS ARE BORN EVERYDAY\" Foundation",
+            "text": "<p>Having a kid(s) is the most EPIC of all human experiences. Starting in 2022 BinkyBro's Legends are Born Everyday Foundation pledges to donate $25,000/year in infertility scholarships along with any additional monies that are collected through generous donations. We truly believe that kids are legendary--but their cost don't need to be. <br/><br/>This foundation originated as Matt and Rachel tried to have kids for several years with no luck. It wasn’t until they had a successful IVF cycle that Jordy was born. Not only was Matt and Rachel’s first son, Jordy, born through IVF, but the next three (Bodee-Parks, Blakely-Rose, and Jude-Rylan) were all from the IVF process as well--four kids 3-years old and under. The total cost for all of those children was easily over $55,000 in total. A sum that most couples in their young 20's don't have access to.<br/><br/>Matt and Rachel always thought if the opportunity came to help others in this process they would. More to come here very soon!</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "left"
+          }
+        },
+        "image_HT3xyL": {
+          "type": "image",
+          "settings": {
+            "width": "two-thirds",
+            "image": "shopify://shop_images/Screen_Shot_2021-09-21_at_5.24.36_PM_2048x_29176bb7-9c10-4876-8490-2560fa4d34d8.png",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "button_style": "primary",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "no_background"
+          }
+        }
+      },
+      "block_order": [
+        "image_f6JBPj",
+        "text_LTBqmT",
+        "image_HT3xyL"
+      ],
+      "name": "Custom content",
+      "settings": {
+        "alignment": "middle"
+      }
+    },
+    "featured_collection_rHKrjE": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "title": "GO BIG. BE EPIC. SHOP THESE FAVES.",
+        "collection": "all-products",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "enable_filter_size": true,
+        "enable_color_swatches_filter": true,
+        "grid": 3,
+        "rows": 2,
+        "color_scheme": "default",
+        "prod_thumb_shape": "shortest",
+        "show_view_all": true,
+        "full_width": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_content_hDYFhA",
+    "custom_content_dff48z",
+    "custom_content_bKUW4b",
+    "featured_collection_rHKrjE"
+  ]
+}

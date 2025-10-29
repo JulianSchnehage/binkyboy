@@ -1,101 +1,349 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "heading": {
       "type": "image-with-text-overlay",
-      "settings": {
-        "height": "fixed",
-        "height_desktop": 400,
-        "height_mobile": 300
-      },
       "blocks": {
         "heading": {
           "type": "heading",
           "settings": {
             "title": "Customer Help",
-            "title_size": 52
+            "heading_max_width": 15,
+            "title_size": 52,
+            "title_size_mobile": 32,
+            "use_h1": false
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>If talking to a real-life human is more your thing, you can reach our Customer Happiness Team via email (below).</p>"
+            "text": "<p>If talking to a real-life human is more your thing, you can reach our Customer Happiness Team via email (below).</p>",
+            "enlarge_text": true
           }
         }
       },
       "block_order": [
         "heading",
         "text"
-      ]
+      ],
+      "disabled": true,
+      "settings": {
+        "height": "fixed",
+        "height_desktop": 400,
+        "height_mobile": 300,
+        "image_link": "",
+        "full_width": true,
+        "text_alignment": "center center",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
     },
     "main": {
       "type": "faq-header",
       "settings": {
+        "title": "FAQ",
+        "use_h1": false,
+        "text": "",
+        "show_search": true,
+        "show_index": true,
+        "index_heading": "How can we help?"
       }
     },
-    "faq-content-1": {
+    "collapsible_tabs_ayCjqP": {
       "type": "collapsible-tabs",
-      "settings": {
-        "title": "Ordering"
-      },
       "blocks": {
-        "question-1": {
+        "question_mePEK9": {
           "type": "question",
           "settings": {
-            "title": "What size should I buy?",
-            "answer": "<p>If you’re not quite sure which size is right for you, refer to our size guides. They’re located underneath the available sizes for each of our products.</p>"
+            "title": "What size should I order?",
+            "answer": "<p>Our sizing is age-based using average head circumferences (50th percentile):</p><ul><li>Infant: 4-12 months</li><li>Toddler: 12 months - 3 years</li><li>Youth: 3-6 years</li><li>Junior: 6-10 years</li></ul><p>If your kid's between sizes or has a bigger dome, size up.</p>"
           }
         },
-        "question-2": {
+        "question_fppzAp": {
           "type": "question",
           "settings": {
-            "title": "Can I cancel my order?",
-            "answer": "<p>We completely get it, we change our minds too! While we wish could, once an order is placed, we are unable to alter or cancel it at this time. We hope to have a cancellation window one day in the future.</p><p>Should the item(s) not work out, make sure to exchange for a preferred style or return for a refund. As a reminder, domestic return shipping is free.</p>"
+            "title": "Do your snapbacks adjust?",
+            "answer": "<p>Yes. All snapbacks have adjustable snaps in the back. The bill and front panels are fixed.</p>"
+          }
+        },
+        "question_6hXyaa": {
+          "type": "question",
+          "settings": {
+            "title": "How do swimsuits fit?",
+            "answer": "<p>Euro-style fit - shorter than typical US board shorts. They'll hit anywhere from mid-thigh to above knee. <br/><br/>Waistband measurements (relaxed):</p><ul><li>6-12m: 41cm</li><li>12-18m: 43cm</li><li>18-24m: 45cm</li><li>2T-3T: 47cm</li><li>4T-5T: 49cm</li></ul>"
           }
         }
       },
       "block_order": [
-        "question-1",
-        "question-2"
-      ]
+        "question_mePEK9",
+        "question_fppzAp",
+        "question_6hXyaa"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "SIZING & FIT"
+      }
     },
-    "faq-content-2": {
+    "collapsible_tabs_6pcCVX": {
       "type": "collapsible-tabs",
-      "settings": {
-        "title": "Shipping, Returns & Exchanges"
-      },
       "blocks": {
-        "para-1": {
-          "type": "content",
-          "settings": {
-            "content": "<p>We use all major carriers, and local courier partners. You’ll be asked to select a delivery method during checkout.</p>"
-          }
-        },
-        "question-1": {
+        "question_TzTPkY": {
           "type": "question",
           "settings": {
-            "title": "What is the shipping policy?",
-            "answer": "<p>Once your order is placed, you will receive a confirmation email letting you know that our fulfillment team has received your order. Once your order is fulfilled, you will receive an email notification with your tracking information. Shipping fees are non-refundable in the case of returns.</p>"
+            "title": "How long until my order ships?",
+            "answer": "<p>1-3 business days normally. During sales/holidays: up to 9+ business days to process. Then 5-6 business days for US delivery via USPS/UPS.</p>"
           }
         },
-        "question-2": {
+        "question_L6rRqt": {
           "type": "question",
           "settings": {
-            "title": "Do you ship overseas?",
-            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout.</p>"
+            "title": "What are shipping costs?",
+            "answer": "<p>US: Starting at $5.99, increases with weight.<br/><br/>International: Varies by weight and destination</p>"
+          }
+        },
+        "question_yViiNR": {
+          "type": "question",
+          "settings": {
+            "title": "Do you ship internationally?",
+            "answer": "<p>Yes, via DHL with DDP (no surprise customs fees at delivery). Takes up to 3 weeks. If tracking shows \"delivered\" but you don't have it, wait 2 days - it's probably at your local post office.</p>"
+          }
+        },
+        "question_TcAzja": {
+          "type": "question",
+          "settings": {
+            "title": "Can I change or cancel my order?",
+            "answer": "<p>No. Processing starts immediately. If critical, we can cancel and refund as store credit to reorder. Email <a href=\"mailto:support@binkybro.com\" target=\"_blank\">support@binkybro.com</a> ASAP.</p>"
+          }
+        },
+        "question_iWyKA6": {
+          "type": "question",
+          "settings": {
+            "title": "Wrong address entered?",
+            "answer": "<p>Email <a href=\"mailto:support@binkybro.com\" target=\"_blank\">support@binkybro.com</a> with \"INCORRECT ADDRESS\" in subject line immediately. Include order number and correct address. If already shipped, we can't help.</p>"
+          }
+        },
+        "question_CAFJFD": {
+          "type": "question",
+          "settings": {
+            "title": "What's shipping protection?",
+            "answer": "<p>Covers damaged, lost, or stolen packages in transit. Also covers free return shipping if needed. Without it, you're on your own for shipping issues. Skip it for local pickup orders.</p>"
           }
         }
       },
       "block_order": [
-        "para-1",
-        "question-1",
-        "question-2"
-      ]
+        "question_TzTPkY",
+        "question_L6rRqt",
+        "question_yViiNR",
+        "question_TcAzja",
+        "question_iWyKA6",
+        "question_CAFJFD"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "ORDERING & SHIPPING"
+      }
+    },
+    "collapsible_tabs_T6EENY": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_QwxMRW": {
+          "type": "question",
+          "settings": {
+            "title": "Do you accept returns?",
+            "answer": "<p>No refunds. We don't resell returned kids' products for safety/hygiene reasons. Returns within 15 days with original packing slip = 100% store credit. Email tracking to <a href=\"mailto:support@binkybro.com\" target=\"_blank\">support@binkybro.com</a>.</p>"
+          }
+        },
+        "question_yB7jzV": {
+          "type": "question",
+          "settings": {
+            "title": "What about exchanges?",
+            "answer": "<p>Same deal - return within 15 days with packing slip and note what you want instead. We'll create a new order. Any price difference gets invoiced or credited.</p>"
+          }
+        },
+        "question_CeRYgX": {
+          "type": "question",
+          "settings": {
+            "title": "Black Friday/Sale purchases?",
+            "answer": "<p>ALL SALES FINAL during discount periods. Zero exceptions. Double-check everything before checkout.</p>"
+          }
+        },
+        "question_gLtDVz": {
+          "type": "question",
+          "settings": {
+            "title": "What if my item arrives damaged?",
+            "answer": "<p>Email <a href=\"mailto:support@binkybro.com\" target=\"_blank\">support@binkybro.com</a> with photos within 5 days of delivery. We'll replace it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_QwxMRW",
+        "question_yB7jzV",
+        "question_CeRYgX",
+        "question_gLtDVz"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "RETURNS & EXCHANGES"
+      }
+    },
+    "collapsible_tabs_9fyrHt": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_iXrtwR": {
+          "type": "question",
+          "settings": {
+            "title": "How do I clean hats?",
+            "answer": "<ul><li>Snapbacks/Beanies: Spot clean with mild detergent, warm water, toothbrush. NO washing machine.<br/></li><li>Barney Patrols (straw): Barely damp spot clean only. They're fragile - will break if bent/soaked.</li></ul>"
+          }
+        },
+        "question_a7MVA8": {
+          "type": "question",
+          "settings": {
+            "title": "How do I wash clothing?",
+            "answer": "<ul><li>Regular items: Machine wash cold, tumble dry low<br/></li><li>Swimwear: Rinse after use, machine wash cold, hang dry</li></ul>"
+          }
+        },
+        "question_njWRtM": {
+          "type": "question",
+          "settings": {
+            "title": "Choking hazards",
+            "answer": "<p>Remove the silver BinkyBro sticker from hat bills before giving to babies.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_iXrtwR",
+        "question_a7MVA8",
+        "question_njWRtM"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "PRODUCT CARE"
+      }
+    },
+    "collapsible_tabs_cUQ3zj": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_dkPaFT": {
+          "type": "question",
+          "settings": {
+            "title": "Military discount",
+            "answer": "<p>15% off through VerifyPass verification. Active duty, veterans, and dependents eligible. Follow this link : <a href=\"https://binkybro.com/pages/military-discounts\" target=\"_blank\" title=\"BinkyBro Military Discount Code link\">Military Discount</a></p>"
+          }
+        },
+        "question_LWrHk8": {
+          "type": "question",
+          "settings": {
+            "title": "Can I stack discount codes?",
+            "answer": "<p>No. One code per order. Most codes don't work with free gift promos.</p>"
+          }
+        },
+        "question_6E3K88": {
+          "type": "question",
+          "settings": {
+            "title": "Missed using my discount code?",
+            "answer": "<p>Too bad. We don't apply codes after purchase. Always check the price dropped before completing checkout.</p>"
+          }
+        },
+        "question_r7E9Pe": {
+          "type": "question",
+          "settings": {
+            "title": "How do I become a brand rep?",
+            "answer": "<p>Annual rep search announced on @binkybro Instagram. Reps get discounts for being brand ambassadors.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_dkPaFT",
+        "question_LWrHk8",
+        "question_6E3K88",
+        "question_r7E9Pe"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "DISCOUNTS & DEALS"
+      }
+    },
+    "collapsible_tabs_pViDPt": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_8wjR6X": {
+          "type": "question",
+          "settings": {
+            "title": "Do you offer wholesale?",
+            "answer": "<p>Yes. Minimum 40 items, brick-and-mortar only (no online resale), buyer pays shipping. Email <a href=\"mailto:support@binkybro.com\" target=\"_blank\">support@binkybro.com</a>.</p>"
+          }
+        },
+        "question_iVRibT": {
+          "type": "question",
+          "settings": {
+            "title": "Is local pickup available?",
+            "answer": "<p>Yes, if you are near our Provo location. No local pickup during BFCM sale time. Select at checkout.</p>"
+          }
+        },
+        "question_gRaCT8": {
+          "type": "question",
+          "settings": {
+            "title": "Gift cards?",
+            "answer": "<p>Digital gift cards available on site.</p>"
+          }
+        },
+        "question_E6NwMJ": {
+          "type": "question",
+          "settings": {
+            "title": "Featured on Instagram?",
+            "answer": "<p>We repost customer photos with permission. Tag your pics for a chance. We don't tag back when reposting.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_8wjR6X",
+        "question_iVRibT",
+        "question_gRaCT8",
+        "question_E6NwMJ"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "ORDERING HELP"
+      }
+    },
+    "collapsible_tabs_MH4rWK": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_6d4MdL": {
+          "type": "question",
+          "settings": {
+            "title": "How do I reach you?",
+            "answer": "<p>Email: <a href=\"mailto:support@binkybro.com\" target=\"_blank\">support@binkybro.com</a> (fastest)</p><p>Instagram: @binkybro (slower)<br/><br/>Response time is 1-2 business days via email.</p>"
+          }
+        },
+        "question_C7y34H": {
+          "type": "question",
+          "settings": {
+            "title": "IVF Foundation?",
+            "answer": "<p>Legends Are Born Everyday program provides IVF scholarships. Check the <a href=\"/pages/ivf-scholarships\" title=\"IVF Scholarships\">foundation page</a> for details.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_6d4MdL",
+        "question_C7y34H"
+      ],
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": "CONTACT"
+      }
     },
     "contact": {
       "type": "rich-text",
-      "settings": {
-        "use_alt_bg": "1"
-      },
       "blocks": {
         "icon": {
           "type": "icon",
@@ -106,19 +354,23 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "title": "Get in touch"
+            "title": "Get in touch",
+            "use_h1": false
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Have questions about your order, or a general enquiry?</p>"
+            "text": "<p>Have questions about your order, or a general enquiry?</p>",
+            "enlarge_text": true
           }
         },
         "button": {
           "type": "button",
           "settings": {
-            "button_label": "Contact us"
+            "button_label": "Contact us",
+            "button_link": "",
+            "button_style": "primary"
           }
         }
       },
@@ -127,14 +379,25 @@
         "heading",
         "text",
         "button"
-      ]
+      ],
+      "settings": {
+        "height": "medium",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "default"
+      }
     }
   },
   "order": [
     "heading",
     "main",
-    "faq-content-1",
-    "faq-content-2",
+    "collapsible_tabs_ayCjqP",
+    "collapsible_tabs_6pcCVX",
+    "collapsible_tabs_T6EENY",
+    "collapsible_tabs_9fyrHt",
+    "collapsible_tabs_cUQ3zj",
+    "collapsible_tabs_pViDPt",
+    "collapsible_tabs_MH4rWK",
     "contact"
   ]
 }

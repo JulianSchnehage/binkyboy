@@ -72,15 +72,21 @@
 
         {%- if show_size_chart -%}
           {%- capture size_chart_link -%}
-            <modal-opener class="no-js-hidden" data-modal="size-chart-{{ product.id }}-{{ section.id }}">
-              <button type="button" class="link block text-sm size-chart-link" aria-haspopup="dialog">
-                <span class="size-chart-link__icon">{%- render 'icon', icon: 'ruler', size: 'small' -%}</span>
-                <span class="size-chart-link__text underline">{{- block.settings.size_chart_label -}}</span>
-              </button>
-            </modal-opener>
-            <noscript>
-              <a href="{{ block.settings.size_chart_page.url }}" class="link">{{ block.settings.size_chart_label }}</a>
-            </noscript>
+
+            {%- if product.metafields.custom.size_guide != blank -%}
+              {%- render 'size-guide', product: product -%}
+            {%- else -%}
+              <modal-opener class="no-js-hidden" data-modal="size-chart-{{ product.id }}-{{ section.id }}">
+                <button type="button" class="link block text-sm size-chart-link" aria-haspopup="dialog">
+                  <span class="size-chart-link__icon">{%- render 'icon', icon: 'ruler', size: 'small' -%}</span>
+                  <span class="size-chart-link__text underline">{{- block.settings.size_chart_label -}}</span>
+                </button>
+              </modal-opener>
+              <noscript>
+                <a href="{{ block.settings.size_chart_page.url }}" class="link">{{ block.settings.size_chart_label }}</a>
+              </noscript>
+            {%- endif -%}
+
           {%- endcapture -%}
         {%- endif -%}
 
@@ -192,10 +198,21 @@
                       assign is_swatch = true
                     endif
                   -%}
-                  <label class="opt-label {% if is_swatch %}opt-label--swatch{% else %}opt-label--btn{% endif %} btn relative text-center"{% if is_swatch %}
+                  <label class="{% if option.name == "Color" or option.name == "color" %}swatch-lables{% endif %} opt-label {% if is_swatch %}opt-label--swatch{% else %}opt-label--btn{% endif %} btn relative text-center"{% if is_swatch %}
                     data-swatch="{{ value | replace: '"', '' | downcase }}"{% endif %}
                     for="{{ option_id }}-opt-{{ value_index0 }}">
-                    <span class="{% if is_swatch and settings.swatch_style != 'listed' %}visually-hidden {% endif %}js-value">{{ value }}</span>
+                    {%- liquid
+                      assign swatch_file_extension = 'png'
+                      assign cdn_base_url = 'https://cdn.shopify.com/s/files/1/1412/5622/files/'
+                      assign color_file_name = value | handle | append: '_36x' | append: '.' | append: swatch_file_extension
+                      assign color_image = cdn_base_url | append: color_file_name
+                      assign color_swatch_fallback = value.value | split: ' ' | last | handle
+                      assign fallback_image = cdn_base_url | append: 'default-swatch.png'
+                    -%}
+                    {% if option.name == "Color" or option.name == "color" %}
+                    <span class="filter-group__item__swatch{% if settings.swatch_images %} lazyload{% endif %}" {% if settings.swatch_images %}data-bgset="{{ value.label | handle | append: '.png' | file_img_url: '48x48', crop: 'center' }}"{% else %}style="background:{{ color_swatch_fallback }}; background-image: url({{ color_image }}); background-size: cover;"{% endif %}></span>
+                    {%endif%}
+                      <span class="{% if is_swatch and settings.swatch_style != 'listed' %}visually-hidden {% endif %}js-value">{{ value }}</span>
                   </label>
                 {%- endif -%}
               {%- endfor -%}

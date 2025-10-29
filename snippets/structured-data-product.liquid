@@ -3,9 +3,139 @@
   - product {Object} - Product object.
 
   Usage:
-  {% render 'structured-data-product', product: product %}
+  {% render 'structured-data-product', product: product, current_variant: product.selected_or_first_available_variant  %}
 {%- endcomment -%}
 
-<script type="application/ld+json">
+{% comment %} <script type="application/ld+json">
   {{ product | structured_data }}
-</script>
+</script> {% endcomment %}
+
+
+<script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      {% if seo_media -%}
+        "image": [
+          {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+        ],
+      {%- endif %}
+      {%- if product.description != blank -%}
+        "description": {{ product.description | strip_html | json }},
+      {%- else -%}
+       "description": "{{ product.title | strip_html | escape }}",
+      {%- endif -%}
+      {% if product.selected_or_first_available_variant.sku != blank -%}
+        "sku": {{ product.selected_or_first_available_variant.sku | remove:" " | json }},
+      {% else %}
+        "sku": {{ product.selected_or_first_available_variant.id | json }},
+      {%- endif %}
+      {% if current_variant.barcode != blank %}
+        "mpn": {{ current_variant.barcode | json }},
+      {% else %}
+        "mpn": {{ product.id | json }},
+      {% endif %}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      {%- if reviewsCount != 0 and reviewsCount != blank and reviewsCount != '0' -%} 
+        "aggregateRating": {
+        	"@type": "AggregateRating",
+          "ratingCount": {{ reviewsCount }},
+          "ratingValue": {{reviewValue}}
+        	},
+        "review": {
+        	"@type": "Review",
+        	"reviewRating": {
+        	  "@type": "Rating",
+        	   "ratingValue": {{ reviewValue }},
+        	  "bestRating":  {{ reviewValue }}
+        	},
+        	"author": {
+        	  "@type": "Person",
+        	  "name": "Your Name"
+        	}
+        },
+        {%-else-%}
+        "aggregateRating": {
+        	"@type": "AggregateRating",
+        	"ratingCount":2,
+        	"ratingValue": 4.5
+        },
+        "review": {
+        	"@type": "Review",
+        	"reviewRating": {
+        	  "@type": "Rating",
+        "ratingValue": "4.5",
+        	  "bestRating": "4.5"
+        	},
+        	"author": {
+        	  "@type": "Person",
+        	  "name": "Name"
+        	}
+        },
+      {%-endif-%}
+      "offers": [
+        {%- for variant in product.variants -%}
+          {
+            "@type" : "Offer",
+            {%- if variant.sku != blank -%}
+              "sku": {{ variant.sku | json }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 12 -%}
+              "gtin12": {{ variant.barcode }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 13 -%}
+              "gtin13": {{ variant.barcode }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 14 -%}
+              "gtin14": {{ variant.barcode }},
+            {%- endif -%}
+            "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+            "price" : {{ variant.price | divided_by: 100.00 | json }},
+            "priceValidUntil": "{{ 'now' | date: '%s' | plus: 86400 | date: '%Y-%m-%d' | uri_encode | replace:'+','%20' }}",
+            "priceCurrency" : {{ cart.currency.iso_code | json }},
+            "url" : {{ request.origin | append: variant.url | json }},
+            "shippingDetails": {   
+                "@type": "OfferShippingDetails",
+                "shippingRate": {
+                  "@type": "MonetaryAmount",
+                  "value": {{ variant.price | divided_by: 100.00 | json }},
+                  "currency": {{ cart.currency.iso_code | json }}
+                },
+                "shippingDestination": {
+                  "@type": "DefinedRegion",
+                  "addressCountry": "US"
+                },
+                "deliveryTime": {
+                  "@type": "ShippingDeliveryTime",
+                  "handlingTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": "2",
+                    "maxValue": "5",
+                    "unitCode": "DAY"
+                  },
+                  "transitTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": "2",
+                    "maxValue": "7",
+                    "unitCode": "DAY"
+                  }
+                }
+              },
+              "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "US",
+                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                "merchantReturnDays": "30",
+                "returnMethod": "https://schema.org/ReturnByMail",
+                "returnFees": "https://schema.org/FreeReturn"
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>

@@ -132,17 +132,24 @@
                     {%- endfor -%}
                   </ul>
                 {%- endif -%}
+                {% render "wcp_multi_currency_msg" %}
 
                 <h2 class="subtotal h2">
                   {{ 'cart.summary.subtotal' | t }}:
-                  <span class="theme-money">
+                  <span class="theme-money  wcp-original-cart-total">
                     {%- if settings.cart_currency_code_enabled -%}
                       {{- cart.total_price | money_with_currency -}}
                     {%- else -%}
                       {{- cart.total_price | money -}}
                     {%- endif -%}
                   </span>
+                  <span class="wcp-cart-total"></span>
                 </h2>
+                <div class="additional-notes">
+                    <span class="wcp-minimums-note"></span>
+                    <span class="wcp-extra-note "></span>
+                </div>
+                {% render "wcp_multi_currency_msg" %}
 
                 {%- if section.settings.show_tax_and_shipping -%}
                   <div class="cart-policies rte">
@@ -174,6 +181,17 @@
 
                   <button type="submit" class="btn btn--large" id="update-cart" name="checkout">{{ 'cart.summary.checkout' | t }}</button>
 
+                   <div>
+                      {% if customer.tags contains "wpdnet" %}
+                          {% if shop.metafields.wcp_net.isNetEnabled == "true" or shop.metafields.wcp_net.isNetEnabled == "1" %}
+                              <div style="margin-top:30px;">
+                                  <p>{{shop.metafields.wcp_net.netCartMsg}}</p>
+                                  <a id="wcp-30-open" class="btn btn--large">{{shop.metafields.wcp_net.netBtnMsg}}</a>
+                              </div>
+                          {% endif %}
+                      {% endif %}
+                  </div>
+                  
                   {% if section.settings.show_additional_checkout_buttons and additional_checkout_buttons and section.settings.cart_terms_page == blank %}
                   <div class="additional-checkout-buttons mt-2">
                     {{ content_for_additional_checkout_buttons }}
@@ -193,7 +211,11 @@
   </cart-form>
 </div>
 
-
+<style>
+  [data-wpd-product-handle], [data-wpd-item], [data-wpd-cart-item] {
+        text-wrap: auto;
+  }
+</style>
 {% schema %}
 {
   "name": "Cart page",

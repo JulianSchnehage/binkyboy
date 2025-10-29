@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "countdown_timer_VWqJ9K": {
@@ -62,19 +71,16 @@
         "collapse_tag_sidebar_by_default": true,
         "collapse_filters_method": "none",
         "show_filter_counts": false,
-        "show_disabled_filters": true,
+        "filter_two_columns": true,
         "auto_apply_hide_unavailable": false,
         "enable_sticky_filter": true,
-        "filter_two_columns": true,
         "show_sort": true,
         "sort_show_featured": false,
         "sort_show_best": true,
         "sort_show_alpha": true,
         "sort_show_price": true,
         "sort_show_date": true,
-        "related_collections": [
-
-        ],
+        "related_collections": [],
         "related_collections_style": "gallery",
         "rel_coll_gall_aspect_ratio": "2",
         "image_position": "center center",
@@ -89,22 +95,21 @@
       "type": "scrolling-banner",
       "blocks": {
         "text_dBUpAq": {
-          "type": "text"
+          "type": "text",
+          "settings": {}
         }
       },
       "block_order": [
         "text_dBUpAq"
       ],
-      "settings": {
-      }
+      "settings": {}
     },
     "featured_product_aWceA7": {
       "type": "featured-product",
       "blocks": {
         "title_BJwiqR": {
           "type": "title",
-          "settings": {
-          }
+          "settings": {}
         },
         "price_Byf8GC": {
           "type": "price",
@@ -115,13 +120,11 @@
         },
         "vendor_tmpEjK": {
           "type": "vendor",
-          "settings": {
-          }
+          "settings": {}
         },
         "divider_3Thp6M": {
           "type": "divider",
-          "settings": {
-          }
+          "settings": {}
         },
         "variant_picker_QXnMCb": {
           "type": "variant-picker",
@@ -240,8 +243,7 @@
         },
         "text_QwrpYq": {
           "type": "text",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [

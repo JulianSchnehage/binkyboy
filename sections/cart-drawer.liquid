@@ -85,7 +85,7 @@
                   {%- if item.line_level_discount_allocations == empty -%}
                   data-merge-cache="{{ item.key }}|{{ item.quantity }}|{{ item.final_line_price }}|{% if item.selling_plan_allocation %}{{ item.selling_plan_allocation.selling_plan.id }}{% endif %}"
                   {%- endif -%}>
-                {%- render 'cart-item', item: item, forloop: forloop, drawer: true -%}
+                {%- render 'cart-item', item: item, forloop: forloop, drawer: true, wpddrawer: true  -%}
               </div>
             {% endfor %}
           </div>
@@ -193,7 +193,7 @@
           {%- endif -%}
           <div class="subtotal h4 heading-font opposing-items">
             {{ 'cart.summary.subtotal' | t }}:
-            <span class="theme-money">
+            <span class="theme-money"  data-wpd-cart-total>
               {%- if settings.cart_currency_code_enabled -%}
                 {{- cart.total_price | money_with_currency -}}
               {%- else -%}

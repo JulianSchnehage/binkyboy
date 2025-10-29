@@ -277,6 +277,15 @@ if (!customElements.get('variant-picker')) {
 
         this.price.classList.toggle('price--on-sale', variant.compare_at_price > variant.price);
         this.price.classList.toggle('price--sold-out', !variant.available && !this.preSelection);
+
+                        try{
+          priceCurrentEl.classList.remove("wpd-processed");
+          priceCurrentEl.setAttribute("data-wpd-variant-compare-at-price",variant.compare_at_price == null?"":variant.compare_at_price);
+          priceCurrentEl.setAttribute("data-wpd-variant-price",variant.price);
+           priceCurrentEl.setAttribute("data-wpd-variant-id",variant.id);
+          priceCurrentEl.setAttribute("data-wpd-product-handle", document.querySelector("#wpdproduct-modal").value);
+            
+          }catch(e){}
       }
 
       this.price.querySelector('.price__default').hidden = !this.variant && !this.preSelection;

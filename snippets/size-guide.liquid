@@ -1,0 +1,81 @@
+<style> 
+  #compvalue {cursor: pointer; text-decoration: underline dotted;}
+  #compdiag {width: 95%; max-width: 1000px; border: 2px solid #111;}
+  #compdiag img {max-width: 300px; margin: auto; display: block;}
+  #compdiag:focus {outline: none;}
+  #compdiag::backdrop {background-color: rgba(0,0,0,.55)}
+
+ .sizeguide {font-size: 1em; text-align: center; width: 100%; border: 1px solid #ccc;}
+ .sizeguide tr {border-bottom: 1px solid #DCDCDC;}
+ .sizeguide th {border: none; border-top: 1px solid #ccc; text-transform: uppercase; text-align: center; font-weight: bold; background-color: #eee;}
+ .sizeguide th:first-child {color: transparent; text-indent: -999vw;}
+ .sizeguide td {border-right: 1px solid #DCDCDC; padding: 4px; text-align: center; min-width: 69px;}
+ .sizeguide td:first-child {font-weight: bold; text-align: left; padding-left: 8px; min-width: 115px;}
+
+  .sizeguide td:after {content: '\0022';}
+  .sizeguide td:first-child:after {display: none;}
+
+  @media only screen and (max-width: 599px) {
+    .overflow {max-width: 100%; overflow-x: scroll;}
+    .sizeguide {font-size: .8em;}
+  }
+</style>
+
+<div id="compvalue">Size Guide</div>
+
+<dialog id="compdiag">
+  <b>{{ product.metafields.custom.size_guide.value.name }} Size Guide</b><br>
+  {%- if product.metafields.custom.size_guide.value.image != blank -%}
+    <img src="{{ product.metafields.custom.size_guide.value.image | image_url: width: 400 }}">
+  {%- endif -%}
+  <div class="overflow"><table class="sizeguide"></table></div>
+</dialog>
+
+<script>
+  const dialog = document.querySelector("#compdiag");
+  const showButton = document.querySelector("#compvalue");
+
+  showButton.addEventListener("click", () => {
+    dialog.showModal();
+  });
+
+  dialog.addEventListener("click", () => {
+   if (event.target === dialog) {
+      dialog.close();
+    }
+  });  
+</script>
+
+        
+<script>
+const sizedata = {{ product.metafields.custom.size_guide.value.json }};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const table = document.querySelector('.sizeguide');
+    
+    // Create header row
+    const headerRow = document.createElement('tr');
+    
+    // Get headers from first object's keys
+    Object.keys(sizedata[0]).forEach(key => {
+    const headerCell = document.createElement('th');
+    headerCell.textContent = key;
+    headerRow.appendChild(headerCell);
+    });
+    
+    table.appendChild(headerRow);
+    
+    // Create data rows
+    sizedata.forEach(row => {
+    const dataRow = document.createElement('tr');
+    
+    Object.values(row).forEach(value => {
+        const dataCell = document.createElement('td');
+        dataCell.textContent = value;
+        dataRow.appendChild(dataCell);
+    });
+    
+    table.appendChild(dataRow);
+    });
+});
+</script>

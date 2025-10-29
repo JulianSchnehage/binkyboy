@@ -1,29 +1,44 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Product (pre-order)",
   "sections": {
     "main": {
       "type": "main-product",
       "blocks": {
         "title": {
-          "type": "title"
+          "type": "title",
+          "settings": {}
         },
         "price": {
-          "type": "price"
+          "type": "price",
+          "settings": {}
         },
         "vendor": {
-          "type": "vendor"
+          "type": "vendor",
+          "settings": {}
         },
         "divider": {
-          "type": "divider"
+          "type": "divider",
+          "settings": {}
         },
         "variant-picker": {
-          "type": "variant-picker"
+          "type": "variant-picker",
+          "settings": {}
         },
         "buy-buttons": {
-          "type": "buy-buttons"
+          "type": "buy-buttons",
+          "settings": {}
         },
         "description": {
-          "type": "description"
+          "type": "description",
+          "settings": {}
         }
       },
       "block_order": [
@@ -34,10 +49,12 @@
         "variant-picker",
         "buy-buttons",
         "description"
-      ]
+      ],
+      "settings": {}
     },
     "related-products": {
-      "type": "related-products"
+      "type": "related-products",
+      "settings": {}
     }
   },
   "order": [

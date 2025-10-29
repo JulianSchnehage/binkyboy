@@ -31,17 +31,17 @@
   endif
 
   if section.settings.product_list != blank
-    if settings.prod_thumb_shape == 'portrait-23'
+    if section.settings.prod_thumb_shape == 'portrait-23'
       assign chosen_aspect_ratio = 0.67
-    elsif settings.prod_thumb_shape == 'portrait-45'
+    elsif section.settings.prod_thumb_shape == 'portrait-45'
       assign chosen_aspect_ratio = 0.8
-    elsif settings.prod_thumb_shape == 'square'
+    elsif section.settings.prod_thumb_shape == 'square'
       assign chosen_aspect_ratio = 1.0
-    elsif settings.prod_thumb_shape == 'landscape-54'
+    elsif section.settings.prod_thumb_shape == 'landscape-54'
       assign chosen_aspect_ratio = 1.25
-    elsif settings.prod_thumb_shape == 'landscape-32'
+    elsif section.settings.prod_thumb_shape == 'landscape-32'
       assign chosen_aspect_ratio = 1.50
-    elsif settings.prod_thumb_shape == 'tallest'
+    elsif section.settings.prod_thumb_shape == 'tallest'
       assign chosen_aspect_ratio = 99
       for product in section.settings.product_list
         if product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
@@ -61,7 +61,10 @@
   assign products_alignment_y = section.settings.products_alignment | split: ' ' | first
 -%}
 
-<image-with-text-overlay id="section-id-{{ section.id }}" class="{% if section.settings.video_shopify != blank or section.settings.video_external != blank %}video-section video-section--background{% endif %}">
+<image-with-text-overlay
+  id="section-id-{{ section.id }}"
+  class="{% if section.settings.video_shopify != blank or section.settings.video_external != blank %}video-section video-section--background{% endif %}"
+>
   {% style %}
     {%- if section.settings.height == 'fixed' %}
       #section-id-{{ section.id }} .height--fixed {
@@ -127,13 +130,14 @@
     {%- endfor -%}
   {% endstyle %}
 
-
-  <div class="
-    {%- if section.settings.full_width and section.settings.mobile_overlay_over %} mobile-container
-    {%- elsif section.settings.full_width == false -%} container fully-spaced-row--medium fully-spaced-row--not-mobile
-      {%- if section.settings.mobile_overlay_over == false %} container--not-mobile{% endif -%}
-    {%- endif %}">
-
+  <div
+    class="
+      {%- if section.settings.full_width and section.settings.mobile_overlay_over %} mobile-container
+      {%- elsif section.settings.full_width == false -%} container fully-spaced-row--medium fully-spaced-row--not-mobile
+        {%- if section.settings.mobile_overlay_over == false %} container--not-mobile{% endif -%}
+      {%- endif %}
+    "
+  >
     {% if section.settings.mobile_overlay_over and show_text_content %}
       <div class="mobile-only spaced-row-above lightish-spaced-row align-center">
         {% assign skip_block_count = 0 %}
@@ -153,19 +157,33 @@
               {% endif %}
 
             {% when 'subheading' %}
-              <div class="subheading subheading--over lightish-spaced-row-above">{{ block.settings.subheading | escape }}</div>
+              <div class="subheading subheading--over lightish-spaced-row-above">
+                {{ block.settings.subheading | escape }}
+              </div>
 
             {% when 'text' %}
-              <div class="rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}">{{ block.settings.text }}</div>
+              <div class="rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}">
+                {{ block.settings.text }}
+              </div>
 
             {% when 'button' %}
               <div class="button-row lightish-spaced-row-above">
-                <a class="button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+                <a
+                  class="button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}"
+                  href="{{ block.settings.button_link }}"
+                >
+                  {{- block.settings.button_label | escape -}}
+                </a>
                 {%- assign skip_block_count = 0 -%}
                 {%- for next_block in section.blocks offset: forloop.index -%}
                   {%- if next_block.type == 'button' -%}
                     {%- assign skip_block_count = skip_block_count | plus: 1 -%}
-                    <a class="button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ next_block.settings.button_link }}">{{ next_block.settings.button_label | escape }}</a>
+                    <a
+                      class="button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}"
+                      href="{{ next_block.settings.button_link }}"
+                    >
+                      {{- next_block.settings.button_label | escape -}}
+                    </a>
                   {%- else -%}
                     {%- break -%}
                   {%- endif -%}
@@ -183,14 +201,19 @@
                   show_labels: block.settings.show_timer_labels
                 %}
               </div>
-
           {% endcase %}
         {% endfor %}
       </div>
     {% endif %}
 
-  <div class="height--{{ section.settings.height }} image-overlay image-overlay--bg-{{ section.settings.overlay_style }}{% if section.settings.mobile_overlay_over and show_text_content %} image-overlay--bg-desktop-only{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
-      {%- if section.settings.image == blank and section.settings.video_shopify == blank and section.settings.video_external == blank -%}
+    <div
+      class="height--{{ section.settings.height }} image-overlay image-overlay--bg-{{ section.settings.overlay_style }}{% if section.settings.mobile_overlay_over and show_text_content %} image-overlay--bg-desktop-only{% endif %}"
+      {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}
+    >
+      {%- if section.settings.image == blank
+        and section.settings.video_shopify == blank
+        and section.settings.video_external == blank
+      -%}
         <div class="height__image image-overlay__image">
           <div class="placeholder-image{% if show_text_content %} dark{% endif %}">
             {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}
@@ -202,14 +225,22 @@
             <div class="{% unless section.settings.video_shopify %}video-section__bg-iframe-video{% endunless %}">
               <deferred-media>
                 <template>
-                  <video-component class="{% if section.settings.video_shopify %}has-video{% else %}has-iframe{% endif %}"
-                    {%- unless section.settings.video_shopify %} data-video-url="{{ section.settings.video_external | escape }}"{% endunless %}
-                                  data-video-id="{{ section.id }}"
-                                  data-autoplay="true"
-                                  data-background="true"
-                                  data-description="{{ section.settings.video_description | escape }}">
+                  <video-component
+                    class="{% if section.settings.video_shopify %}has-video{% else %}has-iframe{% endif %}"
+                    {%- unless section.settings.video_shopify %}
+                      data-video-url="{{ section.settings.video_external | escape }}"
+                    {% endunless %}
+                    data-video-id="{{ section.id }}"
+                    data-autoplay="true"
+                    data-background="true"
+                    data-description="{{ section.settings.video_description | escape }}"
+                  >
                     {%- if section.settings.video_shopify -%}
-                      {{ section.settings.video_shopify | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+                      {{
+                        section.settings.video_shopify
+                        | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: ''
+                        | replace: '<img ', '<img loading="lazy" hidden '
+                      }}
                     {%- else -%}
                       <div></div>
                     {%- endif -%}
@@ -221,7 +252,10 @@
           {%- endif -%}
 
           {%- if main_image -%}
-            {%- render 'image-desktop-and-mobile', desktop_image: main_image, mobile_image: section.settings.mobile_image -%}
+            {%- render 'image-desktop-and-mobile',
+              desktop_image: main_image,
+              mobile_image: section.settings.mobile_image
+            -%}
           {%- endif %}
 
           {%- if section.settings.video_shopify != blank or section.settings.video_external != blank -%}
@@ -235,20 +269,44 @@
           {%- if section.settings.product_list != blank and section.settings.product_list.count == 1 -%}
             {%- for product in section.settings.product_list limit: 1 -%}
               <div class="text-overlay__single-product">
-                {%- render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, compact: true, card_layout: section.settings.product_card_layout, hide_swatches: hide_swatches, grid: 6 -%}
+                {%- render 'product-block',
+                  product: product,
+                  custom_aspect_ratio: chosen_aspect_ratio,
+                  compact: true,
+                  card_layout: section.settings.product_card_layout,
+                  hide_swatches: hide_swatches,
+                  grid: 6
+                -%}
               </div>
             {%- endfor -%}
           {%- else -%}
-            <slide-show class="slide-show--cards-askew slide-show--product-cards-{{ section.settings.product_card_layout }} inline-block" role="region" aria-roledescription="{{ 'sections.slideshow.carousel' | t }}" aria-label="{{ section.settings.accessibility_info | escape }}" data-autoplay="false" data-transition="">
+            <slide-show
+              class="slide-show--cards-askew slide-show--product-cards-{{ section.settings.product_card_layout }} inline-block"
+              role="region"
+              aria-roledescription="{{ 'sections.slideshow.carousel' | t }}"
+              aria-label="{{ section.settings.accessibility_info | escape }}"
+              data-autoplay="false"
+              data-transition=""
+            >
               {%- if products_alignment_y == 'bottom' -%}
                 <div class="slideshow-ctrl slideshow-ctrl--inline js-only">
                   <div class="slideshow-nav">
-                    <button type="button" class="slideshow-nav__btn has-ltr-icon" name="prev" aria-controls="slideshow-{{ section.id }}">
+                    <button
+                      type="button"
+                      class="slideshow-nav__btn has-ltr-icon"
+                      name="prev"
+                      aria-controls="slideshow-{{ section.id }}"
+                    >
                       <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
                       {% render 'icon-chevron-left' %}
                     </button>
 
-                    <button type="button" class="slideshow-nav__btn has-ltr-icon" name="next" aria-controls="slideshow-{{ section.id }}">
+                    <button
+                      type="button"
+                      class="slideshow-nav__btn has-ltr-icon"
+                      name="next"
+                      aria-controls="slideshow-{{ section.id }}"
+                    >
                       <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
                       {% render 'icon-chevron-right' %}
                     </button>
@@ -256,29 +314,57 @@
                 </div>
               {%- endif -%}
 
-              <div class="slideshow slideshow--navigation-arrows" id="slideshow-{{ section.id }}" aria-live="polite" aria-atomic="true">
+              <div
+                class="slideshow slideshow--navigation-arrows"
+                id="slideshow-{{ section.id }}"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 {%- if section.settings.product_list != blank -%}
                   {% for product in section.settings.product_list %}
-                    <div class="slideshow__slide{% if forloop.first %} is-active{% endif %} has-motion"
-                        role="group"
-                        aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
-                        aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
-                        style="--index: {{ forloop.index0 }}"
-                        {%- unless forloop.first %}tabindex="-1"{% endunless %}
-                        {%- if request.design_mode %}data-index="{{ forloop.index0 }}"{% endif %}>
-                      {% render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, compact: true, card_layout: section.settings.product_card_layout, grid: 6 hide_swatches: hide_swatches %}
+                    <div
+                      class="slideshow__slide{% if forloop.first %} is-active{% endif %} has-motion"
+                      role="group"
+                      aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
+                      aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                      style="--index: {{ forloop.index0 }}"
+                      {%- unless forloop.first %}
+                        tabindex="-1"
+                      {% endunless %}
+                      {%- if request.design_mode %}
+                        data-index="{{ forloop.index0 }}"
+                      {% endif %}
+                    >
+                      {% render 'product-block',
+                        product: product,
+                        custom_aspect_ratio: chosen_aspect_ratio,
+                        compact: true,
+                        card_layout: section.settings.product_card_layout,
+                        grid: 6,
+                        hide_swatches: hide_swatches
+                      %}
                     </div>
                   {% endfor %}
                 {%- else -%}
                   {% for i in (1..4) %}
-                    <div class="slideshow__slide{% if forloop.first %} is-active{% endif %}"
-                        role="group"
-                        aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
-                        aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
-                        style="--index: {{ forloop.index0 }}"
-                        {%- unless forloop.first %}tabindex="-1"{% endunless %}
-                        {%- if request.design_mode %}data-index="{{ forloop.index0 }}"{% endif %}>
-                      {% render 'onboarding-product-block', forloop: forloop, compact: true, card_layout: section.settings.product_card_layout %}
+                    <div
+                      class="slideshow__slide{% if forloop.first %} is-active{% endif %}"
+                      role="group"
+                      aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
+                      aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                      style="--index: {{ forloop.index0 }}"
+                      {%- unless forloop.first %}
+                        tabindex="-1"
+                      {% endunless %}
+                      {%- if request.design_mode %}
+                        data-index="{{ forloop.index0 }}"
+                      {% endif %}
+                    >
+                      {% render 'onboarding-product-block',
+                        forloop: forloop,
+                        compact: true,
+                        card_layout: section.settings.product_card_layout
+                      %}
                     </div>
                   {% endfor %}
                 {%- endif -%}
@@ -287,12 +373,22 @@
               {%- if products_alignment_y != 'bottom' -%}
                 <div class="slideshow-ctrl slideshow-ctrl--inline js-only">
                   <div class="slideshow-nav">
-                    <button type="button" class="slideshow-nav__btn has-ltr-icon" name="prev" aria-controls="slideshow-{{ section.id }}">
+                    <button
+                      type="button"
+                      class="slideshow-nav__btn has-ltr-icon"
+                      name="prev"
+                      aria-controls="slideshow-{{ section.id }}"
+                    >
                       <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
                       {% render 'icon-chevron-left' %}
                     </button>
 
-                    <button type="button" class="slideshow-nav__btn has-ltr-icon" name="next" aria-controls="slideshow-{{ section.id }}">
+                    <button
+                      type="button"
+                      class="slideshow-nav__btn has-ltr-icon"
+                      name="next"
+                      aria-controls="slideshow-{{ section.id }}"
+                    >
                       <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
                       {% render 'icon-chevron-right' %}
                     </button>
@@ -319,25 +415,53 @@
                 {% case block.type %}
                   {% when 'heading' %}
                     {% if block.settings.use_h1 %}
-                      <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h1>
+                      <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>
+                        {% render 'multiline-text' with block.settings.title %}
+                      </h1>
                     {% else %}
-                      <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h2>
+                      <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>
+                        {% render 'multiline-text' with block.settings.title %}
+                      </h2>
                     {% endif %}
 
                   {% when 'subheading' %}
-                    <div class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above" {{ block.shopify_attributes }}>{{ block.settings.subheading | escape }}</div>
+                    <div
+                      class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above"
+                      {{ block.shopify_attributes }}
+                    >
+                      {{ block.settings.subheading | escape }}
+                    </div>
 
                   {% when 'text' %}
-                    <div class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+                    <div
+                      class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}"
+                      {{ block.shopify_attributes }}
+                    >
+                      {{ block.settings.text }}
+                    </div>
 
                   {% when 'button' %}
-                    <div class="text-overlay__button-row button-row lightish-spaced-row-above" {{ block.shopify_attributes }}>
-                      <a class="text-overlay__button button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+                    <div
+                      class="text-overlay__button-row button-row lightish-spaced-row-above"
+                      {{ block.shopify_attributes }}
+                    >
+                      <a
+                        class="text-overlay__button button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}"
+                        href="{{ block.settings.button_link }}"
+                      >
+                        {{- block.settings.button_label | escape -}}
+                      </a>
                       {%- assign skip_block_count = 0 -%}
                       {%- for next_block in section.blocks offset: forloop.index -%}
                         {%- if next_block.type == 'button' -%}
                           {%- assign skip_block_count = skip_block_count | plus: 1 -%}
-                          <a class="text-overlay__button button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ next_block.settings.button_link }}" {{ block.shopify_attributes }}>{{ next_block.settings.button_label | escape }}</a>
+                          <a
+                            class="text-overlay__button button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}"
+                            href="{{ next_block.settings.button_link }}"
+                            {{ block.shopify_attributes }}
+                          >
+                            {{- next_block.settings.button_label | escape -}}
+                          </a>
                         {%- else -%}
                           {%- break -%}
                         {%- endif -%}
@@ -345,7 +469,10 @@
                     </div>
 
                   {%- when 'countdown' -%}
-                    <div class="block-id-{{ block.id }} lightly-spaced-row lightish-spaced-row-above countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}" {{ block.shopify_attributes }}>
+                    <div
+                      class="block-id-{{ block.id }} lightly-spaced-row lightish-spaced-row-above countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}"
+                      {{ block.shopify_attributes }}
+                    >
                       {% render 'countdown-timer',
                         end_date: block.settings.end_date,
                         end_time: block.settings.end_time,
@@ -355,7 +482,6 @@
                         show_labels: block.settings.show_timer_labels
                       %}
                     </div>
-
                 {% endcase %}
               {% endfor %}
             </div>
@@ -369,7 +495,14 @@
     {%- if section.settings.product_list != blank and section.settings.product_list.count == 1 -%}
       {%- for product in section.settings.product_list limit: 1 -%}
         <div class="section-shop-the-look__single-product">
-          {%- render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, compact: true, card_layout: 'landscape', hide_swatches: hide_swatches, grid: 6 -%}
+          {%- render 'product-block',
+            product: product,
+            custom_aspect_ratio: chosen_aspect_ratio,
+            compact: true,
+            card_layout: 'landscape',
+            hide_swatches: hide_swatches,
+            grid: 6
+          -%}
         </div>
       {%- endfor -%}
     {%- else -%}
@@ -379,7 +512,14 @@
             {%- if section.settings.product_list != blank -%}
               {% for product in section.settings.product_list %}
                 <li class="slider__item">
-                  {% render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, compact: true, card_layout: 'landscape', hide_swatches: hide_swatches, grid: 6 %}
+                  {% render 'product-block',
+                    product: product,
+                    custom_aspect_ratio: chosen_aspect_ratio,
+                    compact: true,
+                    card_layout: 'landscape',
+                    hide_swatches: hide_swatches,
+                    grid: 6
+                  %}
                 </li>
               {% endfor %}
             {%- else -%}
@@ -395,7 +535,6 @@
     {%- endif -%}
   </div>
 </image-with-text-overlay>
-
 
 {% schema %}
 {
@@ -505,6 +644,42 @@
       "id": "product_list",
       "label": "Products"
     },
+    {
+        "type": "select",
+        "id": "prod_thumb_shape",
+        "label": "Image shape",
+        "options": [
+          {
+            "value": "shortest",
+            "label": "Automatic (shortest image)"
+          },
+          {
+            "value": "tallest",
+            "label": "Automatic (tallest image)"
+          },
+          {
+            "value": "landscape-32",
+            "label": "Landscape (3:2)"
+          },
+          {
+            "value": "landscape-54",
+            "label": "Landscape (5:4)"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "portrait-45",
+            "label": "Portrait (4:5)"
+          },
+          {
+            "value": "portrait-23",
+            "label": "Portrait (2:3)"
+          }
+        ],
+        "default": "shortest"
+      },
     {
       "type": "select",
       "id": "products_alignment",

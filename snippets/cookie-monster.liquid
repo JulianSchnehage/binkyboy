@@ -1,0 +1,202 @@
+{% comment %}
+After adding this file as a snippet, make sure to include it in the theme with the following: {% include 'cookie-monster' %}
+{% endcomment %}
+<script>
+	(async () => {
+		window.ViaTrackerToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0bmFtZSI6ImJpbmt5YnJvLmNvbSIsImxvY2F0aW9uSWQiOiI1ZmJjODA0ZGIxMDVjZTAwMDdmNzhlOGQiLCJpYXQiOjE2ODEyNTAyMzh9.dNCPhOGLwKtUX3PsNs6CsqOuc9-ckHOhRcE6gtn36Z57v42mOH7-sk0avjRsUgP9nfY0F5BNeKOGqJIRuE69AGBYcPOh1naRLrTagK0bh_5HqAXqNtUvmbFQxkGwWphNDLqeJZSX4Z54yfAYT4eGYzm5ZtzLz97Ag0J-XInutkQ';
+		window.ViaStoreType = 'shopify';
+	
+		const BASE_URL = 'https://api.viacustomers.com';
+	
+		const utcDate = (date) => new Date(date).toUTCString();
+	
+		const COOKIE_DELIMITER = '; ';
+		const PAIR_DELIMITER = '=';
+		const MAX_DATE = new Date('+275760-09-13T00:00:00Z');
+	
+		const cookies = {
+			get items() {
+				const decodedCookie = decodeURIComponent(document.cookie);
+				const pairs = decodedCookie.split(COOKIE_DELIMITER).map((cookie) => cookie.split(PAIR_DELIMITER));
+				return Object.fromEntries(pairs);
+			},
+			get length() {
+				return Object.keys(this.items).length;
+			},
+			getItem(key) {
+				return this.items[key] || null;
+			},
+			setItem(key, value, { expires, maxAge, path = '/', domain } = {}) {
+				const config = {
+					[key]: value,
+					domain,
+					path,
+					'max-age': maxAge, // renamed
+					'expires': expires !== undefined ? utcDate(expires) : null,
+				};
+		
+				const cookie = Object.entries(config)
+					.filter(([, value]) => value !== undefined)
+					.map(([key, value]) => `${key}${PAIR_DELIMITER}${value}`)
+					.join(COOKIE_DELIMITER);
+		
+				document.cookie = cookie;
+			},
+			removeItem(key, { path = '/', domain } = {}) {
+				this.setItem(key, null, { expires: 0, path, domain });
+			},
+		};
+	
+		const viaStorage = {
+			key: {
+				customerId: '_viaCustomerId',
+				userId: '_viaUserId',
+			},
+			get customerId() {
+				return cookies.getItem(this.key.customerId);
+			},
+			set customerId(value) {
+				cookies.setItem(this.key.customerId, value);
+			},
+	
+			get userId() {
+				return cookies.getItem(this.key.userId);
+			},
+			set userId(value) {
+				cookies.setItem(this.key.userId, value, { expires: MAX_DATE });
+			},
+		};
+	
+		function addParametersToURL(url, pairs) {
+			const parameters = Object.entries(pairs)
+				.filter(([key, value]) => value !== undefined) // clean parameters
+				.map(([key, value]) => `${key}=${encodeURIComponent(value)}`) // encode pairs
+				.join('&');
+			return `${url}${url.includes('?') ? '&' : '?'}${parameters}`;
+		}
+	
+		async function getViaCustomerId(shopifyCustomerId, phone, email) {
+			let url = `${BASE_URL}/api/v2/customers/get_or_create`;
+			const parameters = { shopifyId: shopifyCustomerId, phone, email };
+			url = addParametersToURL(url, parameters);
+	
+			return fetch(url, {
+				headers: {
+					'Authorization': `Bearer ${window['ViaTrackerToken']}`,
+					'Content-Type': 'application/json',
+				},
+				method: 'GET',
+			}).then((response) => response.json());
+		}
+	
+		async function customerViewedProduct(
+			viaCustomerId,
+			storeType,
+			productId,
+			variantId,
+			price,
+			inventoryQuantity
+		) {
+			let url = `${BASE_URL}/api/v2/customers/product_viewed`;
+			const parameters = { customerId: viaCustomerId, productId, variantId, storeType, price };
+			url = addParametersToURL(url, parameters);
+	
+			return fetch(url, {
+				headers: {
+					'Authorization': `Bearer ${window['ViaTrackerToken']}`,
+					'Content-Type': 'application/json',
+				},
+				method: 'GET',
+			});
+		}
+	
+		async function customerUpdatedCart(viaCustomerId, lineItems) {
+			let url = `${BASE_URL}/api/v2/customers/cart`;
+			return fetch(url, {
+				headers: {
+					'Authorization': `Bearer ${window['ViaTrackerToken']}`,
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					viaCustomerId,
+					lineItems,
+				})
+			});
+		}
+	
+		function checkStorageUsers() {
+			// userId MIGHT be set by popups
+			if (viaStorage.customerId) return;
+			if (!viaStorage.userId) return;
+			viaStorage.customerId = viaStorage.userId;
+		}
+	
+		async function identifyViaCustomer() {
+			{% if customer %}
+				if (viaStorage.customerId) return;
+				let email = '';
+				let phone = '';
+				const shopifyCustomerId = {{customer.id | json }};
+	
+				{% if customer.email %}
+					email = {{ customer.email | json }};
+				{% endif %}
+	
+				{% if customer.phone %}
+					phone = {{ customer.phone | json }};
+				{% endif %}
+				const { id } = await getViaCustomerId(shopifyCustomerId, phone, email);
+				if (id) viaStorage.customerId = id;
+	
+			{% endif %}
+		}
+	
+		async function track() {
+			if (!viaStorage.customerId) return;
+			let variantData = undefined;
+			let productData = undefined;
+			{% if product %}
+				productData = {{ product | json }};
+				variantData = {{product.selected_or_first_available_variant | json}}
+				const storeType = window['ViaStoreType'];
+				const price = (variantData?.price ?? productData.price) / 100;
+				const variantId = (variantData?.id ?? productData.variants[0].id);
+				const inventoryQuantity = 
+					(variantData?.inventory_quantity ?? productData.variants[0].inventory_quantity)
+				const productId = productData.id;
+				await customerViewedProduct(
+					viaStorage.customerId,
+					storeType,
+					productId,
+					variantId,
+					price,
+					inventoryQuantity
+				);
+			{% endif %}
+	
+			{% if cart %}
+				let cartData = {{cart | json }};
+				if (cartData.items.length > 0) {
+					await customerUpdatedCart(viaStorage.customerId, cartData.items.map((item) => ({
+							variantId: item.variant_id, 
+							productId: item.product_id, 
+							quantity: item.quantity,
+							price: (item.final_price / 100),
+							inventoryQuantity: item?.variant?.inventory_quantity
+						}))
+					)
+				}
+			{% endif %}
+		}
+	
+		async function cookieMonster() {
+			checkStorageUsers();
+			await identifyViaCustomer();
+			await track();
+		}
+		
+		window.addEventListener('beforeunload', cookieMonster);
+		await cookieMonster();
+	})();
+	</script>
