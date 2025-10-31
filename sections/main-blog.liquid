@@ -6,41 +6,45 @@
     </div>
   {% endif %}
 
-  <div class="utility-bar" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
-    <div class="utility-bar__left">
-      {% if blog.all_tags.size > 0 %}
-        <div class="utility-bar__item">
-          <link-dropdown class="link-dropdown link-dropdown--left-aligned link-dropdown--with-icon">
-            <div class="visually-hidden" id="filter-dropdown-heading">{{ 'blogs.filtering.filter_by' | t | escape }}</div>
-            <button class="link-dropdown__button has-motion" aria-expanded="false" aria-controls="filter-dropdown-options" aria-describedby="filter-dropdown-heading">
-              <span class="link-dropdown__button-text">
-                <span class="link-dropdown__button-prefix-icon">{% render 'icon-filter', stroke_width: 1.3 %}</span>
-                {%- if current_tags -%}
-                  {{- current_tags | join: ', ' -}}
-                {%- else -%}
-                  {{- 'blogs.filtering.filter_by' | t -}}
-                {%- endif -%}
-              </span>
-              <span class="link-dropdown__button-icon has-motion">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
-            </button>
-            <div class="link-dropdown__options" id="filter-dropdown-options">
-              {% if current_tags %}
-                <a href="{{ blog.url }}" class="link-dropdown__link">
-                  {{- 'blogs.filtering.all' | t -}}
-                </a>
-              {% endif %}
+  <div class="utility-bar utility-bar--blog" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    {%- if section.settings.show_tag_filter -%}
+      <div class="utility-bar__left">
+        {% if blog.all_tags.size > 0 %}
+          <div class="utility-bar__item">
+            <link-dropdown class="link-dropdown link-dropdown--left-aligned link-dropdown--with-icon">
+              <div class="visually-hidden" id="filter-dropdown-heading">{{ 'blogs.filtering.filter_by' | t | escape }}</div>
+              <button class="link-dropdown__button has-motion" aria-expanded="false" aria-controls="filter-dropdown-options" aria-describedby="filter-dropdown-heading">
+                <span class="link-dropdown__button-text">
+                  <span class="link-dropdown__button-prefix-icon">{% render 'icon-filter', stroke_width: 1.3 %}</span>
+                  {%- if current_tags -%}
+                    {{- current_tags | join: ', ' -}}
+                  {%- else -%}
+                    {{- 'blogs.filtering.filter_by' | t -}}
+                  {%- endif -%}
+                </span>
+                <span class="link-dropdown__button-icon has-motion">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
+              </button>
+              <div class="link-dropdown__options" id="filter-dropdown-options">
+                <div class="link-dropdown__options-inner">
+                  {% if current_tags %}
+                    <a href="{{ blog.url }}" class="link-dropdown__link">
+                      {{- 'blogs.filtering.all' | t -}}
+                    </a>
+                  {% endif %}
 
-              {% for tag in blog.all_tags %}
-                <a href="{{ tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first }}"
-                  class="link-dropdown__link{% if current_tags contains tag %} link-dropdown__link--active{% endif %}">
-                  {{- tag -}}
-                </a>
-              {% endfor %}
-            </div>
-          </link-dropdown>
-        </div>
-      {% endif %}
-    </div>
+                  {% for tag in blog.all_tags %}
+                    <a href="{{ tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first }}"
+                      class="link-dropdown__link{% if current_tags contains tag %} link-dropdown__link--active{% endif %}">
+                      {{- tag -}}
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            </link-dropdown>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
 
     {% if section.settings.show_twitter or section.settings.show_facebook or section.settings.show_rss_icon %}
       <div class="utility-bar__right" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
@@ -95,6 +99,32 @@
 
       <h2>{{ article.title | escape | link_to: article.url }}</h2>
 
+      <div class="meta meta--after-title small-text">
+        {% if section.settings.show_date or section.settings.show_date %}
+          <div class="iconmeta time">
+            {% if section.settings.show_date %}
+              {{ article.published_at | time_tag: format: 'date' }}
+            {% endif %}
+            {% if section.settings.show_author %}
+              {% if section.settings.show_date %}&mdash;{% endif %}
+              <span class="author">{{ article.author }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_article_tags %}
+          {% capture tag_markup %}
+            <div class="iconmeta tags">
+              <span class="label">{{ 'blogs.tags.label' | t }}:</span>
+              {% for tag in article.tags %}
+                {{ tag | link_to_tag: tag }}
+              {% endfor %}
+            </div>
+          {% endcapture %}
+          {% if tag_markup contains '</a>' %}{{ tag_markup }}{% endif %}
+        {% endif %}
+      </div>
+
       {%- if section.settings.show_excerpts -%}
         <div class="rte cf">
           {%- if article.excerpt.size > 0 -%}
@@ -105,30 +135,9 @@
         </div>
       {%- endif -%}
 
-      <div class="meta">
-        <span class="iconmeta time">
-          {% if section.settings.show_date %}
-            {{ article.published_at | time_tag: format: 'date' }}
-          {% endif %}
-          {% if section.settings.show_author %}
-            {% if section.settings.show_date %}&mdash;{% endif %}
-            <span class="author">{{ article.author }}</span>
-          {% endif %}
-        </span>
-
-        {% if section.settings.show_article_tags %}
-        {% capture tag_markup %}
-        <div class="iconmeta tags">
-          <span class="label">{{ 'blogs.tags.label' | t }}:</span>
-          {% for tag in article.tags %}
-            {{ tag | link_to_tag: tag }}
-          {% endfor %}
-        </div>
-        {% endcapture %}
-        {% if tag_markup contains '</a>' %}{{ tag_markup }}{% endif %}
-        {% endif %}
+      <div class="article__read-more-container">
+        <a class="small-feature-link" href="{{ article.url }}" aria-hidden="true">{{ 'blogs.article.read_more' | t }}</a>
       </div>
-
     </div>
   </div>
 
@@ -221,8 +230,14 @@
     },
     {
       "type": "checkbox",
+      "id": "show_tag_filter",
+      "label": "Show tag filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
       "id": "show_article_tags",
-      "label": "Show tags underneath articles",
+      "label": "Show tags beneath blog post titles",
       "default": true
     },
     {

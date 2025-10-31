@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Ga naar inhoud",
+    "skip_to_product_info": "Ga direct naar productinformatie",
     "close": "Sluiten",
     "main_navigation": "Primair",
     "secondary_navigation": "Secundair",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Gallerij-viewer",
         "load_image": "Laad afbeelding {{ index }} in gallerij-weergave",
+        "play_model": "3D-viewer afspelen",
         "play_video": "Video afspelen"
       },
       "more_swatches": "+ {{ count }} meer",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "Pick-up beschikbaar bij <strong>{{ location_name }}</strong>",
         "pick_up_unavailable": "Pick-up momenteel niet beschikbaar",
         "pick_up_unavailable_at_html": "Pick-up momenteel niet beschikbaar bij <strong>{{ location_name }}</strong>",
-        "refresh": "Vernieuw",
-        "unavailable": "Kon pick-up beschikbaarheid niet laden",
         "view_store_info": "Bekijk winkelinformatie"
       },
       "preorder": "Pre-order",
       "prev_product": "Vorige",
       "price": {
+        "regular_price": "Reguliere prijs",
+        "sale_price": "Verkoopprijs",
+        "line_total_regular_price": "Lijntotaal normale prijs",
+        "line_total_sale_price": "Regel de totale verkoopprijs",
         "unit_price": "Eenheid prijs",
         "unit_price_separator": " / "
       },
-      "product_variants": "Productvarianten",
       "quantity": "Aantal",
       "quick_buy": "Snelle blik",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "Filters",
       "applied_filters": "Toegepaste filters",
-      "apply": "Toepassen",
       "clear_all": "Alles wissen",
       "filter": "Filter",
       "out_of_stock_label": "Uitverkocht",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "Alles weergeven"
+    },
+    "map": {
+      "label": "Kaart met de locatie van {{ location }}"
     },
     "slideshow": {
       "load_slide": "Dia laden",

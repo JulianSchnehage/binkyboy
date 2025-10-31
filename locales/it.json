@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Passa ai contenuti",
+    "skip_to_product_info": "Passa alle informazioni sul prodotto",
     "close": "Chiudi",
     "main_navigation": "Primario",
     "secondary_navigation": "Secondario",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Visualizzatore galleria",
         "load_image": "Carica immagine {{ index }} nella visualizzazione galleria",
+        "play_model": "Riproduci visualizzatore 3D",
         "play_video": "Riproduci video"
       },
       "more_swatches": "+ {{ count }} in più",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "Ritiro disponibile presso <strong>{{ location_name }}</strong>",
         "pick_up_unavailable": "Ritiro al momento non disponibile",
         "pick_up_unavailable_at_html": "Pickup attualmente non disponibile presso <strong>{{ location_name }}</strong>",
-        "refresh": "Aggiorna",
-        "unavailable": "Non è stato possibile caricare la disponibilità per il ritiro",
         "view_store_info": "Visualizza informazioni sul negozio"
       },
       "preorder": "Pre-ordina",
       "prev_product": "Indietro",
       "price": {
+        "regular_price": "Prezzo normale",
+        "sale_price": "Prezzo di vendita",
+        "line_total_regular_price": "Prezzo normale totale della linea",
+        "line_total_sale_price": "Prezzo totale di vendita della riga",
         "unit_price": "Prezzo unitario",
         "unit_price_separator": " / "
       },
-      "product_variants": "Varianti del prodotto",
       "quantity": "Quantità",
       "quick_buy": "Acquisto rapido",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "Filtri",
       "applied_filters": "Filtri applicati",
-      "apply": "Applica",
       "clear_all": "Azzera tutto",
       "filter": "Filtro",
       "out_of_stock_label": "Esaurito",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "Visualizza tutto"
+    },
+    "map": {
+      "label": "Mappa che mostra la posizione di {{ location }}"
     },
     "slideshow": {
       "load_slide": "Carica slide",

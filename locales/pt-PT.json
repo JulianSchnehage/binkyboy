@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Ir para o conteúdo",
+    "skip_to_product_info": "Saltar para a informação do produto",
     "close": "Fechar",
     "main_navigation": "Primário",
     "secondary_navigation": "Secundário",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Visualizador de Galeria",
         "load_image": "Carregar a imagem {{ index }} na vista de galeria",
+        "play_model": "Iniciar o Visualizador 3D",
         "play_video": "Reproduzir vídeo"
       },
       "more_swatches": "+ {{ count }} mais",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "Recolha disponível em <strong>{{ location_name }}</strong>",
         "pick_up_unavailable": "Recolha indisponível neste momento",
         "pick_up_unavailable_at_html": "Recolha indisponível neste momento em <strong>{{ location_name }}</strong>",
-        "refresh": "Repor",
-        "unavailable": "Não foi possível carregar a disponibilidade de recolha",
         "view_store_info": "Ver informações da loja"
       },
       "preorder": "Pré-encomendar",
       "prev_product": "Anterior",
       "price": {
+        "regular_price": "Preço normal",
+        "sale_price": "Preço de venda",
+        "line_total_regular_price": "Preço normal total da linha",
+        "line_total_sale_price": "Preço total de venda da linha",
         "unit_price": "Preço unitário",
         "unit_price_separator": " / "
       },
-      "product_variants": "Variantes do produto",
       "quantity": "Quantidade",
       "quick_buy": "Uma olhadela",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "Filtros",
       "applied_filters": "Filtros Aplicados",
-      "apply": "Aplicar",
       "clear_all": "Limpar tudo",
       "filter": "Filtro",
       "out_of_stock_label": "Esgotado",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "Ver tudo"
+    },
+    "map": {
+      "label": "Mapa que mostra a localização de {{ location }}"
     },
     "slideshow": {
       "load_slide": "Carregar diapositivo",

@@ -139,7 +139,7 @@
 
           {%- if show_overlay_text -%}
           <div class="text-overlay text-overlay--tight text-overlay--v-{{ block.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ block.settings.text_alignment | split: ' ' | last }} image-overlay__over">
-            <div class="text-overlay__inner">
+            <div class="text-overlay__inner text-overlay__inner--pad-{{ section.settings.overlay_padding }}">
               <div class="text-overlay__text">
                 {%- if block.settings.subheading != blank -%}
                   <div class="text-overlay__subheading subheading subheading--over">{{ block.settings.subheading | escape }}</div>
@@ -225,6 +225,7 @@
       "default": "fixed"
     },
     {
+      "visible_if": "{{ section.settings.height == 'fixed' }}",
       "type": "range",
       "id": "desktop_image_height",
       "min": 100,
@@ -235,6 +236,7 @@
       "default": 460
     },
     {
+      "visible_if": "{{ section.settings.height == 'fixed' }}",
       "type": "range",
       "id": "mobile_image_height",
       "min": 100,
@@ -334,6 +336,22 @@
         {
           "value": "no_background",
           "label": "No background"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "overlay_padding",
+      "label": "Overlay padding",
+      "default": "standard",
+      "options": [
+        {
+          "label": "Standard",
+          "value": "standard"
+        },
+        {
+          "label": "Large",
+          "value": "large"
         }
       ]
     },
@@ -453,6 +471,7 @@
   "presets": [
     {
       "name": "Gallery",
+      "category": "Feature",
       "settings": {
       },
       "blocks": [

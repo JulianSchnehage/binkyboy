@@ -127,7 +127,6 @@
     {%- endfor -%}
   {% endstyle %}
 
-
   <div class="
     {%- if section.settings.full_width and section.settings.mobile_overlay_over %} mobile-container
     {%- elsif section.settings.full_width == false -%} container fully-spaced-row--medium fully-spaced-row--not-mobile
@@ -447,6 +446,7 @@
       "info": "Supports YouTube and Vimeo. Landscape videos with a 16:9 aspect ratio recommended."
     },
     {
+      "visible_if": "{{ section.settings.video_shopify != blank or section.settings.video_external != blank }}",
       "type": "text",
       "id": "video_description",
       "label": "Video description",
@@ -477,6 +477,7 @@
       "default": "fixed"
     },
     {
+      "visible_if": "{{ section.settings.height == 'fixed' }}",
       "type": "range",
       "id": "height_desktop",
       "min": 200,
@@ -487,6 +488,7 @@
       "default": 600
     },
     {
+      "visible_if": "{{ section.settings.height == 'fixed' }}",
       "type": "range",
       "id": "height_mobile",
       "min": 100,
@@ -868,6 +870,7 @@
   "presets": [
     {
       "name": "Shop the look",
+      "category": "Banners",
       "blocks": [
         {
           "type": "subheading"

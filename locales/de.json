@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Direkt zum Inhalt",
+    "skip_to_product_info": "Zu Produktinformationen springen",
     "close": "Schließen",
     "main_navigation": "Primär",
     "secondary_navigation": "Sekundär",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Galerie-Viewer",
         "load_image": "Bild {{ index }} in Galerieansicht laden",
+        "play_model": "3D-Viewer abspielen",
         "play_video": "Video abspielen"
       },
       "more_swatches": "+ {{ count }} mehr",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "Abholung bei <strong>{{ location_name }}</strong> verfügbar",
         "pick_up_unavailable": "Abholung derzeit nicht verfügbar",
         "pick_up_unavailable_at_html": "Abholung bei <strong>{{ location_name }}</strong> derzeit nicht verfügbar",
-        "refresh": "Aktualisieren",
-        "unavailable": "Verfügbarkeit für Abholungen konnte nicht geladen werden",
         "view_store_info": "Shop-Informationen anzeigen"
       },
       "preorder": "Vorbestellung",
       "prev_product": "Vorausgehend",
       "price": {
+        "regular_price": "Normaler Preis",
+        "sale_price": "Verkaufspreis",
+        "line_total_regular_price": "Linie insgesamt regulärer Preis",
+        "line_total_sale_price": "Gesamtverkaufspreis der Zeile",
         "unit_price": "Grundpreis",
         "unit_price_separator": " / "
       },
-      "product_variants": "Produktvarianten",
       "quantity": "Menge",
       "quick_buy": "Schneller blick",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "Filtern",
       "applied_filters": "Ausgewählte Filtern",
-      "apply": "Anwenden",
       "clear_all": "Alle entfernen",
       "filter": "Filter",
       "out_of_stock_label": "Nicht vorrättig",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "Alle anzeigen"
+    },
+    "map": {
+      "label": "Karte mit dem Standort von {{ location }}"
     },
     "slideshow": {
       "load_slide": "Folie laden",

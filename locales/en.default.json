@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Skip to content",
+    "skip_to_product_info": "Skip to product information",
     "close": "Close",
     "main_navigation": "Primary",
     "secondary_navigation": "Secondary",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Gallery Viewer",
         "load_image": "Load image {{ index }} in gallery view",
+        "play_model": "Play 3D Viewer",
         "play_video": "Play video"
       },
       "more_swatches": "+ {{ count }} more",
@@ -101,6 +103,10 @@
       "preorder": "Pre-order",
       "prev_product": "Previous",
       "price": {
+        "regular_price": "Regular price",
+        "sale_price": "Sale price",
+        "line_total_regular_price": "Line total regular price",
+        "line_total_sale_price": "Line total sale price",
         "unit_price": "Unit price",
         "unit_price_separator": " / "
       },
@@ -184,6 +190,9 @@
     },
     "featured_collection": {
       "view_all": "View all"
+    },
+    "map": {
+      "label": "Map showing the location of {{ location }}"
     },
     "slideshow": {
       "load_slide": "Load slide",

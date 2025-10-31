@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Aller au contenu",
+    "skip_to_product_info": "Passer aux informations produits",
     "close": "Fermer",
     "main_navigation": "Principal",
     "secondary_navigation": "Secondaire",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Visionneuse de galerie",
         "load_image": "Charger l’image {{ index }} dans la vue de galerie",
+        "play_model": "Lire le visualiseur 3D",
         "play_video": "Lire la vidéo"
       },
       "more_swatches": "+ {{ count }} de plus",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "Service de retrait disponible à <strong>{{ location_name }}</strong>",
         "pick_up_unavailable": "Service de retrait actuellement indisponible",
         "pick_up_unavailable_at_html": "Service de retrait actuellement indisponible à <strong>{{ location_name }}</strong>",
-        "refresh": "Actualiser",
-        "unavailable": "Impossible de charger la disponibilité pour le Service de retrait",
         "view_store_info": "Voir les informations de la boutique"
       },
       "preorder": "Pré-commande",
       "prev_product": "Précédent",
       "price": {
+        "regular_price": "Prix habituel",
+        "sale_price": "Prix soldé",
+        "line_total_regular_price": "Prix régulier total de la ligne",
+        "line_total_sale_price": "Prix de vente total de la ligne",
         "unit_price": "Prix unitaire",
         "unit_price_separator": " / "
       },
-      "product_variants": "Variantes de produit",
       "quantity": "Quantité",
       "quick_buy": "Coup d'oeil",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "Filtres",
       "applied_filters": "Filtres appliqués",
-      "apply": "Appliquer",
       "clear_all": "Tout effacer",
       "filter": "Filtrer",
       "out_of_stock_label": "En rupture de stock",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "Voir tout"
+    },
+    "map": {
+      "label": "Carte indiquant l'emplacement de {{ location }}"
     },
     "slideshow": {
       "load_slide": "Charger la diapositive",

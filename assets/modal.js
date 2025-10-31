@@ -22,12 +22,30 @@ function trapFocus(container, elementToFocus = container) {
     container.querySelectorAll('summary, a[href], area[href], button:not([disabled]), input:not([type=hidden]):not([disabled]), select:not([disabled]), textarea:not([disabled]), object, iframe, audio[controls], video[controls], [tabindex]:not([tabindex^="-"])')
   );
 
-  const firstEl = focusableEls[0];
-  const lastEl = focusableEls[focusableEls.length - 1];
+  let firstEl = null;
+  let lastEl = null;
+  const isVisible = (el) => el.offsetParent && getComputedStyle(el).visibility !== 'hidden';
+
+  const setFirstLastEls = () => {
+    for (let i = 0; i < focusableEls.length; i += 1) {
+      if (isVisible(focusableEls[i])) {
+        firstEl = focusableEls[i];
+        break;
+      }
+    }
+    for (let i = focusableEls.length - 1; i >= 0; i -= 1) {
+      if (isVisible(focusableEls[i])) {
+        lastEl = focusableEls[i];
+        break;
+      }
+    }
+  };
 
   removeTrapFocus();
 
   trapFocusHandlers.focusin = (evt) => {
+    setFirstLastEls();
+
     if (evt.target !== container && evt.target !== lastEl && evt.target !== firstEl) return;
     document.addEventListener('keydown', trapFocusHandlers.keydown);
   };
@@ -38,6 +56,8 @@ function trapFocus(container, elementToFocus = container) {
 
   trapFocusHandlers.keydown = (evt) => {
     if (evt.code !== 'Tab') return;
+
+    setFirstLastEls();
 
     // If tab pressed on last focusable element, focus the first element.
     if (evt.target === lastEl && !evt.shiftKey) {

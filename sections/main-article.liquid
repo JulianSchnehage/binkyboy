@@ -81,9 +81,9 @@
       {% endcapture %}
     {%- endif -%}
 
-    <div class="meta" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+    <div class="meta small-text" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
       {% if section.settings.show_date or section.settings.show_author %}
-        <span class="iconmeta time">
+        <div class="iconmeta time">
           {% if section.settings.show_date %}
             {{ article.published_at | time_tag: format: 'date' }}
           {% endif %}
@@ -91,7 +91,7 @@
             {% if section.settings.show_date %}&mdash;{% endif %}
             <span class="author">{{ article.author }}</span>
           {% endif %}
-        </span>
+        </div>
       {% endif %}
 
       {% if tag_markup contains '</a>' %}{{ tag_markup }}{% endif %}
@@ -156,7 +156,7 @@
           <p>{{ 'blogs.comments.moderated' | t }}</p>
         {% endif %}
 
-        
+
         {%- assign error_heading = 'blogs.comments.error_heading' | t -%}
         {%- render 'form-errors', form: form, error_heading: error_heading -%}
 
@@ -186,7 +186,7 @@
 
 {% schema %}
 {
-  "name": "Article pages",
+  "name": "Blog post",
   "class": "page-section-spacing",
   "settings": [
     {
@@ -204,7 +204,7 @@
     {
       "type": "checkbox",
       "id": "show_article_tags",
-      "label": "Show article tags",
+      "label": "Show tags",
       "default": true
     },
     {

@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "コンテンツへスキップ",
+    "skip_to_product_info": "商品情報にスキップ",
     "close": "閉じる",
     "main_navigation": "主要",
     "secondary_navigation": "副次",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "ギャラリービューアー",
         "load_image": "画像{{ index }}をギャラリービューで読み込む",
+        "play_model": "3Dビューアーを開始",
         "play_video": "動画を再生"
       },
       "more_swatches": "+ {{ count }} 個以上",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "<strong>{{ location_name }}</strong>で受取可能",
         "pick_up_unavailable": "受取は現在利用不可",
         "pick_up_unavailable_at_html": "受取は<strong>{{ location_name }}</strong>で現在利用不可",
-        "refresh": "再読込",
-        "unavailable": "受取を利用可能か読み込めませんでした",
         "view_store_info": "ストア情報を表示"
       },
       "preorder": "先行予約",
       "prev_product": "前",
       "price": {
+        "regular_price": "定価",
+        "sale_price": "セール価格",
+        "line_total_regular_price": "明細合計通常価格",
+        "line_total_sale_price": "ライン合計販売価格",
         "unit_price": "単価",
         "unit_price_separator": " / "
       },
-      "product_variants": "商品バリエーション",
       "quantity": "数量",
       "quick_buy": "すぐに購入",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "フィルター",
       "applied_filters": "適用されたフィルター",
-      "apply": "適用",
       "clear_all": "すべてクリア",
       "filter": "フィルター",
       "out_of_stock_label": "売り切れ",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "すべてを表示"
+    },
+    "map": {
+      "label": "{{ location }} の位置を示す地図"
     },
     "slideshow": {
       "load_slide": "スライドを読み込む",

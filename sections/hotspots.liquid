@@ -99,7 +99,7 @@
         {%- assign animation_delay = forloop.index | times: 0.15 | append: 's' -%}
         {%- assign animation_attrs = 'data-cc-animate data-cc-animate-delay="' | append: animation_delay | append: '"' -%}
         <div class="hotspot hotspot-{{ forloop.index }} hotspot--outer-{{ section.settings.outer_circle }} hotspot--on-{% if block.settings.hotspot_x < 50 %}right{% else %}left{% endif %}" {{ block.shopify_attributes }} {%- render 'animation-attrs', attrs: animation_attrs -%}>
-          <button type="button" class="hotspot__btn hotspot__btn--{{ section.settings.button_content }} relative tap-target no-js-hidden" aria-expanded="false">
+          <button type="button" class="hotspot__btn hotspot__btn--{{ section.settings.button_content }} relative tap-target" aria-expanded="false">
             <span class="visually-hidden">
               {{- 'accessibility.view_details' | t }}
             </span>
@@ -108,7 +108,7 @@
               <span class="hotspot__btn-number">{{ forloop.index }}</span>
             {% endif %}
           </button>
-          <div class="hotspot__card no-js-hidden has-motion" aria-hidden="true">
+          <div class="hotspot__card has-motion" aria-hidden="true">
             {%- if block.settings.custom_icon != blank or block.settings.icon != blank -%}
               <div class="hotspot__icon lightly-spaced-row" style="--icon-size: {{ block.settings.icon_width }}px">
                 {%- liquid
@@ -457,8 +457,16 @@
               "label": "No icon"
             },
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -557,6 +565,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -585,12 +597,20 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
         },
@@ -616,6 +636,7 @@
   "presets": [
     {
       "name": "Hotspots",
+      "category": "Banners",
       "blocks": [
         {
           "type": "hotspot",

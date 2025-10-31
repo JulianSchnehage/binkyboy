@@ -4,31 +4,24 @@ if (!customElements.get('custom-select')) {
       super();
       this.button = this.querySelector('.custom-select__btn');
       this.listbox = this.querySelector('.custom-select__listbox');
-      this.selectedOption = this.querySelector('[aria-selected="true"]');
-
-      // Set the selected option.
-      if (!this.selectedOption) {
-        this.selectedOption = this.listbox.firstElementChild;
-      }
-
-      this.setButtonWidth();
-      window.initLazyScript(this, this.init.bind(this));
-    }
-
-    init() {
       this.options = this.querySelectorAll('.custom-select__option');
+      this.selectedOption = this.querySelector('[aria-selected="true"]');
       this.nativeSelect = document.getElementById(`${this.id}-native`);
       this.swatches = !!Array.from(this.options).find((el) => 'swatch' in el.dataset);
       this.focusedClass = 'is-focused';
       this.searchString = '';
       this.listboxOpen = false;
-      this.selectedOption = this.querySelector('[aria-selected="true"]');
 
       // Set the selected option.
       if (!this.selectedOption) {
         this.selectedOption = this.listbox.firstElementChild;
       }
 
+      this.addListeners();
+      this.setButtonWidth();
+    }
+
+    addListeners() {
       this.addEventListener('keydown', this.handleKeydown.bind(this));
       this.button.addEventListener('mousedown', this.handleMousedown.bind(this));
     }
@@ -350,7 +343,11 @@ if (!customElements.get('custom-select')) {
           this.nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
         } else {
           // Dispatch a 'change' event on the custom select element.
-          const detail = { selectedValue: option.dataset.value };
+          const detail = {
+            selectedValue: option.dataset.value,
+            productUrl: option.dataset.productUrl,
+            variantId: option.dataset.variantId
+          };
           this.dispatchEvent(new CustomEvent('change', { bubbles: true, detail }));
         }
       }

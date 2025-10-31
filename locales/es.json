@@ -63,6 +63,7 @@
   },
   "accessibility": {
     "skip_to_content": "Ir al contenido",
+    "skip_to_product_info": "Ir directamente a la información del producto",
     "close": "Cerrar",
     "main_navigation": "Principal",
     "secondary_navigation": "Secundario",
@@ -82,6 +83,7 @@
       "media": {
         "gallery_viewer": "Visor de la galería",
         "load_image": "Cargar imagen {{ index }} en la vista de galería",
+        "play_model": "Reproducir visor 3D",
         "play_video": "Reproducir vídeo"
       },
       "more_swatches": "+ {{ count }} más",
@@ -94,17 +96,18 @@
         "pick_up_available_at_html": "Recogida disponible en <strong>{{ location_name }}</strong>",
         "pick_up_unavailable": "La recogida no está disponible en este momento",
         "pick_up_unavailable_at_html": "En este momento, la recogida no está disponible en <strong>{{ location_name }}</strong>",
-        "refresh": "Actualizar",
-        "unavailable": "No se ha podido cargar la disponibilidad de recogida",
         "view_store_info": "Ver información de la tienda"
       },
       "preorder": "Pedir por adelantado",
       "prev_product": "Anterior",
       "price": {
+        "regular_price": "Precio normal",
+        "sale_price": "Precio de venta",
+        "line_total_regular_price": "Precio regular total de la línea",
+        "line_total_sale_price": "Precio de venta total de línea",
         "unit_price": "Precio unitario",
         "unit_price_separator": " / "
       },
-      "product_variants": "Variantes del producto",
       "quantity": "Cantidad",
       "quick_buy": "Vistazo rápido",
       "reviews_count": {
@@ -123,7 +126,6 @@
     "filtering": {
       "title": "Filtros",
       "applied_filters": "Filtros aplicados",
-      "apply": "Aplicar",
       "clear_all": "Eliminar todos",
       "filter": "Filtro",
       "out_of_stock_label": "Agotado",
@@ -184,6 +186,9 @@
     },
     "featured_collection": {
       "view_all": "Ver todos"
+    },
+    "map": {
+      "label": "Mapa que muestra la ubicación de {{ location }}"
     },
     "slideshow": {
       "load_slide": "Cargar diapositiva",

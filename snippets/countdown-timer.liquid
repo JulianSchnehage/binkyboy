@@ -37,7 +37,7 @@
 
 <countdown-timer class="countdown" role="timer" data-end-date="{% if end_date != blank %}{{ end_date }}{% endif %}"{% if pad %} data-pad="true"{% endif %} aria-label="{{ 'sections.countdown.end_date' | t: date: a11y_end_date }}">
   {%- if end_date > now or hide_on_end == false -%}
-    <div class="countdown__grid text-center no-js-hidden">
+    <div class="countdown__grid text-center">
       <div class="countdown__item">
         <span class="countdown__number js-days"><span class="countdown__number-part">0</span></span>
         <div class="countdown__unit subheading{% unless show_labels %} visually-hidden{% endunless %}">{{ 'sections.countdown.days_short' | t }}</div>
@@ -62,10 +62,6 @@
       </div>
     </div>
   {%- endif -%}
-
-  <div class="js-hidden">
-    {{ 'sections.countdown.end_date' | t: date: a11y_end_date }}
-  </div>
 
   {%- if now > end_date and end_text -%}
     <div class="countdown__text large-text rte">

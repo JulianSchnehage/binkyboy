@@ -7,7 +7,6 @@
 <div class="section-id-{{ section.id }} map-section use-color-scheme use-color-scheme--{{ section.settings.color_scheme }}{% unless section.settings.full_width %} map-section--map-constrained{% endunless %}{% if display_map %} map-section--display-map{% endif %}{% if section.settings.show_feature_image %} map-section--has-feature-image{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
   <div class="container">
     <div class="map-section__wrapper">
-
       <div class="map-section__content map-section__text">
         {% if section.settings.heading != blank %}
           <h2>{{ section.settings.heading | escape }}</h2>
@@ -34,7 +33,7 @@
               {%- render 'image' with section.settings.feature_image, size_cols_desktop: 3 -%}
             </div>
           {% else %}
-            <div class="map-section__feature-image placeholder-image">
+            <div class="map-section__feature-image placeholder-image border">
               {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
             </div>
           {% endif %}
@@ -60,7 +59,7 @@
               map_style: section.settings.map_style
             %}
           {%- else -%}
-            <iframe class="map" src="https://www.google.com/maps/embed/v1/place?key={{ section.settings.api_key }}&q={{ section.settings.map_address }}&zoom=14" width="400" height="300" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <iframe class="map" src="https://www.google.com/maps/embed/v1/place?key={{ section.settings.api_key }}&q={{ section.settings.map_address }}&zoom=14" width="400" height="300" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen aria-label="{{ 'sections.map.label' | t: location: shop.name }}"></iframe>
           {%- endif -%}
         {%- endif -%}
       </div>
@@ -221,7 +220,8 @@
   ],
   "presets": [
     {
-      "name": "Map"
+      "name": "Map",
+      "category": "Feature",
     }
   ]
 }

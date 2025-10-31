@@ -122,10 +122,17 @@
                       {%- render 'image' with block.settings.image, size_cols_desktop: 2, custom_aspect_ratio: section.settings.crop_ratio, custom_aspect_ratio: custom_media_aspect_ratio -%}
 
                     {%- else -%}
-                      <div class="placeholder-image">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                      {%- liquid
+                        assign placeholder_svg_count = placeholder_svg_count | default: -1 | plus: 1 | modulo: 6
+                        assign placeholder_svg = placeholder_svg_count | plus: 1 | prepend: 'collection-'
+                      -%}
+                      <div class="placeholder-image">{{ placeholder_svg | placeholder_svg_tag: 'placeholder-svg' }}</div>
                     {%- endif -%}
 
-                    <div class="mobile-only fully-spaced-row scrolling-image-list__content scrolling-image-list__content--mobile{% if block.settings.show_icon %} scrolling-image-list__content--with-icon{% if block.settings.show_segments and section.settings.segment_position == 'over-text' %} scrolling-image-list__content--icon-beside-rating{% endif %}{% endif %}" data-index="{{ forloop.index }}">
+                    <div class="mobile-only fully-spaced-row scrolling-image-list__content scrolling-image-list__content--mobile
+                                {%- if block.settings.show_icon %} scrolling-image-list__content--with-icon
+                                  {%- if block.settings.show_segments and section.settings.segment_position == 'over-text' %} scrolling-image-list__content--icon-beside-rating{% endif %}
+                                {%- endif %}" data-index="{{ forloop.index }}">
                       {%- if section.settings.heading != blank -%}
                         <div class="subheading spaced-row" role="heading" aria-level="2">{{ section.settings.heading }}</div>
                       {%- endif -%}
@@ -389,13 +396,13 @@
           "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "Fit"
+          "default": "Feature"
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Describe a key feature in detail.</p>"
+          "default": "<p>Tell your customers a few important details about your products or practices.</p>"
         },
         {
           "type": "checkbox",
@@ -460,8 +467,16 @@
           "default": "star",
           "options": [
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -560,6 +575,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -588,12 +607,20 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
         },
@@ -608,6 +635,7 @@
   "presets": [
     {
       "name": "Key features",
+      "category": "Storytelling",
       "settings": {
       },
       "blocks": [

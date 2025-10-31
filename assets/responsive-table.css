@@ -19,8 +19,8 @@
     display: none;
   }
   .responsive-table tbody,
-.responsive-table tr,
-.responsive-table td {
+  .responsive-table tr,
+  .responsive-table td {
     display: block;
   }
   .responsive-table tr {

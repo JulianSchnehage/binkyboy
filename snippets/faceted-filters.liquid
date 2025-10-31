@@ -8,7 +8,7 @@
   {% render 'faceted-filters', filter_context: collection, clear_url: collection.url, current_sort: current_sort %}
 {%- endcomment -%}
 
-<a class="filter-shade" href="#" data-toggle-filters></a>
+<a class="filter-shade" href="#" data-toggle-filters aria-hidden="true" aria-label="{{ 'accessibility.close' | t }}"></a>
 <div class="filters{% if section.settings.enable_filtering == false or filter_context.filters == empty %} mobile-only{% endif %}"
     data-auto-apply-hide-unavailable="{{ section.settings.auto_apply_hide_unavailable }}"
     {%- if settings.swatch_option_name != blank %} data-swatch-option-name="{{ settings.swatch_option_name | escape }}"{% endif %}
@@ -260,10 +260,6 @@
           </div>
         </div>
       {% endif %}
-
-      <noscript>
-        <button type="submit" class="btn">{{ 'products.filtering.apply' | t }}</button>
-      </noscript>
     </form>
   </div>
 </div>

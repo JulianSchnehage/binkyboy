@@ -54,7 +54,7 @@ if (!customElements.get('search-suggestions')) {
           this.insertAdjacentElement('beforeend', results.firstElementChild);
         })
         .catch((error) => {
-          console.warn(error);
+          console.warn(error); // eslint-disable-line no-console
           if (error.code === 20) {
             return; // aborted
           }

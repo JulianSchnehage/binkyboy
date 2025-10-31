@@ -235,24 +235,28 @@
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.show_countdown }}",
           "type": "checkbox",
           "id": "hide_on_end",
           "label": "Hide the announcement when the date and time elapses",
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.show_countdown }}",
           "type": "text",
           "id": "end_date",
           "label": "End date",
           "info": "Required. Format: YYYY-MM-DD."
         },
         {
+          "visible_if": "{{ block.settings.show_countdown }}",
           "type": "text",
           "id": "end_time",
           "label": "End time (optional)",
           "info": "Format: 17:00 (24 hour clock). Uses the store's timezone."
         },
         {
+          "visible_if": "{{ block.settings.show_countdown }}",
           "type": "select",
           "id": "number_font",
           "label": "Number font",
@@ -269,6 +273,7 @@
           "default": "base"
         },
         {
+          "visible_if": "{{ block.settings.show_countdown }}",
           "type": "select",
           "id": "countdown_separator",
           "label": "Separation style",
@@ -303,17 +308,20 @@
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.use_custom_colors }}",
           "type": "color",
           "id": "bg_color",
           "label": "Background color",
           "default": "#4a4a4a"
         },
         {
+          "visible_if": "{{ block.settings.use_custom_colors }}",
           "type": "color_background",
           "id": "bg_gradient",
           "label": "Background gradient (optional)"
         },
         {
+          "visible_if": "{{ block.settings.use_custom_colors }}",
           "type": "color",
           "id": "text_color",
           "label": "Text color",

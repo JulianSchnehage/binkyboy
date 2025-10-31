@@ -18,7 +18,7 @@
         {% elsif block.type == 'question' %}
           <div class="collapsible-tabs__tab">
             <details-disclosure>
-              <details class="disclosure">
+              <details class="disclosure"{% if section.settings.open_tab %} open{% endif %}>
                 <summary class="disclosure__title">
                   {{- block.settings.title | escape -}}
                 </summary>
@@ -36,6 +36,34 @@
   </div>
 </div>
 
+{% if section.settings.enable_faq_schema %}
+  <script type="application/ld+json">
+    {%- capture faq_json -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'question' and block.settings.title != blank and block.settings.answer != blank -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.title | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | json }}
+            }
+          },
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if faq_json != blank -%}
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {{ faq_json | remove_last: ',' }}
+      ]
+    }
+    {%- endif -%}
+  </script>
+{% endif %}
 
 {% schema %}
 {
@@ -52,6 +80,19 @@
       "id": "title",
       "label": "Heading",
       "default": "Collapsible tabs"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_tab",
+      "label": "Open by default",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_faq_schema",
+      "label": "Enable FAQ structured data",
+      "info": "Adds FAQPage data to the page for SEO",
+      "default": false
     }
   ],
   "blocks": [
@@ -105,6 +146,7 @@
   "presets": [
     {
       "name": "Collapsible tabs",
+      "category": "Info",
       "settings": {
       },
       "blocks": [
