@@ -84,9 +84,11 @@
                 <span class="link-dropdown__button-icon has-motion">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
               </button>
               <div class="link-dropdown__options" id="sort-dropdown-options">
-                {%- for option in search.sort_options -%}
-                  <a href="{{ request.path | sort_by: option.value | escape }}" class="link-dropdown__link{% if current_sort == option.value %} link-dropdown__link--active{% endif %}">{{ option.name | escape }}</a>
-                {%- endfor -%}
+                <div class="link-dropdown__options-inner">
+                  {%- for option in search.sort_options -%}
+                    <a href="{{ request.path | sort_by: option.value | escape }}" class="link-dropdown__link{% if current_sort == option.value %} link-dropdown__link--active{% endif %}">{{ option.name | escape }}</a>
+                  {%- endfor -%}
+                </div>
               </div>
             </link-dropdown>
           </span>
@@ -250,7 +252,7 @@
       "type": "checkbox",
       "id": "enable_filtering",
       "label": "Enable filtering",
-      "info": "[Customize filters](/admin/menus)",
+      "info": "Customize filters with the [Search & Discovery app](https://help.shopify.com/manual/online-store/search-and-discovery/filters)",
       "default": true
     },
     {

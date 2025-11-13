@@ -43,7 +43,6 @@
 
   {%- if settings.swatch_source == 'theme' and settings.swatch_value_list != blank -%}
     <link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}"></noscript>
   {%- endif -%}
 
   {%- unless base_font.system? -%}
@@ -60,7 +59,7 @@
     window.theme = {
       info: {
         name: 'Symmetry',
-        version: '7.4.0'
+        version: '8.1.0'
       },
       device: {
         hasTouch: window.matchMedia('(any-pointer: coarse)').matches,
@@ -90,7 +89,9 @@
           singleRate: {{ 'cart.shipping_calculator.single_rate' | t | json }},
           multipleRates: {{ 'cart.shipping_calculator.multiple_rates' | t | json }},
           noRates: {{ 'cart.shipping_calculator.no_rates' | t | json }}
-        }
+        },
+        regularPrice: {{ 'products.product.price.regular_price' | t | json }},
+        salePrice: {{ 'products.product.price.sale_price' | t | json }}
       },
       settings: {
         moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }},

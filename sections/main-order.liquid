@@ -67,7 +67,7 @@
           <td class="product">
             <a class="text-current font-semibold" href="{{ line_item.url }}">{{ line_item.title }}</a>
             <div class="small-text">
-              {% if line_item.product.variants.size > 1 %}
+              {% if line_item.product.variants_count > 1 %}
               <div class="variant">{{ line_item.variant.title }}</div>
               {% endif %}
 

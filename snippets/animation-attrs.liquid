@@ -1,6 +1,8 @@
 {%- liquid
   if settings.animations_enabled_desktop
-    if section.location == 'header'
+    if request.visual_preview_mode
+      # Do not include
+    elsif section.location == 'header'
       if settings.animations_disabled_first_section == false
         echo ' ' | append: attrs
       endif

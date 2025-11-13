@@ -36,7 +36,7 @@ if (!customElements.get('added-notification')) {
         cartLinks.forEach((el) => {
           el.addEventListener('click', (evt) => {
             evt.preventDefault();
-            document.querySelector('.js-cart-drawer').open();
+            document.querySelector('.js-cart-drawer').open(evt.currentTarget);
             this.dismiss();
           });
         });

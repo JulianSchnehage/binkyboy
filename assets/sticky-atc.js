@@ -30,20 +30,22 @@ if (!customElements.get('sticky-atc')) {
         super();
 
         this.section = this.closest('.section-main-product');
-        this.mainProductForm = this.section.querySelector('.js-product');
+        this.mainProductForm = this.section.querySelector('product-form');
+        this.mainProductSubmitForm = this.mainProductForm.getSubmitForm();
+        this.submitForm = this.getSubmitForm();
         this.buyButtons = this.section.querySelector('buy-buttons');
         this.imageContainer = this.querySelector('.sticky-atc__image');
-        this.variantContainer = this.querySelector('.sticky-atc__details__variant');
         this.variantTitle = this.querySelector('.sticky-atc__details__variant__title');
         this.variantTitle?.toggleAttribute('hidden', !this.section.querySelector('variant-picker'));
+        this.button = this.querySelector('.add-to-cart');
 
-        this.throttledOnScroll = throttle(StickyAtc.handleScroll.bind(this));
+        this.throttledOnScroll = throttle(this.handleScroll.bind(this));
         window.addEventListener('scroll', this.throttledOnScroll);
 
-        this.section.addEventListener('on:variant:change', this.onVariantChange.bind(this));
         this.section.addEventListener('on:media-gallery:change', this.updateImage.bind(this));
 
         this.updateImage();
+        this.updateAddToCartButton();
       }
 
       disconnectedCallback() {
@@ -57,7 +59,7 @@ if (!customElements.get('sticky-atc')) {
       async handleSubmit(evt) {
         evt.preventDefault();
 
-        const variantId = this.section.querySelector('product-form buy-buttons input[name="id"]').value;
+        const variantId = this.section.querySelector('.js-product-form input[name="id"]').value;
         if (!variantId) {
           const target = this.section.querySelector('#product-info');
           if (target && target.offsetParent) {
@@ -69,12 +71,12 @@ if (!customElements.get('sticky-atc')) {
 
         // Validate main form
         const customFormValid = this.mainProductForm.validate();
-        if (!customFormValid || !this.mainProductForm.form.reportValidity()) {
+        if (!customFormValid || !this.mainProductSubmitForm.reportValidity()) {
           evt.preventDefault();
           if (!customFormValid) {
             theme.scrollToRevealElement(this.mainProductForm);
           } else {
-            const input = Array.from(this.mainProductForm.form.elements).find(
+            const input = Array.from(this.mainProductSubmitForm.elements).find(
               (el) => !el.checkValidity()
             );
             setTimeout(() => theme.scrollToRevealElement(input), 100);
@@ -82,17 +84,19 @@ if (!customElements.get('sticky-atc')) {
           return;
         }
 
+        // Clear copied data
+        this.submitForm.querySelectorAll('[data-copied]').forEach((el) => el.remove());
+
         // Copy data
-        this.form.querySelectorAll('[data-copied]').forEach((el) => el.remove());
-        const formData = new FormData(this.mainProductForm.form);
+        const formData = new FormData(this.mainProductSubmitForm);
         for (const p of formData) {
-          if (!this.form.querySelector(`[name="${p[0]}"]`)) {
+          if (!this.submitForm.querySelector(`[name="${p[0]}"]`)) {
             const input = document.createElement('input');
             input.name = p[0];
             input.value = p[1];
             input.hidden = true;
             input.setAttribute('data-copied', '');
-            this.form.append(input);
+            this.submitForm.append(input);
           }
         }
         super.handleSubmit(evt);
@@ -101,7 +105,7 @@ if (!customElements.get('sticky-atc')) {
       /**
        * Determine visibility after scroll.
        */
-      static handleScroll() {
+      handleScroll() {
         const topOffset = document.querySelector('.pageheader--sticky') ? document.querySelector('.section-header').offsetHeight : 0;
         this.classList.toggle(
           'sticky-atc--out',
@@ -112,28 +116,6 @@ if (!customElements.get('sticky-atc')) {
           'scrolled-to-bottom',
           window.scrollY + window.innerHeight + 100 > document.body.scrollHeight
         );
-      }
-
-      /**
-       * Handle a change in variant on the page.
-       * @param {Event} evt - Variant change event dispatched by variant-picker.
-       */
-      onVariantChange(evt) {
-        const idInput = this.form?.querySelector('[name="id"]');
-
-        if (evt.detail.variant) {
-          this.variantTitle.textContent = evt.detail.variant.title;
-          this.variantContainer.hidden = false;
-          if (idInput) idInput.value = evt.detail.variant.id;
-        } else {
-          this.variantContainer.hidden = true;
-          this.variantTitle.textContent = '';
-          if (idInput) idInput.value = '';
-        }
-
-        this.updateImage();
-        this.updateAddToCartButton(evt.detail.variant);
-        this.setErrorMsgState();
       }
 
       /**
@@ -150,19 +132,14 @@ if (!customElements.get('sticky-atc')) {
       }
 
       /**
-       * Updates the "Add to Cart" button label and status.
-       * @param {object} variant - Current variant object.
+       * Updates the add to cart button text.
        */
-      updateAddToCartButton(variant) {
-        if (!this.submitBtn) return;
-
-        const variantAvailable = variant && variant.available;
-        const unavailableStr = variant
-          ? theme.strings.noStock : this.submitBtn.dataset.unavailableText;
-
-        this.submitBtn.textContent = variantAvailable
-          ? this.submitBtn.dataset.addToCartText
-          : unavailableStr;
+      updateAddToCartButton() {
+        // If there is no variant selected, show unavailable-text
+        const variantId = this.section.querySelector('.js-product-form input[name="id"]').value;
+        if (!variantId) {
+          this.button.innerHTML = this.button.dataset.unavailableText;
+        }
       }
     }
 

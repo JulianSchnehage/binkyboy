@@ -251,6 +251,7 @@
       "default": "fixed"
     },
     {
+      "visible_if": "{{ section.settings.height == 'fixed' }}",
       "type": "range",
       "id": "height_desktop",
       "min": 200,
@@ -261,6 +262,7 @@
       "default": 600
     },
     {
+      "visible_if": "{{ section.settings.height == 'fixed' }}",
       "type": "range",
       "id": "height_mobile",
       "min": 100,
@@ -365,6 +367,7 @@
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.autoplay }}",
       "type": "range",
       "id": "autoplay_speed",
       "min": 1,
@@ -546,6 +549,7 @@
   "presets": [
     {
       "name": "Slideshow",
+      "category": "Banners",
       "settings": {
       },
       "blocks": [

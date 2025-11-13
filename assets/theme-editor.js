@@ -39,6 +39,9 @@ document.addEventListener('shopify:section:load', (evt) => {
       new CustomEvent('theme:faq-header-update', { bubbles: true, cancelable: false })
     );
   }
+
+  // Clear caches that may depend on settings
+  theme.fetchCache.clear();
 });
 
 document.addEventListener('shopify:section:unload', (evt) => {

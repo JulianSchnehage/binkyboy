@@ -8,6 +8,7 @@
   margin-left: 6px;
   height: 3px;
   background: rgb(var(--heading-color)/0.1);
+  border-radius: var(--btn-border-radius);
 }
 
 .segment-bar__segment--filled {

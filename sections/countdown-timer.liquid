@@ -72,8 +72,8 @@
 
               {% when 'icon' %}
                 <div class="lightly-spaced-row" {{ block.shopify_attributes }}>
-                  <span class="large-light-icon">
-                    {% render 'icon', icon: block.settings.icon, size: 'medium' %}
+                  <span{% if block.settings.icon_color.alpha > 0 %} style="color: {{ block.settings.icon_color }}"{% endif %}>
+                    {% render 'icon', icon: block.settings.icon, size: 'large' %}
                   </span>
                 </div>
 
@@ -122,22 +122,26 @@
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_image }}",
       "type": "image_picker",
       "id": "image",
       "label": "Image"
     },
     {
+      "visible_if": "{{ section.settings.show_image }}",
       "type": "url",
       "id": "image_link",
       "label": "Image link"
     },
     {
+      "visible_if": "{{ section.settings.show_image }}",
       "type": "checkbox",
       "id": "show_image_space",
       "label": "Show space around image",
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.show_image }}",
       "type": "select",
       "id": "image_position",
       "label": "Image alignment",
@@ -282,8 +286,16 @@
           "default": "star",
           "options": [
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -382,6 +394,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -410,14 +426,28 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "rgba(0,0,0,0)"
         }
       ]
     },
@@ -537,6 +567,7 @@
   "presets": [
     {
       "name": "Countdown timer",
+      "category": "Feature",
       "settings": {
       },
       "blocks": [

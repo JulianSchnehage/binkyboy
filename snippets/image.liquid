@@ -145,7 +145,6 @@
   {%- if custom_aspect_ratio != blank -%}<div class="img-ar img-ar--{% if custom_crop == 'contain' %}contain{% else %}cover{% endif %}" style="--aspect-ratio: {{ custom_aspect_ratio }}">{% endif %}
   {%- if manual_load -%}
     {{- image_html | replace: ' srcset=', ' data-manual-srcset=' | replace: ' src=', ' data-manual-src=' -}}
-    <noscript>{{ image_html }}</noscript>
   {%- else -%}
     {{- image_html -}}
   {%- endif -%}

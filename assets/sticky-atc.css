@@ -37,6 +37,10 @@
   width: 48px;
   margin-inline-end: 1.2em;
   display: none;
+  background: var(--product-block-blend-bg, none);
+}
+.sticky-atc__image .theme-img {
+  mix-blend-mode: var(--product-block-blend-mode, none);
 }
 
 .sticky-atc__details {
@@ -90,7 +94,7 @@
     width: var(--sticky-atc-width);
     padding: 12px;
     bottom: calc(var(--gutter-content) + env(safe-area-inset-bottom, 0px));
-    border-radius: var(--btn-border-radius);
+    border-radius: var(--btn-inspired-border-radius);
     box-shadow: 0 6px 12px 1px rgba(0, 0, 0, 0.12);
   }
   .sticky-atc--hide-on-mobile {

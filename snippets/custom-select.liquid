@@ -91,17 +91,30 @@
         </li>
       {%- endif -%}
       {%- for value in option_values -%}
-        <li class="custom-select__option flex items-center js-option" id="{{ id }}-opt-{{ forloop.index0 }}" role="option"
+        <li class="custom-select__option flex items-center js-option{% if value.available == false %} is-unavailable{% endif %}"
+            id="{{ id }}-opt-{{ forloop.index0 }}"
+            role="option"
             data-value="{{ value | escape }}"
-            {%- if swatches %} data-swatch="{{ value | escape | downcase }}"
-              {%- if native_swatches and value.swatch.image %}
-                style="--native-swatch-image: url({{ value.swatch.image | image_url: width: swatch_size, height: swatch_size, crop: 'center' }})"
-              {%- elsif native_swatches and value.swatch.color %}
-                style="--native-swatch-color: rgb({{ value.swatch.color.rgb }})"
-              {%- endif %}
-            {% endif %}
+            {%- if value.id %}
+              data-value-id="{{ value.id }}"
+              {%- if value.variant != blank %} data-variant-id="{{ value.variant.id }}"{% endif %}
+              {%- if value.product_url != blank %} data-product-url="{{ value.product_url }}"{% endif %}
+              {%- if swatches %} data-swatch="{{ value | escape | downcase }}"
+                {%- if native_swatches and value.swatch.image %}
+                  style="--native-swatch-image: url({{ value.swatch.image | image_url: width: swatch_size, height: swatch_size, crop: 'center' }})"
+                {%- elsif native_swatches and value.swatch.color %}
+                  style="--native-swatch-color: rgb({{ value.swatch.color.rgb }})"
+                {%- endif %}
+              {% endif %}
+            {%- endif -%}
             {%- if value == selected_value %} aria-selected="true"{% endif %}>
           <span class="pointer-events-none">{{- option_names[forloop.index0] -}}</span>
+          {% if value.id and value.available == false and value.variant -%}
+            <em class="pointer-events-none">{{ 'products.variant.no_stock' | t }}</em>
+          {%- endif -%}
+          {% if value.id and value.available == false and value.variant == blank -%}
+            <em class="pointer-events-none">{{ 'products.variant.non_existent' | t }}</em>
+          {%- endif -%}
         </li>
       {%- endfor -%}
     </ul>

@@ -1,0 +1,266 @@
+<!-- VIA MOBILE POPUP SCRIPT -->
+<script>
+    (function (d, w, c) {
+        w[`ViaPopupToken`] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0bmFtZSI6ImJpbmt5YnJvLmNvbSIsImxvY2F0aW9uSWQiOiI1ZmJjODA0ZGIxMDVjZTAwMDdmNzhlOGQiLCJzdG9yZUlkIjoiMjI4IiwiaWF0IjoxNjQ5NzgzNTgzfQ.SM9wFahLUt_RWwGNbj9ChGRspzceoTdCZIpykh6uhMTQkmG32wjyEgPy1_dBIstjhIEA2uzYoGSEgozngPhcmMXISGLfE89IkRpAj4FLwuZC4YI8ZcUzTe4-VZhT1ubehuQ5zfEB4pc9_OY_yWpvR1FcUzKFrxe6rDSOtps1TmY';
+        w.ViaStoreType = 'shopify';
+        var s = d.createElement('script');
+        w.ViaPopupHideHyperLink = true;
+        w[c] = w[c] || function () {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://pg-popup.viacustomers.com/via_popup.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'ViaPopup');
+</script>
+<!-- END VIA MOBILE POPUP SCRIPT -->
+
+<!-- customize mobile popup -->
+<script>
+  let mobilePopupInterval = setInterval(mobilePopupUpdates, 500)
+    
+  function mobilePopupUpdates(){
+    let mobileBubbleContainer = document.getElementById('via-popup-minimized-button__container');
+      
+    if (!mobileBubbleContainer) return;
+    
+    let mobileBubbleBody = document.getElementById('via-popup-minimized-button__body');
+    mobileBubbleBody.style = 'background-color: black !important; color: white !important;';
+    
+    let mobileBubbleClose = document.getElementById('via-popup-minimized-button__close');
+    if (mobileBubbleClose) {
+      mobileBubbleClose.style = 'background-color: black !important; color: white !important;';
+    }
+        
+    let mobilePopup = document.getElementById('via-popup');
+    mobilePopup.style = 'height: 90% !important; padding: 0 !important; justify-content: center; max-height: unset !important;';
+
+    if (mobilePopup) {
+      const callback = function(mutationsList, observer) {
+          for(const mutation of mutationsList) {
+            if (mutation.target.className === 'via-popup__visible') {
+			  mobileOverlay.style.height = '100%';
+            } else {
+              mobileOverlay.style.height = '0px';
+            }
+          }
+      };
+
+      // Create an observer instance linked to the callback function
+      const observer = new MutationObserver(callback);
+
+      // Start observing the target node for configured mutations
+      observer.observe(mobilePopup, { attributes: true});
+      
+      let mobileOverlay = document.createElement('div');
+      mobileOverlay.id = 'via-mobile-popup-overlay';
+      mobileOverlay.style = 'position: fixed; left: 0px; bottom: 0px; width: 100%; height: 0px; z-index: 2147483646; background-color: black; opacity: 50%;';
+
+      mobilePopup.insertAdjacentElement('beforebegin', mobileOverlay);
+
+      let mobilePopupContainer = document.getElementById('via-popup__container');
+      
+      let mobilePopupClose = document.getElementById('via-popup__close_wrapper');
+      mobilePopupClose.style = 'color: white !important; z-index: 9999999 !important; height: 0 !important; margin-top: 10px !important;';
+    
+      let headerActions = mobilePopup.children[0].children[0].children[0];      
+      headerActions.style.flexDirection = 'row-reverse';
+
+      let mobileLogo = document.getElementById('via-popup__logo');
+      mobileLogo.style = 'width: auto !important; max-width: 300px !important; max-height: 50px !important; margin-top: 10px !important; margin-bottom: 30px !important;';
+      
+      let mobileEmailTitle = document.getElementById('via-popup__title_email');
+      mobileEmailTitle.style = 'color: white !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 100px !important; margin-bottom: 0px !important;';
+      mobileEmailTitle.textContent = 'UNLOCK';
+
+      let mobileEmailSubtitle = document.getElementById('via-popup__subtitle_email');
+      mobileEmailSubtitle.style = 'color: white !important; font-size: 64px !important; font-weight: 900 !important; margin-top: 10px !important; margin-bottom: 10px !important;';
+      mobileEmailSubtitle.textContent = '15% OFF';
+      
+      let mobileEmailThirdTitle = document.createElement('p');
+      mobileEmailThirdTitle.id = 'via-mobile-popup-email-third-title';
+      mobileEmailThirdTitle.style = 'color: white !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 0px !important; margin-bottom: 20px !important;';
+      mobileEmailThirdTitle.textContent = 'YOUR ORDER!';
+
+      mobileEmailSubtitle.insertAdjacentElement('afterend', mobileEmailThirdTitle);
+      
+      let mobileEmailContainer = document.getElementById('via-popup__form_container_email');
+      mobileEmailContainer.style = 'margin-top: 30px !important; margin-bottom: 20px !important;';
+	    
+      let mobileEmailInput = document.getElementById('via-popup-popup__input_email');
+      mobileEmailInput.style = 'border-radius: 0 !important; height: 40px !important;';
+      
+      let mobileEmailSubmitLink = document.getElementById('via-popup__link_email');
+      mobileEmailSubmitLink.style = 'color: white !important; background-color: black !important; font-size: 20px !important; font-weight: 900 !important; width: 80% !important; flex-direction: column !important; border-radius: 0 !important;';
+      mobileEmailSubmitLink.textContent = 'CONTINUE';
+
+      // hide the fine print on first page
+      let emailLegalText = document.getElementById('via-popup__message_email');
+      emailLegalText.style = 'display: none !important;';
+      
+      let mobilePhoneTitle = document.getElementById('via-popup__title');
+      mobilePhoneTitle.style = 'color: white !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 100px !important; margin-bottom: 0px !important;';
+      mobilePhoneTitle.textContent = 'UNLOCK';
+      
+      let mobilePhoneSubtitle = document.getElementById('via-popup__subtitle');
+      mobilePhoneSubtitle.style = 'color: white !important; font-size: 64px !important; font-weight: 900 !important; margin-top: 10px !important; margin-bottom: 10px !important;';
+      mobilePhoneSubtitle.textContent = '15% OFF';
+      
+      let mobilePhoneThirdTitle = document.createElement('p');
+      mobilePhoneThirdTitle.id = 'via-mobile-popup-phone-third-title';
+      mobilePhoneThirdTitle.style = 'color: white !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 0px !important; margin-bottom: 20px !important;';
+      mobilePhoneThirdTitle.textContent = 'YOUR ORDER!';
+
+      mobilePhoneSubtitle.insertAdjacentElement('afterend', mobilePhoneThirdTitle);
+
+      let mobilePhoneSubmitLink = document.getElementById('via-popup__link');
+      mobilePhoneSubmitLink.style = 'color: white !important; background-color: black !important; font-size: 20px !important; font-weight: 900 !important; width: 80% !important; flex-direction: column !important; border-radius: 0 !important;';
+      mobilePhoneSubmitLink.textContent = 'CONTINUE';
+
+      let mobilePhoneLegalText = document.getElementById('via-popup__message');
+      mobilePhoneLegalText.style = 'color: white !important; text-align: justify !important; margin: 10px 10px 0 10px !important;';
+      mobilePhoneLegalText.innerText = 'By clicking the button above and then signing up via text, you agree to receive recurring automated marketing communications (inc. shopping cart reminders) at the phone number which you use to sign up via text. Message frequency varies. Consent is not a condition of purchase. Reply STOP to unsubscribe. Reply HELP for help. MSG & Data Rates may apply. By signing up via text you agree to the Privacy Policy and Terms and Conditions.';
+            
+      mobilePhoneSubmitLink.parentNode.insertAdjacentElement('afterend', mobilePhoneLegalText);
+
+      clearInterval(mobilePopupInterval)
+    }
+  }
+</script>
+
+<!-- VIA DESKTOP SCRIPT -->
+<script>
+    (function (d, w, c) {
+        w[`ViaSubscribersPopupToken`] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0bmFtZSI6ImJpbmt5YnJvLmNvbSIsImxvY2F0aW9uSWQiOiI1ZmJjODA0ZGIxMDVjZTAwMDdmNzhlOGQiLCJzdG9yZUlkIjoiMjI4IiwiaWF0IjoxNjQ5NzgzNTc0fQ.JnlCyYUtBgTxIPMUt4lc5mDFFq06zD_lTBrSrE-KfPl8_3kFVh9WepU-nXmoPHEahbL1bG_tdaNMhVSUrSCpSxmCDaOrzUyYp-88va7tUhOhReypo6jZev97blv0OwVB_sfzulfso8CZgb6RqlODgJ2XnSScsopoerJNMuby8BA';
+        w.ViaStoreType = 'shopify';
+        var s = d.createElement('script');
+        w[c] = w[c] || function () {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://pg-desktop-popup.viacustomers.com/via_subscribers_popup.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'ViaSubscribersPopup');
+</script>
+<!-- END VIA DESKTOP SCRIPT -->
+
+<!-- customize desktop popup -->
+<script>
+  let interval = setInterval(desktopPopupUpdates, 500)
+  
+  function desktopPopupUpdates(){
+    let desktopPopup = document.getElementById('via-subscribers-popup');
+    
+    if (!desktopPopup) return;
+    
+    desktopPopup.style = 'width: 800px !important; max-width: 800px !important; min-width: 800px !important; height: 600px !important; max-height: 600px !important; min-height: 600px !important; flex-direction: row !important;';
+
+    if (desktopPopup) {
+      const desktopCallback = function(mutationsList, observer) {
+          for(const mutation of mutationsList) {
+            if (mutation.target.className.includes('via-subscribers-popup__visible')) {
+			  desktopOverlay.style.height = '100vh';
+            } else {
+              desktopOverlay.style.height = '0px';
+            }
+          }
+      };
+
+      // Create an observer instance linked to the callback function
+      const desktopObserver = new MutationObserver(desktopCallback);
+
+      // Start observing the target node for configured mutations
+      desktopObserver.observe(desktopPopup, { attributes: true}); 
+      
+      let desktopOverlay = document.createElement('div');
+      desktopOverlay.id = 'via-desktop-popup-overlay';
+      desktopOverlay.style = "position: fixed; left: 0px; bottom: 0px; width: 100vw; height: 0px; z-index: 2147483646; background-color: black; opacity: 50%;";
+
+      desktopPopup.insertAdjacentElement('beforebegin', desktopOverlay);
+      
+      let desktopPopupImage = document.createElement('img');
+      desktopPopupImage.src = 'https://cdn.shopify.com/s/files/1/1412/5622/files/Via_Custom_Pops_30.jpg?v=1666042477';
+      desktopPopupImage.id = 'via-desktop-popup-img';
+      desktopPopupImage.style = 'max-height: 600px; width: 50% !important; border-radius: 4px 0 0 4px !important; box-shadow: 0 10px 20px rgb(0 0 0 / 20%) !important;';
+
+      desktopPopup.insertAdjacentElement('afterbegin', desktopPopupImage);
+      
+      let desktopPopupContainer = document.getElementById('via-subscribers-popup__container');
+      desktopPopupContainer.style = 'background-color: white !important; border-radius: 0 4px 4px 0 !important;';
+      
+      let desktopPopupClose = document.getElementById('via-subscribers-popup__close_btn');
+      desktopPopupClose.style = 'color: black !important; border-color: black !important; background: none !important;';
+      
+      let logo = document.getElementById('via-subscribers-popup__logo');
+      logo.style = 'max-width: 300px !important; max-height: 80px !important; margin-top: 5px !important;';
+
+      let emailTitle = document.getElementById('via-subscribers-popup__title_email');
+      emailTitle.style = 'color: black !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 50px !important; margin-bottom: 0 !important;';
+      emailTitle.textContent = 'UNLOCK';
+      
+      let emailSubtitle = document.getElementById('via-subscribers-popup__subtitle_email');
+      emailSubtitle.style = 'color: black !important; font-size: 64px !important; font-weight: 900 !important; margin-top: 5px !important; margin-bottom: 10px !important;';
+      emailSubtitle.textContent = '15% OFF';
+      
+      let emailThirdTitle = document.createElement('p');
+      emailThirdTitle.id = 'via-popup-email-third-title';
+      emailThirdTitle.style = 'color: black !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 0px !important; margin-bottom: 40px !important;';
+      emailThirdTitle.textContent = 'YOUR ORDER!';
+
+      emailSubtitle.insertAdjacentElement('afterend', emailThirdTitle);
+      
+      let emailInput = document.getElementById('via-subscribers-popup__input_email');
+      emailInput.style = 'border-radius: 0 !important;';
+
+      let emailSubmitBtn = document.getElementById('via-subscribers-popup__submit_email');
+      emailSubmitBtn.style = 'margin-top: -10px !important;';
+      
+      let emailSubmitLink = document.getElementById('via-subscribers-popup__link_email');
+      emailSubmitLink.style = 'color: white !important; background-color: black !important; font-size: 20px !important; font-weight: 900 !important; height: 25px !important; border-radius: 0 !important;';
+      emailSubmitLink.textContent = 'CONTINUE';
+
+      // hide the legal text on first page
+      let legalText = document.getElementById('via-subscribers-popup__legal');
+      let phoneLegalText = legalText;
+      legalText.style = 'display: none !important;';
+
+      let phoneTitle = document.getElementById('via-subscribers-popup__title');
+      phoneTitle.style = 'color: black !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 50px !important; margin-bottom: 0px !important;';
+      phoneTitle.textContent = 'UNLOCK';
+      
+      let phoneSubtitle = document.getElementById('via-subscribers-popup__subtitle');
+      phoneSubtitle.style = 'color: black !important; font-size: 64px !important; font-weight: 900 !important; margin-top: 5px !important; margin-bottom: 10px !important;';
+      phoneSubtitle.textContent = '15% OFF';      
+      
+      let phoneThirdTitle = document.createElement('p');
+      phoneThirdTitle.id = 'via-popup-phone-third-title';
+      phoneThirdTitle.style = 'color: black !important; font-size: 24px !important; font-weight: 900 !important; margin-top: 0px !important; margin-bottom: 40px !important;';
+      phoneThirdTitle.textContent = 'YOUR ORDER!';
+      
+      phoneSubtitle.insertAdjacentElement('afterend', phoneThirdTitle);
+      
+      let countrySelect = document.getElementById('via-subscribers-popup__form_select');
+      countrySelect.style = 'border-radius: 0 !important;';     
+      
+      let phoneInput = document.getElementById('via-subscribers-popup__input');
+      phoneInput.style = 'border-radius: 0 !important;';
+              
+      let phoneSubmitBtn = document.getElementById('via-subscribers-popup__submit');
+      phoneSubmitBtn.style = 'margin-top: -10px !important;';
+
+      let phoneSubmitLink = document.getElementById('via-subscribers-popup__link');
+      phoneSubmitLink.style = 'color: white !important; background-color: black !important; font-size: 20px !important; font-weight: 900 !important; height: 25px !important; border-radius: 0 !important;';
+      phoneSubmitLink.textContent = 'CONTINUE';
+
+      phoneSubmitBtn.parentNode.insertAdjacentElement('afterend', phoneLegalText);
+      phoneLegalText.style = 'font-size: 8px !important; color: black !important; padding: 0 !important; margin: 0 !important; text-align: justify !important;';
+      phoneLegalText.innerText = 'By clicking the button above and then signing up via text, you agree to receive recurring automated marketing communications (inc. shopping cart reminders) at the phone number which you use to sign up via text. Message frequency varies. Consent is not a condition of purchase. Reply STOP to unsubscribe. Reply HELP for help. MSG & Data Rates may apply. By signing up via text you agree to the Privacy Policy and Terms and Conditions.';
+      
+      let phoneSubmitSuccessText = document.getElementById('via-subscribers-popup__success-text');
+      phoneSubmitSuccessText.style = 'margin-top: 70px !important;';
+      
+      clearInterval(interval)
+    }
+  }
+  
+</script>

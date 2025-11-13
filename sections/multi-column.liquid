@@ -280,11 +280,13 @@
           "default": true
         },
         {
+          "visible_if": "{{ block.settings.enable_media }}",
           "type": "image_picker",
           "id": "image",
           "label": "Image"
         },
         {
+          "visible_if": "{{ block.settings.enable_media }}",
           "id": "video_shopify",
           "type": "video",
           "label": "Video upload"
@@ -317,6 +319,7 @@
   "presets": [
     {
       "name": "Multi-column",
+      "category": "Storytelling",
       "settings": {
       },
       "blocks": [
