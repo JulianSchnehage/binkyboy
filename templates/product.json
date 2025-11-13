@@ -119,14 +119,14 @@
             "slide_size": "250",
             "border": 0,
             "border_color": "linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)",
-            "slide_rounding": "20",
-            "slide_spacing": 16,
-            "padding_top": 40,
+            "slide_rounding": "6",
+            "slide_spacing": 5,
+            "padding_top": 20,
             "pagination": "overlay",
             "alignment": "center",
             "product_cards": "none",
             "show_captions": false,
-            "autoscroll_duration": 0,
+            "autoscroll_duration": 3,
             "click_action": "fullscreen",
             "float_location": "bottom_right",
             "float_size": "medium",
@@ -139,7 +139,7 @@
       ],
       "settings": {
         "full_width": false,
-        "show_space": true
+        "show_space": false
       }
     },
     "1740386906f19cc9e9": {
@@ -170,9 +170,9 @@
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
             "review_data": "sample_data",
+            "max_width": 1200,
             "show_shop_reviews": false,
-            "empty_state": "empty_widget",
-            "max_width": 1200
+            "empty_state": "empty_widget"
           }
         }
       },

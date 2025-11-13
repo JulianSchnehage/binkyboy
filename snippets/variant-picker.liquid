@@ -72,15 +72,21 @@
 
         {%- if show_size_chart -%}
           {%- capture size_chart_link -%}
-            <modal-opener class="no-js-hidden" data-modal="size-chart-{{ product.id }}-{{ section.id }}">
-              <button type="button" class="link block text-sm size-chart-link" aria-haspopup="dialog">
-                <span class="size-chart-link__icon">{%- render 'icon', icon: 'ruler', size: 'small' -%}</span>
-                <span class="size-chart-link__text underline">{{- block.settings.size_chart_label -}}</span>
-              </button>
-            </modal-opener>
-            <noscript>
-              <a href="{{ block.settings.size_chart_page.url }}" class="link">{{ block.settings.size_chart_label }}</a>
-            </noscript>
+
+            {%- if product.metafields.custom.size_guide != blank -%}
+              {%- render 'size-guide', product: product -%}
+            {%- else -%}
+              <modal-opener class="no-js-hidden" data-modal="size-chart-{{ product.id }}-{{ section.id }}">
+                <button type="button" class="link block text-sm size-chart-link" aria-haspopup="dialog">
+                  <span class="size-chart-link__icon">{%- render 'icon', icon: 'ruler', size: 'small' -%}</span>
+                  <span class="size-chart-link__text underline">{{- block.settings.size_chart_label -}}</span>
+                </button>
+              </modal-opener>
+              <noscript>
+                <a href="{{ block.settings.size_chart_page.url }}" class="link">{{ block.settings.size_chart_label }}</a>
+              </noscript>
+            {%- endif -%}
+
           {%- endcapture -%}
         {%- endif -%}
 
