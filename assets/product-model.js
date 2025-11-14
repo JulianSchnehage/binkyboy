@@ -7,6 +7,13 @@ if (!customElements.get('product-model')) {
       super();
     }
 
+    handleMouseMove(evt) {
+      if (!this.modelViewer.classList.contains('shopify-model-viewer-ui__disabled')) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+    }
+
     loadContent() {
       super.loadContent();
 
@@ -21,7 +28,10 @@ if (!customElements.get('product-model')) {
 
     setupModelViewerUI(errors) {
       if (errors) return;
-      this.modelViewerUI = new Shopify.ModelViewerUI(this.querySelector('model-viewer'));
+
+      this.modelViewer = this.querySelector('model-viewer');
+      this.modelViewerUI = new Shopify.ModelViewerUI(this.modelViewer);
+      this.addEventListener('mousemove', this.handleMouseMove.bind(this));
     }
   }
 

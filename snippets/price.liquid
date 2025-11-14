@@ -29,31 +29,47 @@
 <div class="price{%- if compare_at_price > price %} price--on-sale{% endif -%}
                  {%- if available == false %} price--sold-out{% endif -%}">
   <div class="price__default">
-    {%- if product.price_varies -%}
-      {%- if for_variant_picker == false -%}
-        <span class="price__from data-wpd-hide ">{{ 'products.product.from' | t }}</span>
-      {%- elsif for_variant_picker and current_variant == false -%}
-        <span class="price__from data-wpd-hide ">{{ 'products.product.from' | t }}</span>
-      {%- endif -%}
-    {%- endif %}
-    <span class="price__current"
+    <span class="price__current" 
       data-wpd-product-handle="{{ product.handle }}"         
       data-wpd-variant-id="{{ product.selected_or_first_available_variant.id }}"         
       data-wpd-variant-price="{{ product.selected_or_first_available_variant.price }}"        
       data-wpd-variant-compare-at-price="{{ product.selected_or_first_available_variant.compare_at_price }}"
       data-wpd-product-collection-ids="{% assign wpdProductCollectionIds = product.collections | map:'id' %}{{ wpdProductCollectionIds | join:',' }}"        
       data-wpd-product-id="{{ product.id }}">
-      {%- if show_currency_code -%}
-        {{ price | money_with_currency }}
-      {%- else -%}
-        {{ price | money }}
-      {%- endif -%}
+      <span class="visually-hidden js-label">
+        {%- if compare_at_price > price -%}
+          {{- 'products.product.price.sale_price' | t -}}
+        {%- else -%}
+          {{- 'products.product.price.regular_price' | t -}}
+        {%- endif -%}
+      </span>
+      {%- if product.price_varies -%}
+        {%- if for_variant_picker == false -%}
+          <span class="price__from data-wpd-hide">{{ 'products.product.from' | t }}</span>
+        {%- elsif for_variant_picker and current_variant == false -%}
+          <span class="price__from data-wpd-hide">{{ 'products.product.from' | t }}</span>
+        {%- endif -%}
+      {%- endif %}
+      <span class="js-value">
+        {%- if show_currency_code -%}
+          {{ price | money_with_currency }}
+        {%- else -%}
+          {{ price | money }}
+        {%- endif -%}
+      </span>
     </span>
     {% if for_variant_picker or compare_at_price > price -%}
       <span class="price__was data-wpd-hide">
-        {%- if compare_at_price > price -%}
-          {{- compare_at_price | money -}}
-        {%- endif -%}
+        <span class="visually-hidden js-label">
+          {%- if compare_at_price > price -%}
+            {{- 'products.product.price.regular_price' | t -}}
+          {%- endif -%}
+        </span>
+        <span class="js-value">
+          {%- if compare_at_price > price -%}
+            {{- compare_at_price | money -}}
+          {%- endif -%}
+        </span>
       </span>
     {%- endif -%}
   </div>

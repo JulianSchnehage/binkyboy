@@ -13,6 +13,7 @@
 
       assign bg_color = section.settings.bg_color
       assign bg = section.settings.bg_grad | default: bg_color
+      assign bg_alpha = bg | color_extract: 'alpha'
       assign heading_color = section.settings.heading_color
       assign text_color = section.settings.text_color
       assign popup_image = false
@@ -36,7 +37,7 @@
         color: {{ text_color }};
       }
 
-      {%- if section.settings.bg_image != blank and bg != 'rgba(0,0,0,0)' -%}
+      {%- if section.settings.bg_image != blank and bg_alpha > 0 -%}
         #{{ section.id }} .popup-section__background-image::after {
           content: "";
           background-color: {{ bg_color }};
@@ -117,6 +118,11 @@
 
           {%- for block in section.blocks -%}
             {%- case block.type -%}
+              {% when '@app' %}
+                <div class="section__block" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+
               {%- when 'heading' -%}
                 {%- if block.settings.heading != blank -%}
                   <h2 class="section__block section__block--heading {{ block.settings.heading_size }}" id="{{ section.id }}-heading" {{ block.shopify_attributes }}>
@@ -146,7 +152,7 @@
 
               {%- when 'countdown' -%}
                 <script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
-                <div class="section__block countdown__block countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }} no-js-hidden" id="{{ block.id }}" {{ block.shopify_attributes }}>
+                <div class="section__block countdown__block countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}" id="{{ block.id }}" {{ block.shopify_attributes }}>
                   {% render 'countdown-timer',
                     end_date: block.settings.end_date,
                     end_time: block.settings.end_time,
@@ -238,10 +244,10 @@
       "default": "delay"
     },
     {
+      "visible_if": "{{ section.settings.trigger == 'delay' }}",
       "type": "range",
       "id": "delay",
       "label": "Delay seconds",
-      "info": "Only applies when the \"Trigger\" is \"Delay\".",
       "default": 5,
       "min": 0,
       "max": 30,
@@ -370,6 +376,9 @@
     }
   ],
   "blocks": [
+    {
+      "type": "@app"
+    },
     {
       "type": "heading",
       "name": "Heading",
@@ -684,6 +693,7 @@
   "presets": [
     {
       "name": "Pop-up",
+      "category": "Feature",
       "blocks": [
         {
           "type": "heading"

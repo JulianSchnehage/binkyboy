@@ -18,7 +18,7 @@
 -%}
 <div class="cart-item product-{{ item.product.handle }}"{% if animate %}{%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}{% endif %}>
   <div class="cart-item__column cart-item__image">
-    <a href="{{ item.url }}">
+    <a class="cart-item__image-link" href="{{ item.url }}">
       {%- render 'image', image: item.image, sizes: '100px', widths: '100, 200', loading: image_loading -%}
     </a>
   </div>
@@ -32,7 +32,7 @@
         <div class="small-text">
           {%- liquid
             assign show_variants = false
-            if item.product.variants.size > 1
+            if item.product.variants_count > 1
               assign show_variants = true
             elsif settings.cart_item_show_single_variant and item.product.has_only_default_variant == false
               assign show_variants = true
@@ -144,6 +144,13 @@ data-wpd-cart-drawer-quantity="{{ item.quantity }}" />
 {% endif %}
 
     <div class="cart-item__column cart-item__price">
+      <span class="visually-hidden">
+        {%- if item.variant.compare_at_price > item.variant.price or item.original_line_price > item.final_line_price -%}
+          {{- 'products.product.price.sale_price' | t -}}
+        {%- else -%}
+          {{- 'products.product.price.regular_price' | t -}}
+        {%- endif -%}
+      </span>
       <span class="theme-money cart-item__selling-price"
         {% if wpddrawer == true %} 
           data-wpd-cart-drawer-product-handle="{{ item.product.handle }}" 
@@ -159,8 +166,10 @@ data-wpd-cart-drawer-quantity="{{ item.quantity }}" />
           data-wpd-cart-variant-id="{{ item.variant.id }}"                                
           data-wpd-cart-item="{{ item.key }}">{{ item.final_price | money }}</span>
       {% if item.variant.compare_at_price > item.variant.price %}
+        <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
         <span class="struck-out-price small-text data-wpd-hide"><span class="theme-money">{{ item.variant.compare_at_price | money }}</span></span>
       {% elsif item.original_line_price > item.final_line_price %}
+        <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
         <span class="struck-out-price small-text"
            {% if wpddrawer == true %} 
           data-wpd-cart-drawer-product-handle="{{ item.product.handle }}" 
@@ -198,7 +207,7 @@ data-wpd-cart-drawer-quantity="{{ item.quantity }}" />
       endif
     %}
     <div class="cart-item__column cart-item__quantity">
-      <div class="quantity buttoned-input">
+      <div class="quantity buttoned-input buttoned-input--small">
         <a id="updates_dec_{{ forloop.index }}" class="quantity-down" href="{{ routes.cart_change_url }}?id={{ item.key }}&quantity={{ quantity | minus: 1 }}" aria-label="{{ 'cart.items.decrease_quantity' | t | escape }}">{% render 'icon-minus' %}</a>
         <input
           class="cart-item__quantity-input"
@@ -224,13 +233,22 @@ data-wpd-cart-drawer-quantity="{{ item.quantity }}" />
 
     {%- unless drawer -%}
       <div class="cart-item__column cart-item__total">
+        <span class="visually-hidden">
+          {%- if item.variant.compare_at_price > item.variant.price or item.original_line_price > item.final_line_price -%}
+            {{- 'products.product.price.line_total_sale_price' | t -}}
+          {%- else -%}
+            {{- 'products.product.price.line_total_regular_price' | t -}}
+          {%- endif -%}
+        </span>
         <span class="theme-money cart-item__selling-total"
           data-wpd-cart-variant-id="{{ item.variant.id }}"   
 data-wpd-cart-item="{{ item.key }}"                                
 data-wpd-cart-line-price>{{ item.final_line_price | money }}</span>
         {% if item.variant.compare_at_price > item.variant.price %}
+          <span class="visually-hidden">{{ 'products.product.price.line_total_regular_price' | t }}</span>
           <div class="theme-money struck-out-price small-text data-wpd-hide">{{ item.variant.compare_at_price | times: item.quantity | money }}</div>
         {% elsif item.original_line_price != item.final_line_price %}
+          <span class="visually-hidden">{{ 'products.product.price.line_total_regular_price' | t }}</span>
           <div class="theme-money struck-out-price small-text"
             data-wpd-cart-variant-id="{{ item.variant.id }}"   
 data-wpd-cart-item="{{ item.key }}"                                

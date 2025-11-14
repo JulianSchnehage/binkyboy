@@ -20,6 +20,11 @@
     .section-header {
       margin-bottom: calc(var(--theme-header-height) * -1);
       --transparent-header-text-color: {{ section.settings.transparent_color }};
+      --transparent-header-bg-gradient:
+      {%- liquid
+        assign gradient_start_opacity = section.settings.transparent_fade_strength | divided_by: 100.0
+        render 'nonlinear-gradient', type: 'down-out', start_color: section.settings.transparent_fade.rgb, start_opacity: gradient_start_opacity
+      -%};
     }
     .section-store-messages {
       display: none;
@@ -124,7 +129,7 @@
 
             <a class="logo__link" href="{{ routes.root_url }}" title="{{ shop.name }}">
               {%- if section.settings.logo != blank -%}
-                {%- assign logo_width_x2 = section.settings.logo_img_width_int | times: 2 -%}
+                {%- assign logo_width_x2 = section.settings.logo_img_width_int | at_least: section.settings.mobile_logo_img_width_int | times: 2 -%}
                 <img class="logo__image" src="{{ section.settings.logo | image_url: width: logo_width_x2 }}" alt="{{ section.settings.logo.alt | default: shop.name | escape }}" itemprop="logo" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" loading="eager" />
 
                 {%- if section.settings.enable_transparent and template.name == 'index' and section.settings.transparent_logo != blank -%}
@@ -424,7 +429,12 @@
 </page-header>
 
 <script>
-  theme.inlineNavigationCheck();
+  const mainNav = document.getElementById('main-nav');
+  if (mainNav) mainNav.style.opacity = 0;
+  setTimeout(() => {
+    theme.inlineNavigationCheck();
+    if (mainNav) mainNav.style.opacity = null;
+  }, 0);
   setTimeout(theme.setInitialHeaderHeightProperty, 0);
 </script>
 
@@ -501,16 +511,36 @@
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.enable_transparent }}",
+      "type": "image_picker",
+      "id": "transparent_logo",
+      "label": "Logo",
+      "info": "Match your main logo size."
+    },
+    {
+      "visible_if": "{{ section.settings.enable_transparent }}",
       "type": "color",
       "id": "transparent_color",
       "label": "Text color",
       "default": "#ffffff"
     },
     {
-      "type": "image_picker",
-      "id": "transparent_logo",
-      "label": "Logo",
-      "info": "Match your main logo size."
+      "visible_if": "{{ section.settings.enable_transparent }}",
+      "type": "color",
+      "id": "transparent_fade",
+      "label": "Contrast fade",
+      "default": "#000000"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_transparent }}",
+      "type": "range",
+      "id": "transparent_fade_strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Contrast fade strength",
+      "default": 0
     },
     {
       "type": "header",

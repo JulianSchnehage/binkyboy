@@ -104,7 +104,7 @@
               {%- endfor -%}
             </div>
           </div>
-          <div class="slider-nav slider-nav--floating desktop-only no-js-hidden">
+          <div class="slider-nav slider-nav--floating desktop-only">
             <button type="button" class="slider-nav__btn has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
               <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
               {%- render 'icon-chevron-left', stroke_width: 1.3 -%}
@@ -242,35 +242,37 @@
                 <span class="link-dropdown__button-icon has-motion">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
               </button>
               <div class="link-dropdown__options" id="sort-dropdown-options">
-                {%- for option in collection.sort_options -%}
-                  {%- liquid
-                    if section.settings.sort_show_featured == false and option.value == 'manual' and collection.default_sort_by != 'manual'
-                      continue
-                    endif
-                    if section.settings.sort_show_best == false and option.value == 'best-selling' and collection.default_sort_by != 'best-selling'
-                      continue
-                    endif
-                    if section.settings.sort_show_alpha == false and option.value == 'title-ascending' and collection.default_sort_by != 'title-ascending'
-                      continue
-                    endif
-                    if section.settings.sort_show_alpha == false and option.value == 'title-descending' and collection.default_sort_by != 'title-descending'
-                      continue
-                    endif
-                    if section.settings.sort_show_price == false and option.value == 'price-ascending' and collection.default_sort_by != 'price-ascending'
-                      continue
-                    endif
-                    if section.settings.sort_show_price == false and option.value == 'price-descending' and collection.default_sort_by != 'price-descending'
-                      continue
-                    endif
-                    if section.settings.sort_show_date == false and option.value == 'created-ascending' and collection.default_sort_by != 'created-ascending'
-                      continue
-                    endif
-                    if section.settings.sort_show_date == false and option.value == 'created-descending' and collection.default_sort_by != 'created-descending'
-                      continue
-                    endif
-                  -%}
-                  <a href="{{ request.path | sort_by: option.value | escape }}" class="link-dropdown__link{% if current_sort == option.value %} link-dropdown__link--active{% endif %}">{{ option.name | escape }}</a>
-                {%- endfor -%}
+                <div class="link-dropdown__options-inner">
+                  {%- for option in collection.sort_options -%}
+                    {%- liquid
+                      if section.settings.sort_show_featured == false and option.value == 'manual' and collection.default_sort_by != 'manual'
+                        continue
+                      endif
+                      if section.settings.sort_show_best == false and option.value == 'best-selling' and collection.default_sort_by != 'best-selling'
+                        continue
+                      endif
+                      if section.settings.sort_show_alpha == false and option.value == 'title-ascending' and collection.default_sort_by != 'title-ascending'
+                        continue
+                      endif
+                      if section.settings.sort_show_alpha == false and option.value == 'title-descending' and collection.default_sort_by != 'title-descending'
+                        continue
+                      endif
+                      if section.settings.sort_show_price == false and option.value == 'price-ascending' and collection.default_sort_by != 'price-ascending'
+                        continue
+                      endif
+                      if section.settings.sort_show_price == false and option.value == 'price-descending' and collection.default_sort_by != 'price-descending'
+                        continue
+                      endif
+                      if section.settings.sort_show_date == false and option.value == 'created-ascending' and collection.default_sort_by != 'created-ascending'
+                        continue
+                      endif
+                      if section.settings.sort_show_date == false and option.value == 'created-descending' and collection.default_sort_by != 'created-descending'
+                        continue
+                      endif
+                    -%}
+                    <a href="{{ request.path | sort_by: option.value | escape }}" class="link-dropdown__link{% if current_sort == option.value %} link-dropdown__link--active{% endif %}">{{ option.name | escape }}</a>
+                  {%- endfor -%}
+                </div>
               </div>
             </link-dropdown>
           </span>
@@ -374,6 +376,7 @@
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.show_image_behind_heading }}",
       "type": "select",
       "id": "heading_image_height",
       "label": "Heading image height",
@@ -398,6 +401,7 @@
       "default": "medium"
     },
     {
+      "visible_if": "{{ section.settings.show_image_behind_heading }}",
       "id": "overlay_style",
       "type": "select",
       "label": "Overlay style",
@@ -531,7 +535,7 @@
       "type": "checkbox",
       "id": "enable_filtering",
       "label": "Enable filtering",
-      "info": "[Customize filters](/admin/menus)",
+      "info": "Customize filters with the [Search & Discovery app](https://help.shopify.com/manual/online-store/search-and-discovery/filters)",
       "default": true
     },
     {
@@ -617,36 +621,42 @@
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_sort }}",
       "type": "checkbox",
       "id": "sort_show_featured",
       "label": "Enable order: Featured",
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.show_sort }}",
       "type": "checkbox",
       "id": "sort_show_best",
       "label": "Enable order: Best selling",
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_sort }}",
       "type": "checkbox",
       "id": "sort_show_alpha",
       "label": "Enable order: Alphabetical",
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_sort }}",
       "type": "checkbox",
       "id": "sort_show_price",
       "label": "Enable order: Price",
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_sort }}",
       "type": "checkbox",
       "id": "sort_show_date",
       "label": "Enable order: Date added",
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_sort }}",
       "type": "paragraph",
       "content": "The collection's default sort order will always show."
     },
@@ -684,6 +694,7 @@
       "content": "Related collections gallery layout"
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "type": "select",
       "id": "rel_coll_gall_aspect_ratio",
       "label": "Image shape",
@@ -712,6 +723,7 @@
       ]
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "type": "select",
       "id": "image_position",
       "label": "Image alignment",
@@ -757,18 +769,21 @@
       ]
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "id": "rel_coll_gall_enable_margin",
       "type": "checkbox",
       "label": "Add spacing around images",
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "id": "rel_coll_gall_full_width",
       "type": "checkbox",
       "label": "Full page width",
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "id": "rel_coll_gall_overlay_style",
       "type": "select",
       "label": "Overlay style",
@@ -797,6 +812,7 @@
       ]
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "type": "select",
       "id": "rel_coll_gall_text_alignment",
       "label": "Text overlay position",
@@ -833,6 +849,7 @@
       "default": "center center"
     },
     {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
       "type": "select",
       "id": "rel_coll_grid_mobile",
       "label": "Images per row - mobile",

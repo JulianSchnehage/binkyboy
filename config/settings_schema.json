@@ -3,7 +3,7 @@
     "name": "theme_info",
     "theme_name": "Symmetry",
     "theme_author": "Clean Canvas",
-    "theme_version": "7.4.0",
+    "theme_version": "8.1.0",
     "theme_documentation_url": "http:\/\/cleancanvas.co.uk\/support\/symmetry\/",
     "theme_support_url": "http:\/\/cleancanvas.co.uk\/support\/symmetry\/"
   },
@@ -457,10 +457,17 @@
         "default": "#ffffff"
       },
       {
+        "type": "checkbox",
+        "id": "prod_over_redu_bold",
+        "label": "Bold reduction text",
+        "default": true
+      },
+      {
         "type": "color",
         "id": "prod_over_redu_bg",
         "label": "Reduction background",
-        "default": "#860001"
+        "default": "#860001",
+        "alpha": true
       },
       {
         "type": "color",
@@ -472,7 +479,8 @@
         "type": "color",
         "id": "prod_over_low_bg",
         "label": "Low inventory background",
-        "default": "#09728c"
+        "default": "#09728c",
+        "alpha": true
       },
       {
         "type": "color",
@@ -484,7 +492,8 @@
         "type": "color",
         "id": "prod_over_new_bg",
         "label": "New in background",
-        "default": "#09728c"
+        "default": "#09728c",
+        "alpha": true
       },
       {
         "type": "color",
@@ -496,7 +505,8 @@
         "type": "color",
         "id": "prod_over_meta_bg",
         "label": "Custom background",
-        "default": "#09728c"
+        "default": "#09728c",
+        "alpha": true
       },
       {
         "type": "header",
@@ -563,6 +573,36 @@
         "id": "foot_divider_col",
         "label": "Dividing lines",
         "default": "#e2e2e2"
+      },
+      {
+        "type": "header",
+        "content": "Color blending"
+      },
+      {
+        "type": "paragraph",
+        "content": "If all product images are set on a very light background, this can blend that background into a light color. [Read more](https://cleancanvas.co.uk/support/symmetry/settings/product-image-blend)"
+      },
+      {
+        "type": "paragraph",
+        "content": "Setting the image to crop is also recommended."
+      },
+      {
+        "type": "checkbox",
+        "id": "blend_product_images",
+        "label": "Blend product images",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "blend_bg_color",
+        "label": "Blend color",
+        "info": "Choose a very light color",
+        "default": "#fefefe"
+      },
+      {
+        "type": "color_background",
+        "id": "blend_bg_gradient",
+        "label": "Blend gradient"
       }
     ]
   },
@@ -696,6 +736,10 @@
           {
             "value": "slightlyrounded",
             "label": "Slightly rounded"
+          },
+          {
+            "value": "fullyround",
+            "label": "Fully round"
           }
         ],
         "default": "sharp"
@@ -836,6 +880,13 @@
         "id": "qb_show_app_blocks",
         "label": "Show app blocks in quick buy",
         "info": "App must be compatible loading off the product page",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "qb_allow_selling_plans",
+        "label": "Allow subscription products to open quick buy",
+        "info": "Some apps may not support this",
         "default": false
       },
       {

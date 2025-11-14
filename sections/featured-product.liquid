@@ -7,7 +7,7 @@
   assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
 
   unless product.has_only_default_variant
-    if section.settings.select_first_variant == false and product.variants.size > 1
+    if section.settings.select_first_variant == false and product.variants_count > 1
       assign current_variant = product.selected_variant | default: false
       assign featured_media = product.featured_media
     endif
@@ -17,10 +17,17 @@
 
   assign enable_media_grouping = false
   if section.settings.enable_media_grouping
-    for variant in product.variants
-      if variant.featured_media
-        assign enable_media_grouping = true
-        break
+    assign media_grouping_options = section.settings.media_grouping_option | replace: ', ', ',' | split: ','
+    for option in product.options_with_values
+      if media_grouping_options contains option.name
+        assign media_grouping_option = option
+
+        for value in option.values
+          if value.variant.featured_media
+            assign enable_media_grouping = true
+            break
+          endif
+        endfor
       endif
     endfor
   endif
@@ -30,7 +37,7 @@
   <script src="{{ 'slideshow.js' | asset_url }}" defer></script>
 {%- endif -%}
 
-<product-form class="js-product product-info featured-product strongly-spaced-row container">
+<product-form id="{{ section.id }}" class="js-product product-info cc-featured-product strongly-spaced-row container">
   {% if product != blank %}
     <media-gallery class="media-gallery media-gallery--layout-{{ section.settings.gallery_layout }} media-gallery-size-{{ section.settings.gallery_size }} product-column-left {% if product.media.size > 1 %}has-thumbnails{% endif %}"
       {%- if enable_media_grouping %}
@@ -42,7 +49,10 @@
       {%- if settings.preload_pdp_gallery_images %}
         data-preload
       {%- endif %}
+      data-dynamic-product-content="media-gallery-{{ section.id }}"
       {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
+
+      <a class="skip-link visually-hidden top-0 start-0" href="#ProductInfo-{{ section.id }}">{{ 'accessibility.skip_to_product_info' | t }}</a>
 
       <div class="media-gallery__inner{% if section.settings.enable_sticky_columns %} sticky-content-container{% endif %}">
         <div class="main-image">
@@ -170,50 +180,35 @@
       {%- endif -%}
 
       {%- if enable_media_grouping -%}
-        {%- liquid
-          assign media_grouping_options = section.settings.media_grouping_option | replace: ', ', ',' | split: ','
-          for option in product.options
-            if media_grouping_options contains option
-              assign groupOptionName = option
-              assign groupOptionIndex = forloop.index0
-              assign groupOptionProperty = 'option' | append: forloop.index
-              assign sortedVariants = product.variants | sort: groupOptionProperty
-              break
-            endif
-          endfor
-          assign currentGroup = null
-        -%}
-        {%- if groupOptionName -%}
-          <script class="js-data-variant-media" type="application/json">
-            {
-              "groupOptionName": {{- groupOptionName | json -}},
-              "groupOptionIndex": {{- groupOptionIndex }},
-              "media": {
-                {%- assign standardMediaFound = false -%}
-                {%- for media in product.media -%}
-                  {%- liquid
-                    for variant in sortedVariants
-                      if variant.featured_media and variant.featured_media.id == media.id
-                        assign currentGroup = variant.options[groupOptionIndex]
-                      endif
-                    endfor
-                    unless media.alt contains 'all-groups'
-                      assign standardMediaFound = true
-                    endunless
-                  -%}
-                  {%- unless forloop.first -%},{%- endunless -%}
-                  "{{ media.id }}": {
-                    {%- if media.alt contains 'all-groups' -%}
-                      "group": true, "position": "{% if standardMediaFound %}end{% else %}start{% endif %}"
-                    {%- else -%}
-                      "group": {{ currentGroup | json }}
-                    {%- endif -%}
-                  }
-                {%- endfor -%}
-              }
+        <script class="js-data-variant-media" type="application/json">
+          {
+            "groupOptionName": {{- media_grouping_option.name | json -}},
+            "groupOptionIndex": {{- media_grouping_option.position | minus: 1 }},
+            "media": {
+              {%- assign standard_media_found = false -%}
+              {%- for media in product.media -%}
+                {%- liquid
+                  for value in media_grouping_option.values
+                    if value.variant and value.variant.featured_media.id == media.id
+                      assign current_group = value.name
+                    endif
+                  endfor
+                  unless media.alt contains 'all-groups'
+                    assign standard_media_found = true
+                  endunless
+                -%}
+                {%- unless forloop.first -%},{%- endunless -%}
+                "{{ media.id }}": {
+                  {%- if media.alt contains 'all-groups' -%}
+                    "group": true, "position": "{% if standard_media_found %}end{% else %}start{% endif %}"
+                  {%- else -%}
+                    "group": {{ current_group | json }}
+                  {%- endif -%}
+                }
+              {%- endfor -%}
             }
-          </script>
-        {%- endif -%}
+          }
+        </script>
       {%- endif -%}
     </media-gallery>
   {% else %}
@@ -282,7 +277,7 @@
   {% endif %}
 
   <div class="detail product-column-right" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
-    <div class="product-form{% if section.settings.enable_sticky_columns %} sticky-content-container{% endif %}" data-ajax-add-to-cart="true" data-product-id="{{ product.id }}">
+    <div class="product-form{% if section.settings.enable_sticky_columns %} sticky-content-container{% endif %}" id="ProductInfo-{{ section.id }}" data-ajax-add-to-cart="true">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when '@app' %}
@@ -291,7 +286,7 @@
             </div>
 
           {% when 'title' %}
-            <div class="title-row" {{ block.shopify_attributes }}>
+            <div class="title-row" data-dynamic-variant-content="{{ block.id }}" {{ block.shopify_attributes }}>
               {% if product != blank %}
                 <h2 class="h1 product-title">{{ product.title | link_to: product.url }}</h2>
               {% else %}
@@ -300,13 +295,13 @@
             </div>
 
           {% when 'price' %}
-            <div class="price-container" {{ block.shopify_attributes }}>
-              <div class="product-info__price product-price product-price--large">
+            <div class="price-container" data-dynamic-variant-content="{{ block.id }}" {{ block.shopify_attributes }}>
+              <div class="product-info__price product-price product-price--large" role="status">
                 {% render 'price', product: product, show_currency_code: settings.product_currency_code_enabled, for_variant_picker: true, current_variant: current_variant %}
               </div>
 
               <div class="price-descriptors">
-                {%- if product != blank -%}
+                {%- if product != blank and block.settings.show_installments -%}
                   {%- form 'product', product, class: 'js-instalments-form' -%}
                     <input type="hidden" name="id" value="{% if current_variant %}{{ current_variant.id }}{% endif %}">
                     {{ form | payment_terms }}
@@ -326,28 +321,22 @@
                   {%- endif -%}
                 {%- endif -%}
 
-                {% if section.settings.inventory_transfers_enable %}
-                  <variant-content class="product-inventory-transfer">
-                    {%- for variant in product.variants -%}
-                      {%- if variant.incoming -%}
-                        {%- liquid
-                          if variant.next_incoming_date
-                            assign date = variant.next_incoming_date | date: format: 'date'
-                            if variant.available
-                              assign incoming_html = 'products.transfers.will_not_ship_until' | t: date: date
-                            else
-                              assign incoming_html = 'products.transfers.will_be_in_stock_after' | t: date: date
-                            endif
-                          else
-                            assign incoming_html = 'products.transfers.waiting_for_stock' | t
-                          endif
-                        -%}
-                        <script type="text/template" data-variant="{{ variant.id }}">{{ incoming_html }}</script>
-
-                        {%- if current_variant and variant.id == current_variant.id -%}{{ incoming_html }}{%- endif -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </variant-content>
+                {% if section.settings.inventory_transfers_enable and current_variant and current_variant.incoming %}
+                  <div class="product-inventory-transfer">
+                    {%- liquid
+                      if current_variant.next_incoming_date
+                        assign date = current_variant.next_incoming_date | date: format: 'date'
+                        if current_variant.available
+                          assign incoming_html = 'products.transfers.will_not_ship_until' | t: date: date
+                        else
+                          assign incoming_html = 'products.transfers.will_be_in_stock_after' | t: date: date
+                        endif
+                      else
+                        assign incoming_html = 'products.transfers.waiting_for_stock' | t
+                      endif
+                    -%}
+                    {{- incoming_html -}}
+                  </div>
                 {% endif %}
               </div>
 
@@ -365,50 +354,51 @@
             </div>
 
           {% when 'description' %}
-            {%- if product.description != blank -%}
-              <div class="{% if block.settings.show_in_tab %} product-info-accordion{% endif %}" {{ block.shopify_attributes }}>
-                {% if block.settings.show_in_tab %}
-                  <details-disclosure>
-                    <details class="disclosure"{% if block.settings.open_tab %} open{% endif %}>
-                      <summary class="disclosure__title">
-                        {%- if block.settings.icon == blank -%}
-                          {{- 'products.product.description' | t -}}
-                        {%- else -%}
-                          <div class="with-icon">
-                            {% render 'icon', icon: block.settings.icon, size: 'small' %}
-                            <span class="with-icon__beside">{{ 'products.product.description' | t }}</span>
-                          </div>
-                        {%- endif -%}
-                      </summary>
-                      <div class="disclosure__panel has-motion">
-                        <div class="disclosure__content rte cf">
-                          {%- if product != blank -%}
-                            {{- product.description -}}
-                          {%- else -%}
-                            {{- 'onboarding.product.description' | t -}}
-                          {%- endif -%}
-                        </div>
-                      </div>
-                    </details>
-                  </details-disclosure>
-                {% else %}
-                  <div class="product-description rte cf">
-                    {%- if block.settings.icon == blank -%}
-                      {%- if product != blank -%}
-                        {{- product.description -}}
+            <div class="{% if block.settings.show_in_tab %} product-info-accordion{% endif %}"
+                  data-dynamic-variant-content="{{ block.id }}"
+                  {%- if product.description == blank %} hidden{% endif %}
+                  {{ block.shopify_attributes }}>
+              {% if block.settings.show_in_tab %}
+                <details-disclosure>
+                  <details class="disclosure"{% if block.settings.open_tab %} open{% endif %}>
+                    <summary class="disclosure__title">
+                      {%- if block.settings.icon == blank -%}
+                        {{- 'products.product.description' | t -}}
                       {%- else -%}
-                        {{- 'onboarding.product.description' | t -}}
+                        <div class="with-icon">
+                          {% render 'icon', icon: block.settings.icon, size: 'small' %}
+                          <span class="with-icon__beside">{{ 'products.product.description' | t }}</span>
+                        </div>
                       {%- endif -%}
-                    {%- else -%}
-                      <div class="with-icon">
-                        {% render 'icon', icon: block.settings.icon, size: 'small' %}
-                        <span class="with-icon__beside">{{ product.description }}</span>
+                    </summary>
+                    <div class="disclosure__panel has-motion">
+                      <div class="disclosure__content rte cf">
+                        {%- if product != blank -%}
+                          {{- product.description -}}
+                        {%- else -%}
+                          {{- 'onboarding.product.description' | t -}}
+                        {%- endif -%}
                       </div>
+                    </div>
+                  </details>
+                </details-disclosure>
+              {% else %}
+                <div class="product-description rte cf">
+                  {%- if block.settings.icon == blank -%}
+                    {%- if product != blank -%}
+                      {{- product.description -}}
+                    {%- else -%}
+                      {{- 'onboarding.product.description' | t -}}
                     {%- endif -%}
-                  </div>
-                {% endif %}
-              </div>
-            {%- endif -%}
+                  {%- else -%}
+                    <div class="with-icon">
+                      {% render 'icon', icon: block.settings.icon, size: 'small' %}
+                      <span class="with-icon__beside">{{ product.description }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {% endif %}
+            </div>
 
           {% when 'vendor' %}
             {%- liquid
@@ -430,7 +420,7 @@
 
           {% when 'sku' %}
             {%- if product -%}
-              <div class="product-sku"{% if current_variant == blank or current_variant.sku == blank %} hidden{% endif %} {{ block.shopify_attributes }}>
+              <div class="product-sku"{% if current_variant == blank or current_variant.sku == blank %} hidden{% endif %} data-dynamic-variant-content="{{ block.id }}" {{ block.shopify_attributes }}>
                 <span class="product-info-label">{{ 'products.product.sku' | t }}</span>
                 <span class="product-sku__value">{% if current_variant %}{{ current_variant.sku }}{% endif %}</span>
               </div>
@@ -443,7 +433,7 @@
 
           {% when 'barcode' %}
             {%- if product -%}
-              <div class="product-barcode"{% if current_variant == blank or current_variant.barcode == blank %} hidden{% endif %} {{ block.shopify_attributes }}>
+              <div class="product-barcode"{% if current_variant == blank or current_variant.barcode == blank %} hidden{% endif %} data-dynamic-variant-content="{{ block.id }}" {{ block.shopify_attributes }}>
                 <span class="product-info-label">{{ 'products.product.barcode' | t }}</span>
                 <span class="product-barcode__value">{% if current_variant %}{{ current_variant.barcode }}{% endif %}</span>
               </div>
@@ -455,100 +445,92 @@
             {%- endif -%}
 
           {% when 'variant-picker' %}
-            <div class="input-row" {{ block.shopify_attributes }}>
+            <div class="input-row" data-dynamic-variant-content="{{ block.id }}" {{ block.shopify_attributes }}>
               {%- capture size_chart_icon -%}{%- render 'icon', icon: 'ruler', size: 'small' -%}{%- endcapture -%}
               {% render 'variant-picker',
                 product: product,
+                current_variant: current_variant,
                 product_form_id: product_form_id,
                 block: block,
+                update_url: false,
                 size_chart_icon: size_chart_icon,
-                media_ratio: 1,
-                swatch_crop: settings.swatch_crop_align,
-                dynamic_availability_mode: 'down'
+                media_ratio: 1
               %}
             </div>
 
           {% when 'buy-buttons' %}
-            <buy-buttons class="buy-buttons-row block" {{ block.shopify_attributes }}>
+            <div class="input-row" {{ block.shopify_attributes }}>
               {% if product != blank %}
                 {% form 'product', product, id: product_form_id, class: 'form js-product-form', data-product-id: product.id %}
-                  <input type="hidden" name="id" value="{{ current_variant.id }}" disabled>
+                  <input type="hidden" name="id" value="{{ current_variant.id }}" required data-dynamic-variant-content="{{ block.id }}-input-id">
 
-                  {% if product.available %}
-                    {%- liquid
-                      assign gift_card_recipient_feature_active = false
-                      if block.settings.show_gift_card_recipient and product.gift_card?
-                        assign gift_card_recipient_feature_active = true
-                      endif
+                  {%- liquid
+                    assign gift_card_recipient_feature_active = false
+                    if block.settings.show_gift_card_recipient and product.gift_card?
+                      assign gift_card_recipient_feature_active = true
+                    endif
 
-                      assign enable_dynamic_payment_button = false
-                      if block.settings.enable_payment_button and product.selling_plan_groups == empty and gift_card_recipient_feature_active == false
-                        unless product.template_suffix contains 'preorder'
-                          assign enable_dynamic_payment_button = true
-                        endunless
-                      endif
-                    -%}
+                    assign enable_dynamic_payment_button = false
+                    if block.settings.enable_payment_button and product.selling_plan_groups == empty and gift_card_recipient_feature_active == false
+                      unless product.template_suffix contains 'preorder'
+                        assign enable_dynamic_payment_button = true
+                      endunless
+                    endif
+                  -%}
 
-                    {% if gift_card_recipient_feature_active %}
-                      {% render 'gift-card-recipient', section: section %}
+                  {% if gift_card_recipient_feature_active %}
+                    {% render 'gift-card-recipient', section: section %}
+                  {% endif %}
+
+                  <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %}">
+                    {% if block.settings.show_quantity_selector %}
+                      <label class="label" for="quantity">{{ 'products.product.quantity' | t }}</label>
+                      <quantity-wrapper class="buttoned-input">
+                        <a href="#" data-quantity="down" aria-label="{{ 'cart.items.decrease_quantity' | t }}">{% render 'icon-minus' %}</a>
+                        <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" type="number" name="quantity" value="1" />
+                        <a href="#" data-quantity="up" aria-label="{{ 'cart.items.increase_quantity' | t }}">{% render 'icon-plus' %}</a>
+                      </quantity-wrapper>
                     {% endif %}
 
-                    <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %}">
-                      {% if block.settings.show_quantity_selector %}
-                        <label class="label" for="quantity">{{ 'products.product.quantity' | t }}</label>
-                        <quantity-wrapper class="quantity-wrapper">
-                          <a href="#" data-quantity="down" aria-label="{{ 'cart.items.decrease_quantity' | t }}">{% render 'icon-minus' %}</a>
-                          <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" type="number" name="quantity" value="1" />
-                          <a href="#" data-quantity="up" aria-label="{{ 'cart.items.increase_quantity' | t }}">{% render 'icon-plus' %}</a>
-                        </quantity-wrapper>
-                      {% endif %}
+                    <div class="quantity-submit-row__submit input-row" data-dynamic-variant-content="{{ block.id }}-atc">
+                      <div class="js-form-error lightly-spaced-row" role="alert" hidden></div>
 
-                      <div class="quantity-submit-row__submit input-row">
-                        <div class="js-form-error lightly-spaced-row" role="alert" hidden></div>
-
-                        {%- capture add_to_cart_text -%}
-                          {%- if product.template_suffix contains 'preorder' -%}
-                            {{- 'products.product.preorder' | t -}}
-                          {%- else -%}
-                            {{- 'products.product.add_to_cart' | t -}}
-                          {%- endif -%}
-                        {%- endcapture -%}
-                        <button class="btn btn--large add-to-cart" type="submit" name="add" data-add-to-cart-text="{{ add_to_cart_text | escape }}"{% if product.available == false %} disabled{% endif %}>
-                          {%- if current_variant.available or current_variant == false -%}
-                            {{- add_to_cart_text -}}
-                          {%- else -%}
-                            {{- 'products.variant.no_stock' | t -}}
-                          {%- endif -%}
-                        </button>
-                      </div>
-                      {% if enable_dynamic_payment_button %}
-                        <div class="product-dynamic-payment-button">
-                          <script class="dynamic-payment-button-template" type="text/template">
-                            {{ form | payment_button }}
-                          </script>
-                        </div>
-                      {% endif %}
-
-                      {% if block.settings.show_backorder_text %}
-                        {% render 'backorder', product: product, variant: current_variant %}
-                      {% endif %}
-                    </div>
-
-                  {% else %}
-                    <div class="quantity-submit-row input-row">
-                      <div class="quantity-submit-row__submit">
-                        <button class="btn btn--large" name="add" type="submit" disabled>
+                      {%- capture add_to_cart_text -%}
+                        {%- if product.template_suffix contains 'preorder' -%}
+                          {{- 'products.product.preorder' | t -}}
+                        {%- else -%}
+                          {{- 'products.product.add_to_cart' | t -}}
+                        {%- endif -%}
+                      {%- endcapture -%}
+                      <button class="btn btn--large add-to-cart" type="submit" name="add" data-add-to-cart-text="{{ add_to_cart_text | escape }}"{% unless current_variant.available %} disabled{% endunless %}>
+                        {%- if current_variant.available or current_variant == false -%}
+                          {{- add_to_cart_text -}}
+                        {%- else -%}
                           {{- 'products.variant.no_stock' | t -}}
-                        </button>
-                      </div>
+                        {%- endif -%}
+                      </button>
                     </div>
-                  {% endif %}
+
+                    {% if enable_dynamic_payment_button %}
+                      <buy-buttons class="product-dynamic-payment-button">
+                        <script class="dynamic-payment-button-template" type="text/template">
+                          {{ form | payment_button }}
+                        </script>
+                      </buy-buttons>
+                    {% endif %}
+
+                    {% if block.settings.show_backorder_text %}
+                      <div data-dynamic-variant-content="{{ block.id }}-backorder">
+                        {%- render 'backorder', product: product, variant: current_variant -%}
+                      </div>
+                    {% endif %}
+                  </div>
                 {% endform %}
               {% else %}
                 <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %}">
                   {% if block.settings.show_quantity_selector %}
                     <label class="label" for="quantity">{{ 'products.product.quantity' | t }}</label>
-                    <quantity-wrapper class="quantity-wrapper">
+                    <quantity-wrapper class="buttoned-input">
                       <a href="#" data-quantity="down" aria-label="{{ 'cart.items.decrease_quantity' | t }}">{% render 'icon-minus' %}</a>
                       <input aria-label="{{ 'products.product.quantity' | t }}" id="quantity" type="number" name="quantity" value="1" />
                       <a href="#" data-quantity="up" aria-label="{{ 'cart.items.increase_quantity' | t }}">{% render 'icon-plus' %}</a>
@@ -556,16 +538,16 @@
                   {% endif %}
 
                   <div class="quantity-submit-row__submit input-row">
-                    <button class="btn btn--large add-to-cart" type="submit" name="add" disabled>
+                    <button class="btn btn--large add-to-cart" type="submit" name="add" disabled data-add-to-cart-text="{{ 'products.variant.no_stock' | t }}">
                       {{- 'products.product.add_to_cart' | t -}}
                     </button>
                   </div>
                 </div>
               {% endif %}
-            </buy-buttons>
+            </div>
 
           {% when 'inventory-level' %}
-            <div {{ block.shopify_attributes }}>
+            <div data-dynamic-variant-content="{{ block.id }}" {{ block.shopify_attributes }}>
               {%- render 'product-inventory', product: product, current_variant: current_variant, block: block -%}
             </div>
 
@@ -577,29 +559,30 @@
               endif
               assign content = content | append: block.settings.custom_liquid
             -%}
-            {%- if content != blank -%}
-              <div class="product-info-accordion" {{ block.shopify_attributes }}>
-                <details-disclosure>
-                  <details class="disclosure"{% if block.settings.open %} open{% endif %}>
-                    <summary class="disclosure__title">
-                      {%- if block.settings.icon == blank -%}
-                        {{- block.settings.title | escape -}}
-                      {%- else -%}
-                        <div class="with-icon">
-                          {% render 'icon', icon: block.settings.icon, size: 'small' %}
-                          <span class="with-icon__beside">{{ block.settings.title | escape }}</span>
-                        </div>
-                      {%- endif -%}
-                    </summary>
-                    <div class="disclosure__panel has-motion">
-                      <div class="disclosure__content rte cf">
-                        {{- content -}}
+            <div class="product-info-accordion"
+                {%- if block.settings.variant_content %} data-dynamic-variant-content="{{ block.id }}"{% endif %}
+                {%- if content == blank %} hidden{% endif %}
+                {{ block.shopify_attributes }}>
+              <details-disclosure>
+                <details class="disclosure"{% if block.settings.open %} open{% endif %}>
+                  <summary class="disclosure__title">
+                    {%- if block.settings.icon == blank -%}
+                      {{- block.settings.title | escape -}}
+                    {%- else -%}
+                      <div class="with-icon">
+                        {% render 'icon', icon: block.settings.icon, size: 'small' %}
+                        <span class="with-icon__beside">{{ block.settings.title | escape }}</span>
                       </div>
+                    {%- endif -%}
+                  </summary>
+                  <div class="disclosure__panel has-motion">
+                    <div class="disclosure__content rte cf">
+                      {{- content -}}
                     </div>
-                  </details>
-                </details-disclosure>
-              </div>
-            {%- endif -%}
+                  </div>
+                </details>
+              </details-disclosure>
+            </div>
 
           {% when 'text' %}
             {% if block.settings.text != blank %}
@@ -692,12 +675,11 @@
           {% when 'pop-up' %}
             {% if block.settings.page != blank %}
               <div class="lightly-spaced-row" {{ block.shopify_attributes }}>
-                <modal-opener class="no-js-hidden" data-modal="modal-{{ block.id }}">
+                <modal-opener data-modal="modal-{{ block.id }}">
                   <button type="button" class="{% if block.settings.style != 'link' %}btn btn--{{ block.settings.style }}{% else %}small-feature-link{% endif %}" aria-haspopup="dialog">
                     {{- block.settings.text | escape -}}
                   </button>
                 </modal-opener>
-                <a href="{{ block.settings.page.url }}" class="link js-hidden">{{ block.settings.text | escape }}</a>
               </div>
             {% endif %}
 
@@ -723,10 +705,143 @@
               </div>
             {% endif %}
 
-          {% when 'custom-liquid' %}
-            {% if block.settings.custom_liquid != blank %}
-              <div class="lightly-spaced-row" {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+          {% when 'icon-columns' %}
+            {% if block.settings.icon_1 != blank or block.settings.custom_icon_1 != blank or block.settings.icon_2 != blank or block.settings.custom_icon_2 != blank or block.settings.icon_3 != blank or block.settings.custom_icon_3 != blank %}
+              {%- liquid
+                if block.settings.enable_box
+                  assign box_color_brightness = block.settings.box_color | color_brightness
+                  if box_color_brightness > 128
+                    assign box_color_saturation = block.settings.box_color | color_extract: 'saturation'
+                    if box_color_saturation > 0
+                      assign text_col = block.settings.box_color | color_darken: 60 | color_saturate: 30 | color_to_rgb | split: '(' | last | split: ')' | first
+                    else
+                      assign text_col = block.settings.box_color | color_darken: 60 | color_to_rgb | split: '(' | last | split: ')' | first
+                    endif
+                  else
+                    assign text_col = '255,255,255'
+                  endif
+                endif
+
+                assign icon_count = 0
+                  if block.settings.icon_1 != blank or block.settings.custom_icon_1 != blank
+                    assign icon_count = icon_count | plus: 1
+                  endif
+                  if block.settings.icon_2 != blank or block.settings.custom_icon_2 != blank
+                    assign icon_count = icon_count | plus: 1
+                  endif
+                  if block.settings.icon_3 != blank or block.settings.custom_icon_3 != blank
+                    assign icon_count = icon_count | plus: 1
+                  endif
+              -%}
+              <div class="{% if block.settings.enable_box %}my-gutter text-box text-box--wide{% else %}my-7{% endif %}"{% if block.settings.enable_box %} style="--box-color: {{ block.settings.box_color }}; --box-text-color: {{ text_col }}"{% endif %} {{ block.shopify_attributes }}>
+                <div class="flex gap-gutter align-center
+                            {%- if block.settings.enable_box %} my-2 px-2{% endif %}
+                            {%- if icon_count == 2 %} mx-5{% endif %}
+                            {%- if block.settings.text_size == 'sm' %} text-sm{% endif %}">
+                  {% if block.settings.icon_1 != blank or block.settings.custom_icon_1 != blank %}
+                    <div class="flex-1">
+                      {% if block.settings.custom_icon_1 == blank %}
+                        <span{% if block.settings.icon_1_color.alpha > 0 %} style="color: {{ block.settings.icon_1_color }}"{% endif %}>
+                          {%- render 'icon', icon: block.settings.icon_1, size: block.settings.icon_size -%}
+                        </span>
+                      {% else %}
+                        {%- liquid
+                          if block.settings.icon_size == 'extra-large'
+                            assign icon_sizes = '52px'
+                            assign icon_widths = '52, 104'
+                          elsif block.settings.icon_size == 'large'
+                            assign icon_sizes = '38px'
+                            assign icon_widths = '38, 76'
+                          else
+                            assign icon_sizes = '24px'
+                            assign icon_widths = '24, 48'
+                          endif
+                        -%}
+                        <div class="icon icon--image icon--{{ block.settings.icon_size }} mx-auto">
+                          {%- render 'image' with block.settings.custom_icon_1, sizes: icon_sizes, widths: icon_widths -%}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.icon_1_heading != blank %}
+                        <div class="mt-2"><strong role="heading" aria-level="2">{{ block.settings.icon_1_heading }}</strong></div>
+                      {% endif %}
+                      {% if block.settings.icon_1_text != blank %}
+                        <div class="{% if block.settings.icon_1_heading == blank %}mt-2{% endif %}">{{ block.settings.icon_1_text }}</div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.icon_2 != blank or block.settings.custom_icon_2 != blank %}
+                    <div class="flex-1">
+                      {% if block.settings.custom_icon_2 == blank %}
+                        <span{% if block.settings.icon_2_color.alpha > 0 %} style="color: {{ block.settings.icon_2_color }}"{% endif %}>
+                          {%- render 'icon', icon: block.settings.icon_2, size: block.settings.icon_size -%}
+                        </span>
+                      {% else %}
+                        {%- liquid
+                          if block.settings.icon_size == 'extra-large'
+                            assign icon_sizes = '52px'
+                            assign icon_widths = '52, 104'
+                          elsif block.settings.icon_size == 'large'
+                            assign icon_sizes = '38px'
+                            assign icon_widths = '38, 76'
+                          else
+                            assign icon_sizes = '24px'
+                            assign icon_widths = '24, 48'
+                          endif
+                        -%}
+                        <div class="icon icon--image icon--{{ block.settings.icon_size }} mx-auto">
+                          {%- render 'image' with block.settings.custom_icon_2, sizes: icon_sizes, widths: icon_widths -%}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.icon_2_heading != blank %}
+                        <div class="mt-2"><strong role="heading" aria-level="2">{{ block.settings.icon_2_heading }}</strong></div>
+                      {% endif %}
+                      {% if block.settings.icon_2_text != blank %}
+                        <div class="{% if block.settings.icon_2_heading == blank %}mt-2{% endif %}">{{ block.settings.icon_2_text }}</div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  {% if block.settings.icon_3 != blank or block.settings.custom_icon_3 != blank %}
+                    <div class="flex-1">
+                      {% if block.settings.custom_icon_3 == blank %}
+                        <span{% if block.settings.icon_3_color.alpha > 0 %} style="color: {{ block.settings.icon_3_color }}"{% endif %}>
+                          {%- render 'icon', icon: block.settings.icon_3, size: block.settings.icon_size -%}
+                        </span>
+                      {% else %}
+                        {%- liquid
+                          if block.settings.icon_size == 'extra-large'
+                            assign icon_sizes = '52px'
+                            assign icon_widths = '52, 104'
+                          elsif block.settings.icon_size == 'large'
+                            assign icon_sizes = '38px'
+                            assign icon_widths = '38, 76'
+                          else
+                            assign icon_sizes = '24px'
+                            assign icon_widths = '24, 48'
+                          endif
+                        -%}
+                        <div class="icon icon--image icon--{{ block.settings.icon_size }} mx-auto">
+                          {%- render 'image' with block.settings.custom_icon_3, sizes: icon_sizes, widths: icon_widths -%}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.icon_3_heading != blank %}
+                        <div class="mt-2"><strong role="heading" aria-level="2">{{ block.settings.icon_3_heading }}</strong></div>
+                      {% endif %}
+                      {% if block.settings.icon_3_text != blank %}
+                        <div class="{% if block.settings.icon_3_heading == blank %}mt-2{% endif %}">{{ block.settings.icon_3_text }}</div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
             {% endif %}
+
+          {% when 'custom-liquid' %}
+            <div class="lightly-spaced-row"
+                {%- if block.settings.variant_content %} data-dynamic-variant-content="{{ block.id }}"{% endif %}
+                {%- if block.settings.custom_liquid == blank %} hidden{% endif %}
+                {{ block.shopify_attributes }}>
+              {{- block.settings.custom_liquid -}}
+            </div>
 
           {% when 'sharing' %}
             <div class="lightly-spaced-row" {{ block.shopify_attributes }}>
@@ -1015,12 +1130,6 @@
   {%- endif -%}
 </product-form>
 
-{%- if product != blank -%}
-  <script type="application/json" id="ProductJson-{{ product.id }}">
-    {{- product | json -}}
-  </script>
-{%- endif -%}
-
 
 {% schema %}
 {
@@ -1133,6 +1242,7 @@
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.show_alt_text }}",
       "type": "select",
       "id": "alt_text_icon",
       "label": "Alt text icon",
@@ -1143,8 +1253,16 @@
           "label": "No icon"
         },
         {
+          "value": "accessible",
+          "label": "Accessible"
+        },
+        {
           "value": "award",
           "label": "Award"
+        },
+        {
+          "value": "beach",
+          "label": "Beach"
         },
         {
           "value": "box",
@@ -1243,6 +1361,10 @@
           "label": "Question mark"
         },
         {
+          "value": "recycle",
+          "label": "Recycle"
+        },
+        {
           "value": "return",
           "label": "Return"
         },
@@ -1271,14 +1393,29 @@
           "label": "Star"
         },
         {
+          "value": "sun-high",
+          "label": "Sun"
+        },
+        {
           "value": "truck",
           "label": "Truck"
         },
         {
           "value": "washing",
           "label": "Washing"
+        },
+        {
+          "value": "world",
+          "label": "World"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variant_media_label",
+      "label": "Show variant custom label over image",
+      "info": "Add a variant metafield with the namespace and key 'theme.label', and the 'single-line text' type.",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -1320,6 +1457,10 @@
     },
     {
       "type": "paragraph",
+      "content": "If using both color and size, a variant must exist for every color and size combination."
+    },
+    {
+      "type": "paragraph",
       "content": "Add the alt text 'all-groups' to show that media in all groups."
     }
   ],
@@ -1337,6 +1478,13 @@
       "name": "Price",
       "limit": 1,
       "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_installments",
+          "label": "Show Shop Pay Installments banner",
+          "info": "Learn more about Shop Pay Installments [here](https://help.shopify.com/en/manual/payments/shop-pay-installments).",
+          "default": false
+        },
         {
           "type": "checkbox",
           "id": "show_tax_and_shipping",
@@ -1364,9 +1512,10 @@
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.open_tab }}",
           "type": "checkbox",
           "id": "open_tab",
-          "label": "Open tab",
+          "label": "Open by default",
           "default": false
         },
         {
@@ -1380,8 +1529,16 @@
               "label": "No icon"
             },
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -1480,6 +1637,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -1508,12 +1669,20 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
         }
@@ -1730,8 +1899,16 @@
               "label": "No icon"
             },
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -1830,6 +2007,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -1858,12 +2039,20 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
         },
@@ -1885,8 +2074,14 @@
         },
         {
           "type": "checkbox",
+          "id": "variant_content",
+          "label": "Update when variant changes",
+          "default": false
+        },
+        {
+          "type": "checkbox",
           "id": "open",
-          "label": "Open",
+          "label": "Open by default",
           "default": false
         }
       ]
@@ -1912,8 +2107,16 @@
               "label": "No icon"
             },
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -2012,6 +2215,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -2040,12 +2247,20 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
         },
@@ -2077,6 +2292,7 @@
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.enable_box }}",
           "type": "color",
           "id": "box_color",
           "label": "Box color",
@@ -2106,8 +2322,16 @@
               "label": "No icon"
             },
             {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
               "value": "award",
               "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
             },
             {
               "value": "box",
@@ -2206,6 +2430,10 @@
               "label": "Question mark"
             },
             {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
               "value": "return",
               "label": "Return"
             },
@@ -2234,12 +2462,20 @@
               "label": "Star"
             },
             {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
               "value": "truck",
               "label": "Truck"
             },
             {
               "value": "washing",
               "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
             }
           ]
         },
@@ -2271,6 +2507,7 @@
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.enable_box }}",
           "type": "color",
           "id": "box_color",
           "label": "Box color",
@@ -2280,7 +2517,7 @@
       ]
     },
     {
-      "type": "popup",
+      "type": "pop-up",
       "name": "Pop-up",
       "settings": [
         {
@@ -2300,8 +2537,16 @@
               "value": "primary"
             },
             {
+              "label": "Primary - wide",
+              "value": "primary btn--wide"
+            },
+            {
               "label": "Secondary",
               "value": "secondary"
+            },
+            {
+              "label": "Secondary - wide",
+              "value": "secondary btn--wide"
             },
             {
               "label": "Link",
@@ -2342,8 +2587,16 @@
               "value": "primary"
             },
             {
+              "label": "Primary - wide",
+              "value": "primary btn--wide"
+            },
+            {
               "label": "Secondary",
               "value": "secondary"
+            },
+            {
+              "label": "Secondary - wide",
+              "value": "secondary btn--wide"
             },
             {
               "label": "Link",
@@ -2376,6 +2629,646 @@
           "type": "url",
           "id": "url",
           "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "icon-columns",
+      "name": "Icon columns",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_size",
+          "label": "Icon size",
+          "default": "medium",
+          "options": [
+            {
+              "value": "medium",
+              "label": "Small"
+            },
+            {
+              "value": "large",
+              "label": "Medium"
+            },
+            {
+              "value": "extra-large",
+              "label": "Large"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "default": "sm",
+          "options": [
+            {
+              "value": "sm",
+              "label": "Small"
+            },
+            {
+              "value": "md",
+              "label": "Medium"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_box",
+          "label": "Enable box style",
+          "default": true
+        },
+        {
+          "visible_if": "{{ block.settings.enable_box }}",
+          "type": "color",
+          "id": "box_color",
+          "label": "Box color",
+          "default": "#f4f4f4"
+        },
+        {
+          "type": "header",
+          "content": "Icon 1"
+        },
+        {
+          "type": "select",
+          "id": "icon_1",
+          "label": "Icon",
+          "default": "truck",
+          "options": [
+            {
+              "value": "",
+              "label": "No icon"
+            },
+            {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "briefcase",
+              "label": "Briefcase"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "check_mark_in_circle",
+              "label": "Check mark in circle"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "credit_card",
+              "label": "Credit card"
+            },
+            {
+              "value": "dollar_sign",
+              "label": "Dollar sign"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "feather",
+              "label": "Feather"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
+            }
+          ]
+        },
+        {
+          "visible_if": "{{ block.settings.icon_1 != blank }}",
+          "type": "color",
+          "id": "icon_1_color",
+          "label": "Icon color",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon_1",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_1_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "icon_1_text",
+          "label": "Text",
+          "default": "Icon label 1"
+        },
+        {
+          "type": "header",
+          "content": "Icon 2"
+        },
+        {
+          "type": "select",
+          "id": "icon_2",
+          "label": "Icon",
+          "default": "map_pin",
+          "options": [
+            {
+              "value": "",
+              "label": "No icon"
+            },
+            {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "briefcase",
+              "label": "Briefcase"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "check_mark_in_circle",
+              "label": "Check mark in circle"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "credit_card",
+              "label": "Credit card"
+            },
+            {
+              "value": "dollar_sign",
+              "label": "Dollar sign"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "feather",
+              "label": "Feather"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
+            }
+          ]
+        },
+        {
+          "visible_if": "{{ block.settings.icon_2 != blank }}",
+          "type": "color",
+          "id": "icon_2_color",
+          "label": "Icon color",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon_2",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_2_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "icon_2_text",
+          "label": "Text",
+          "default": "Icon label 2"
+        },
+        {
+          "type": "header",
+          "content": "Icon 3"
+        },
+        {
+          "type": "select",
+          "id": "icon_3",
+          "label": "Icon",
+          "default": "gift",
+          "options": [
+            {
+              "value": "",
+              "label": "No icon"
+            },
+            {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "briefcase",
+              "label": "Briefcase"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "check_mark_in_circle",
+              "label": "Check mark in circle"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "credit_card",
+              "label": "Credit card"
+            },
+            {
+              "value": "dollar_sign",
+              "label": "Dollar sign"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "feather",
+              "label": "Feather"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
+            }
+          ]
+        },
+        {
+          "visible_if": "{{ block.settings.icon_3 != blank }}",
+          "type": "color",
+          "id": "icon_3_color",
+          "label": "Icon color",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon_3",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_3_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "icon_3_text",
+          "label": "Text",
+          "default": "Icon label 3"
         }
       ]
     },
@@ -2415,10 +3308,12 @@
           ]
         },
         {
+          "visible_if": "{{ block.settings.type == 'text' or block.settings.type == 'textarea' }}",
           "type": "header",
           "content": "Text"
         },
         {
+          "visible_if": "{{ block.settings.type == 'text' or block.settings.type == 'textarea' }}",
           "type": "checkbox",
           "id": "text_required",
           "label": "Require text",
@@ -2426,26 +3321,31 @@
           "default": false
         },
         {
+          "visible_if": "{{ block.settings.type == 'checkbox' }}",
           "type": "header",
           "content": "Checkbox"
         },
         {
+          "visible_if": "{{ block.settings.type == 'checkbox' }}",
           "type": "text",
           "id": "checkbox_checked_value",
           "label": "Checked value",
           "default": "Yes"
         },
         {
+          "visible_if": "{{ block.settings.type == 'checkbox' }}",
           "type": "text",
           "id": "checkbox_unchecked_value",
           "label": "Unchecked value",
           "default": "No"
         },
         {
+          "visible_if": "{{ block.settings.type == 'multiple' }}",
           "type": "header",
           "content": "Multiple options"
         },
         {
+          "visible_if": "{{ block.settings.type == 'multiple' }}",
           "type": "select",
           "id": "multiple_style",
           "label": "Style",
@@ -2462,6 +3362,7 @@
           ]
         },
         {
+          "visible_if": "{{ block.settings.type == 'multiple' }}",
           "type": "textarea",
           "id": "multiple_options",
           "label": "Options",
@@ -2478,6 +3379,12 @@
           "type": "liquid",
           "id": "custom_liquid",
           "label": "Liquid code"
+        },
+        {
+          "type": "checkbox",
+          "id": "variant_content",
+          "label": "Update when variant changes",
+          "default": false
         }
       ]
     },
@@ -2755,6 +3662,7 @@
   "presets": [
     {
       "name": "Featured product",
+      "category": "Products",
       "settings": {
       },
       "blocks": [

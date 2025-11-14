@@ -13,4 +13,4 @@
   %}
 {%- endcomment -%}
 
-<location-map class="map" data-api-key="{{ api_key }}" data-address="{{ address | escape }}"{% if map_id != blank %} data-map-id="{{ map_id }}"{% endif %}{% if map_style != blank %} data-map-style="{{ map_style }}"{% endif %}></location-map>
+<location-map class="map" data-api-key="{{ api_key }}" data-address="{{ address | escape }}"{% if map_id != blank %} data-map-id="{{ map_id }}"{% endif %}{% if map_style != blank %} data-map-style="{{ map_style }}"{% endif %} aria-label="{{ 'sections.map.label' | t: location: shop.name }}"></location-map>

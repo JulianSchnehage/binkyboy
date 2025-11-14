@@ -27,6 +27,20 @@
 
               <h3><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
 
+              {% if section.settings.show_date or section.settings.show_date %}
+                <div class="meta meta--after-title small-text">
+                  <div class="iconmeta time">
+                    {% if section.settings.show_date %}
+                      {{ article.published_at | time_tag: format: 'date' }}
+                    {% endif %}
+                    {% if section.settings.show_author %}
+                      {% if section.settings.show_date %}&mdash;{% endif %}
+                      <span class="author">{{ article.author }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+
               {%- if section.settings.show_excerpts -%}
                 <div class="rte">
                   {%- if article.excerpt.size > 0 -%}
@@ -37,16 +51,8 @@
                 </div>
               {%- endif -%}
 
-              <div class="meta">
-                <span class="iconmeta time">
-                  {% if section.settings.show_date %}
-                    {{ article.published_at | time_tag: format: 'date' }}
-                  {% endif %}
-                  {% if section.settings.show_author %}
-                    {% if section.settings.show_date %}&mdash;{% endif %}
-                    <span class="author">{{ article.author }}</span>
-                  {% endif %}
-                </span>
+              <div class="article__read-more-container">
+                <a class="small-feature-link" href="{{ article.url }}" aria-hidden="true">{{ 'blogs.article.read_more' | t }}</a>
               </div>
             </div>
           </div>
@@ -68,22 +74,28 @@
 
             <h3>{{ 'onboarding.article.title' | t }}</h3>
 
+            {% if section.settings.show_date or section.settings.show_date %}
+              <div class="meta meta--after-title small-text">
+                <div class="iconmeta time">
+                  {% if section.settings.show_date %}
+                    {{ 'now' | time_tag: format: 'date' }}
+                  {% endif %}
+                  {% if section.settings.show_author %}
+                    {% if section.settings.show_date %}&mdash;{% endif %}
+                    <span class="author">{{ 'onboarding.article.author' | t }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
             {%- if section.settings.show_excerpts -%}
               <div class="rte">
                 {{ 'onboarding.article.excerpt' | t }}
               </div>
             {%- endif -%}
 
-            <div class="meta">
-              <span class="iconmeta time">
-                {% if section.settings.show_date %}
-                  {{ 'now' | time_tag: format: 'date' }}
-                {% endif %}
-                {% if section.settings.show_author %}
-                  {% if section.settings.show_date %}&mdash;{% endif %}
-                  <span class="author">{{ 'onboarding.article.author' | t }}</span>
-                {% endif %}
-              </span>
+            <div class="article__read-more-container">
+              <a class="small-feature-link" href="#" aria-hidden="true">{{ 'blogs.article.read_more' | t }}</a>
             </div>
           </div>
         </div>
@@ -202,6 +214,7 @@
   "presets": [
     {
       "name": "Blog posts",
+      "category": "Storytelling",
       "settings": {
       }
     }

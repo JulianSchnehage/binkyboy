@@ -62,15 +62,18 @@ class CarouselSlider extends HTMLElement {
       this.updateDynamicHeight();
     }
     this.addListeners();
-    if (this.totalPages < 2 || !this.nav) return;
 
     this.sliderStart = this.getWindowOffset(this.slider);
     if (!this.sliderStart) this.sliderStart = (this.slider.clientWidth - this.gridWidth) / 2;
     this.sliderEnd = this.sliderStart + this.gridWidth;
 
+    if (this.totalPages < 2) return;
+
     if (window.matchMedia('(pointer: fine)').matches) {
       this.slider.classList.add('is-grabbable');
     }
+
+    if (!this.nav) return;
 
     this.setButtonStates();
   }
@@ -228,6 +231,7 @@ class CarouselSlider extends HTMLElement {
    * @param {string} transition - Transition to pass to behavior parameter of scrollTo (optional)
    */
   scrollToElement(el, transition) {
+    if (this.slides.indexOf(el) === -1 || this.slides.length < 2) return;
     if (!this.getSlideVisibility(el)) {
       // this.scrollPos = this.rtl ? (el.offsetLeft + this.slideSpan) : el.offsetLeft;
       this.scrollPos = el.offsetLeft;

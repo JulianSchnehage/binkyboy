@@ -4,30 +4,34 @@
       {% for block in section.blocks %}
         {% case block.type %}
         {% when '@app' %}
-          <div class="section-footer__row__col">
+          <div class="section-footer__row__col" {{ block.shopify_attributes }}>
             {% render block %}
           </div>
 
         {% when 'menu' %}
-          <div class="section-footer__row__col section-footer__menu-block" role="navigation" aria-label="{{ 'accessibility.secondary_navigation' | t }}" {{ block.shopify_attributes }}>
-            {% if block.settings.title != blank %}
-              {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
-              <div role="heading" aria-level="2" class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
-                {{- block.settings.title | escape -}}
-              </div>
-            {% endif %}
-
-            {% if block.settings.menu != blank %}
-              <ul class="section-footer__menu-block__menu" {{ block.shopify_attributes }}>
-                {% for link in linklists[block.settings.menu].links %}
-                  <li>
-                    <a href="{{ link.url }}" {% if link.title.size < 25 %}class="no-wrap"{% endif %}>
-                      {{- link.title -}}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+          <div class="section-footer__row__col section-footer__menu-block section-footer__menu-block--{{ block.settings.link_layout }}" role="navigation" aria-label="{{ 'accessibility.secondary_navigation' | t }}" {{ block.shopify_attributes }}>
+            <mobile-disclosure class="block"{% if block.settings.link_layout == 'collapse'%} data-collapse="true"{% endif %}>
+              <details class="mobile-disclosure" open>
+                <summary class="mobile-disclosure__title" tabindex="-1">
+                  <div role="heading" aria-level="2" class="section-footer__title heading-font h6">
+                    {{- block.settings.title | escape -}}
+                  </div>
+                </summary>
+                <div class="mobile-disclosure__panel has-motion">
+                  <div class="mobile-disclosure__content">
+                    {% if block.settings.menu != blank %}
+                      <ul class="section-footer__menu-block__menu" {{ block.shopify_attributes }}>
+                        {% for link in linklists[block.settings.menu].links %}
+                          <li>
+                              {{- link.title | link_to: link.url -}}
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                </div>
+              </details>
+            </mobile-disclosure>
           </div>
 
         {% when 'text' %}
@@ -192,6 +196,47 @@
   </div>
 </div>
 
+{% javascript %}
+  customElements.whenDefined('details-disclosure').then(() => {
+    class MobileDisclosure extends DetailsDisclosure {
+      constructor() {
+        super();
+
+        const collapseEnabled = this.dataset.collapse === 'true';
+        if (!collapseEnabled) return;
+
+        this.reset();
+        window.addEventListener('on:breakpoint-change', this.reset.bind(this));
+      }
+
+      reset() {
+        const isLargeScreen = window.matchMedia(theme.mediaQueries.md).matches;
+        this.disclosure.open = isLargeScreen;
+
+        if (isLargeScreen) {
+          this.toggle.setAttribute('tabindex', '-1');
+          this.querySelectorAll('.disclosure, .disclosure__title, .disclosure__panel, .disclosure__content').forEach((el) => {
+            [...el.classList].filter((cl) => cl.indexOf('disclosure') === 0).forEach((cl) => {
+              el.classList.remove(cl);
+              el.classList.add(`mobile-${cl}`);
+            });
+          });
+        } else {
+          this.toggle.removeAttribute('tabindex');
+          this.querySelectorAll('.mobile-disclosure, .mobile-disclosure__title, .mobile-disclosure__panel, .mobile-disclosure__content').forEach((el) => {
+            [...el.classList].filter((cl) => cl.indexOf('mobile-disclosure') === 0).forEach((cl) => {
+              el.classList.remove(cl);
+              el.classList.add(cl.substr(7));
+            });
+          });
+        }
+      }
+    }
+
+    customElements.define('mobile-disclosure', MobileDisclosure);
+  });
+{% endjavascript %}
+
 
 {% schema %}
 {
@@ -269,6 +314,26 @@
           "label": "Menu",
           "info": "This menu won't show dropdown items",
           "default": "footer"
+        },
+        {
+          "type": "select",
+          "id": "link_layout",
+          "label": "Link layout (mobile)",
+          "options": [
+            {
+              "value": "collapse",
+              "label": "Collapse"
+            },
+            {
+              "value": "columns",
+              "label": "Half width"
+            },
+            {
+              "value": "full",
+              "label": "Full width"
+            }
+          ],
+          "default": "collapse"
         }
       ]
     },
@@ -314,6 +379,7 @@
           "default": true
         },
         {
+          "visible_if": "{{ block.settings.show_social_icons }}",
           "type": "checkbox",
           "id": "soc_icons_large",
           "label": "Use large social media icons",
@@ -366,6 +432,10 @@
             {
               "label": "Secondary",
               "value": "secondary"
+            },
+            {
+              "label": "Match text",
+              "value": "inherit"
             }
           ]
         },
@@ -376,6 +446,7 @@
           "default": true
         },
         {
+          "visible_if": "{{ block.settings.show_social_icons }}",
           "type": "checkbox",
           "id": "soc_icons_large",
           "label": "Use large social media icons",
