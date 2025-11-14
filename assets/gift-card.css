@@ -232,6 +232,15 @@ button svg {
   padding: 0.9em 20px;
 }
 
+.btn--inherit {
+  --btn-text-color: var(--bg-color);
+  --btn-text-hover-color: var(--bg-color);
+  --btn-bg-color: var(--text-color);
+  --btn-bg-hover-color: var(--text-color) / 0.85;
+  --btn-border-color: var(--text-color);
+  --btn-border-hover-color: var(--text-color) / 0.85;
+}
+
 .btn-icon {
   display: inline-block;
   position: relative;
@@ -509,24 +518,6 @@ h6,
   color: rgb(var(--heading-color));
   line-height: 1.2;
 }
-h1 svg,
-h1 svg g,
-.h1 svg,
-.h1 svg g,
-h2 svg,
-h2 svg g,
-h3 svg,
-h3 svg g,
-h4 svg,
-h4 svg g,
-h5 svg,
-h5 svg g,
-h6 svg,
-h6 svg g,
-.heading-font svg,
-.heading-font svg g {
-  fill: currentColor;
-}
 
 h1 a,
 h2 a,
@@ -577,7 +568,7 @@ h6,
     --font-scale: calc((var(--larger-mobile-text-size) - var(--base-text-size)) * 0.16);
   }
   h1,
-.h1 {
+  .h1 {
     font-size: var(--larger-mobile-text-size);
   }
 }
@@ -604,6 +595,9 @@ h6,
 .hometitle {
   margin: 0 0 30px;
   line-height: 1em;
+}
+.hometitle .slider-nav__btn {
+  color: rgb(var(--heading-color));
 }
 @media (max-width: 1299.98px) {
   .hometitle {

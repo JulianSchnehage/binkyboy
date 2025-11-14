@@ -163,7 +163,7 @@ const MainSearch = class extends HTMLElement {
               }
             })
             .catch((error) => {
-              console.warn(error);
+              console.warn(error); // eslint-disable-line no-console
             });
         }, searchTimeoutThrottle);
       } else if (!valueToSearch.length) {

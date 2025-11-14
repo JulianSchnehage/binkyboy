@@ -49,6 +49,11 @@
         {%- endif %}
       }
     }
+    {%- if section.settings.use_custom_star_rating_color -%}
+      #section-id-{{ section.id }} .testimonial__star-rating {
+        color: {{ section.settings.star_rating_color }};
+      }
+    {%- endif -%}
   {%- endstyle -%}
 
   <div class="container fade-in" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
@@ -251,6 +256,19 @@
       ]
     },
     {
+      "id": "use_custom_star_rating_color",
+      "type": "checkbox",
+      "label": "Use custom star rating color",
+      "default": false
+    },
+    {
+      "visible_if": "{{ section.settings.use_custom_star_rating_color }}",
+      "type": "color",
+      "id": "star_rating_color",
+      "label": "Custom star rating color",
+      "default": "#E9A80A"
+    },
+    {
       "id": "autoplay",
       "type": "checkbox",
       "label": "Auto-rotate testimonials",
@@ -316,6 +334,7 @@
   "presets": [
     {
       "name": "Testimonials",
+      "category": "Storytelling",
       "settings": {
       },
       "blocks": [

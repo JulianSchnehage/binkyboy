@@ -74,7 +74,12 @@
 
     {% when 'model' %}
       <product-model class="product-media product-media--model product-media--frame" style="padding-bottom: 100%" data-model-id="{{ media.id }}">
-        {% render 'image' with media.preview_image, size_cols_desktop: 2 %}
+        <div class="product-media__poster img-fill">
+          {% render 'image' with media.preview_image, size_cols_desktop: 2 %}
+          <button class="product-media__model-play-btn js-load-media" aria-label="{{ 'products.product.media.play_model' | t }}">
+            {%- render 'icon-3d-badge-full-color' -%}
+          </button>
+        </div>
         <template>
           {{ media | media_tag: image_size: '1000x', toggleable: true }}
         </template>

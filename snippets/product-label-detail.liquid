@@ -1,7 +1,13 @@
-{%- capture all_variants_label_html -%}
+<div class="product-label-container" data-dynamic-variant-content="{{ section.id }}-product-label">
   {%- if product.metafields.theme.label != blank -%}
     <span class="product-label product-label--meta">
       <span>{{ product.metafields.theme.label | escape }}</span>
+    </span>
+  {%- endif -%}
+
+  {%- if section.settings.show_variant_media_label and current_variant and current_variant.metafields.theme.label != blank -%}
+    <span class="product-label product-label--meta">
+      <span>{{ current_variant.metafields.theme.label | escape }}</span>
     </span>
   {%- endif -%}
 
@@ -35,57 +41,26 @@
       <span>{{ new_label_text }}</span>
     </span>
   {%- endif -%}
-{%- endcapture -%}
 
-<variant-content class="product-label-list">
-  {%- for variant in product.variants -%}
-    <script type="text/template" data-variant="{{ variant.id }}">
-      {%- capture label_html -%}
-        {{- all_variants_label_html -}}
-
-        {%- liquid
-          assign sale_label_text = false
-          if settings.prod_reduction_show and variant.compare_at_price > variant.price
-            if settings.prod_reduction_type == 'percent'
-              assign amount = 1.0 | times: variant.price | divided_by: variant.compare_at_price
-              assign amount = 1.0 | minus: amount
-              assign amount = amount | times: 100.0 | round
-              assign sale_label_text = 'products.product.percent_reduction' | t: amount: amount
-            else
-              assign amount = variant.compare_at_price | minus: variant.price | money
-              assign sale_label_text = 'products.product.value_reduction_html' | t: amount: amount
-            endif
-          endif
-        -%}
-        {%- if sale_label_text -%}
-          <span class="product-label product-label--sale">
-            <span>{{ sale_label_text }}</span>
-          </span>
-        {%- endif -%}
-      {%- endcapture -%}
-
-      {%- if label_html != blank -%}
-        <div class="product-label-container">
-          {{- label_html -}}
-        </div>
-      {%- endif -%}
-    </script>
-
-    {%- if current_variant and variant.id == current_variant.id and label_html -%}
-      <div class="product-label-container">
-        {{- label_html -}}
-      </div>
+  {%- if current_variant -%}
+    {%- liquid
+      assign sale_label_text = false
+      if settings.prod_reduction_show and current_variant.compare_at_price > current_variant.price
+        if settings.prod_reduction_type == 'percent'
+          assign amount = 1.0 | times: current_variant.price | divided_by: current_variant.compare_at_price
+          assign amount = 1.0 | minus: amount
+          assign amount = amount | times: 100.0 | round
+          assign sale_label_text = 'products.product.percent_reduction' | t: amount: amount
+        else
+          assign amount = current_variant.compare_at_price | minus: current_variant.price | money
+          assign sale_label_text = 'products.product.value_reduction_html' | t: amount: amount
+        endif
+      endif
+    -%}
+    {%- if sale_label_text -%}
+      <span class="product-label product-label--sale">
+        <span>{{ sale_label_text }}</span>
+      </span>
     {%- endif -%}
-  {%- endfor -%}
-
-  {%- if current_variant == false and all_variants_label_html != blank -%}
-    <script type="text/template" data-variant="">
-      <div class="product-label-container">
-        {{- all_variants_label_html -}}
-      </div>
-    </script>
-    <div class="product-label-container">
-      {{- all_variants_label_html -}}
-    </div>
   {%- endif -%}
-</variant-content>
+</div>

@@ -1,3 +1,6 @@
+.shopify-model-viewer-ui {
+  background: rgb(var(--bg-color));
+}
 .shopify-model-viewer-ui model-viewer:not(.shopify-model-viewer-ui__disabled) {
   z-index: 3;
 }

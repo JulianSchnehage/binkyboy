@@ -121,8 +121,14 @@
                 <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
                   <div class="opposing-items__left product-info-label">{{ section.settings.cross_sell_title | escape }}</div>
                   <div class="no-wrap slider-nav">
-                    <button name="prev" class="slider-nav__btn has-ltr-icon">{% render 'icon-chevron-left' %}</button>
-                    <button name="next" class="slider-nav__btn has-ltr-icon">{% render 'icon-chevron-right' %}</button>
+                    <button name="prev" class="slider-nav__btn has-ltr-icon">
+                      <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+                      {% render 'icon-chevron-left' %}
+                    </button>
+                    <button name="next" class="slider-nav__btn has-ltr-icon">
+                      <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+                      {% render 'icon-chevron-right' %}
+                    </button>
                   </div>
                 </div>
                 <div class="slider slider--no-scrollbar slider--edge-peek">
@@ -390,6 +396,7 @@
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.show_announcement }}",
       "type": "select",
       "id": "announcement_position",
       "label": "Position",
@@ -414,12 +421,14 @@
       "default": "above-items"
     },
     {
+      "visible_if": "{{ section.settings.show_announcement }}",
       "type": "inline_richtext",
       "id": "announcement_text",
       "label": "Text",
       "default": "Cart announcement text"
     },
     {
+      "visible_if": "{{ section.settings.show_announcement }}",
       "type": "select",
       "id": "announcement_icon",
       "label": "Icon",
@@ -430,8 +439,16 @@
           "label": "No icon"
         },
         {
+          "value": "accessible",
+          "label": "Accessible"
+        },
+        {
           "value": "award",
           "label": "Award"
+        },
+        {
+          "value": "beach",
+          "label": "Beach"
         },
         {
           "value": "box",
@@ -530,6 +547,10 @@
           "label": "Question mark"
         },
         {
+          "value": "recycle",
+          "label": "Recycle"
+        },
+        {
           "value": "return",
           "label": "Return"
         },
@@ -558,21 +579,31 @@
           "label": "Star"
         },
         {
+          "value": "sun-high",
+          "label": "Sun"
+        },
+        {
           "value": "truck",
           "label": "Truck"
         },
         {
           "value": "washing",
           "label": "Washing"
+        },
+        {
+          "value": "world",
+          "label": "World"
         }
       ]
     },
     {
+      "visible_if": "{{ section.settings.show_announcement }}",
       "type": "image_picker",
       "id": "announcement_custom_icon",
       "label": "Custom icon"
     },
     {
+      "visible_if": "{{ section.settings.show_announcement }}",
       "type": "select",
       "id": "announcement_icon_size",
       "label": "Icon size",
@@ -589,12 +620,14 @@
       ]
     },
     {
+      "visible_if": "{{ section.settings.show_announcement }}",
       "type": "checkbox",
       "id": "announcement_enable_box",
       "label": "Enable box style",
       "default": true
     },
     {
+      "visible_if": "{{ section.settings.show_announcement and section.settings.announcement_enable_box }}",
       "type": "color",
       "id": "announcement_box_color",
       "label": "Box color",
@@ -679,16 +712,19 @@
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.empty_enable_custom_colors }}",
       "type": "color",
       "id": "empty_color_background",
       "label": "Background"
     },
     {
+      "visible_if": "{{ section.settings.empty_enable_custom_colors }}",
       "type": "color_background",
       "id": "empty_color_background_gradient",
       "label": "Background gradient"
     },
     {
+      "visible_if": "{{ section.settings.empty_enable_custom_colors }}",
       "type": "color",
       "id": "empty_color_text",
       "label": "Text"

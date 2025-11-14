@@ -101,14 +101,14 @@
           <div class="flexible-layout">
             <div class="checkout-subtotal-container__left column column--half">
               {% if section.settings.show_order_note %}
-                <cart-note class="cart-note block lightly-spaced-row">
+                <cart-note class="cart-note block{% if section.settings.show_shipping_calculator %} lightly-spaced-row{% endif %}">
                   <label class="block" for="note">{{ 'cart.note.label' | t }}</label>
                   <textarea id="note" name="note">{{ cart.note }}</textarea>
                 </cart-note>
               {% endif %}
 
               {% if section.settings.show_shipping_calculator %}
-                <toggle-target class="block lightly-spaced-row link underline" role="button" tabindex="0" data-toggle-target="#{{ section.id }}-shipping-calculator-container" data-toggle-close-label="{{ 'cart.shipping_calculator.hide' | t }}">{{ 'cart.shipping_calculator.show' | t }}</toggle-target>
+                <toggle-target class="block link underline very-lightly-spaced-row" role="button" tabindex="0" data-toggle-target="#{{ section.id }}-shipping-calculator-container" data-toggle-close-label="{{ 'cart.shipping_calculator.hide' | t }}">{{ 'cart.shipping_calculator.show' | t }}</toggle-target>
                 <div id="{{ section.id }}-shipping-calculator-container" class="toggle-target toggle-target--hidden">
                   <div class="toggle-target-container">
                     {%- render 'shipping-calculator', id: section.id, default_country: section.settings.shipping_calculator_default_country -%}
@@ -117,74 +117,92 @@
               {% endif %}
             </div>
 
-            <div class="checkout-subtotal-container__right column column--half">
-              <div data-merge="total">
-                {%- if cart.cart_level_discount_applications != blank -%}
-                  <ul class="cart-discount-list">
-                    {%- for discount_application in cart.cart_level_discount_applications -%}
-                      <li class="cart-discount cart-discount--inline">
-                        <span class="cart-discount__label">
-                            <span class="cart-discount__icon">{% render 'icon-label' %}</span>
-                            <span class="cart-discount__title">{{ discount_application.title | escape_once }}</span>
-                        </span>
-                        <span class="cart-discount__amount theme-money">{{ discount_application.total_allocated_amount | money }}</span>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                {%- endif -%}
+            <div class="checkout-subtotal-container__right column column--half mobile-align-center">
+              {%- capture subtotal_and_checkout -%}
+                <div data-merge="total">
+                  {%- if cart.cart_level_discount_applications != blank -%}
+                    <ul class="cart-discount-list">
+                      {%- for discount_application in cart.cart_level_discount_applications -%}
+                        <li class="cart-discount cart-discount--inline">
+                          <span class="cart-discount__label">
+                              <span class="cart-discount__icon">{% render 'icon-label' %}</span>
+                              <span class="cart-discount__title">{{ discount_application.title | escape_once }}</span>
+                          </span>
+                          <span class="cart-discount__amount theme-money">{{ discount_application.total_allocated_amount | money }}</span>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
 
-                <h2 class="subtotal h2">
-                  {{ 'cart.summary.subtotal' | t }}:
-                  <span class="theme-money">
-                    {%- if settings.cart_currency_code_enabled -%}
-                      {{- cart.total_price | money_with_currency -}}
-                    {%- else -%}
-                      {{- cart.total_price | money -}}
-                    {%- endif -%}
-                  </span>
-                </h2>
+                  <h2 class="subtotal h2">
+                    {{ 'cart.summary.subtotal' | t }}:
+                    <span class="theme-money">
+                      {%- if settings.cart_currency_code_enabled -%}
+                        {{- cart.total_price | money_with_currency -}}
+                      {%- else -%}
+                        {{- cart.total_price | money -}}
+                      {%- endif -%}
+                    </span>
+                  </h2>
 
-                {%- if section.settings.show_tax_and_shipping -%}
-                  <div class="cart-policies rte">
-                    {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
-                      {{- 'cart.general.taxes_included_shipping_at_checkout_html' | t: link: shop.shipping_policy.url -}}
-                    {%- elsif cart.taxes_included -%}
-                      {{- 'cart.general.taxes_included_shipping_at_checkout' | t -}}
-                    {%- elsif shop.shipping_policy.body != blank -%}
-                      {{- 'cart.general.taxes_and_shipping_at_checkout_html' | t: link: shop.shipping_policy.url -}}
-                    {%- else -%}
-                      {{- 'cart.general.taxes_and_shipping_at_checkout' | t -}}
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
-              </div>
-
-              {% if section.settings.cart_terms_page != blank %}
-                <terms-agreement class="terms-agreement rte">
-                  <input type="checkbox" id="terms" />
-                  <label for="terms">{{ 'cart.terms.agreement_html' | t: terms_url: section.settings.cart_terms_page }}</label>
-                </terms-agreement>
-              {% endif %}
-
-              <div class="checkout-col">
-                <div class="checkout-buttons">
-                  <span class="update-cart-container">
-                    <button type="submit" name="update">{{ 'cart.general.update' | t }}</button>
-                  </span>
-
-                  <button type="submit" class="btn btn--large" id="update-cart" name="checkout">{{ 'cart.summary.checkout' | t }}</button>
-
-                  {% if section.settings.show_additional_checkout_buttons and additional_checkout_buttons and section.settings.cart_terms_page == blank %}
-                  <div class="additional-checkout-buttons mt-2">
-                    {{ content_for_additional_checkout_buttons }}
-                  </div>
-                  {% endif %}
+                  {%- if section.settings.show_tax_and_shipping -%}
+                    <div class="cart-policies rte">
+                      {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                        {{- 'cart.general.taxes_included_shipping_at_checkout_html' | t: link: shop.shipping_policy.url -}}
+                      {%- elsif cart.taxes_included -%}
+                        {{- 'cart.general.taxes_included_shipping_at_checkout' | t -}}
+                      {%- elsif shop.shipping_policy.body != blank -%}
+                        {{- 'cart.general.taxes_and_shipping_at_checkout_html' | t: link: shop.shipping_policy.url -}}
+                      {%- else -%}
+                        {{- 'cart.general.taxes_and_shipping_at_checkout' | t -}}
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
                 </div>
 
-                {%- if section.settings.show_continue_shopping -%}
-                  <a class="continue-shopping underline block lightly-spaced-row-above" href="{{ continue_shopping_url }}">{{ 'cart.summary.continue_shopping' | t }}</a>
-                {%- endif -%}
-              </div>
+                {% if section.settings.cart_terms_page != blank %}
+                  <terms-agreement class="terms-agreement rte">
+                    <input type="checkbox" id="terms" />
+                    <label for="terms">{{ 'cart.terms.agreement_html' | t: terms_url: section.settings.cart_terms_page }}</label>
+                  </terms-agreement>
+                {% endif %}
+
+                <div class="checkout-col lightly-spaced-row">
+                  <div class="checkout-buttons">
+                    <span class="update-cart-container">
+                      <button type="submit" name="update">{{ 'cart.general.update' | t }}</button>
+                    </span>
+
+                    <button type="submit" class="btn btn--large" id="update-cart" name="checkout">{{ 'cart.summary.checkout' | t }}</button>
+
+                    {% if section.settings.show_additional_checkout_buttons and additional_checkout_buttons and section.settings.cart_terms_page == blank %}
+                    <div class="additional-checkout-buttons mt-2">
+                      {{ content_for_additional_checkout_buttons }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  {%- if section.settings.show_continue_shopping -%}
+                    <a class="continue-shopping underline block lightly-spaced-row-above" href="{{ continue_shopping_url }}">{{ 'cart.summary.continue_shopping' | t }}</a>
+                  {%- endif -%}
+                </div>
+              {%- endcapture -%}
+
+              {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                  {%- when '@app' -%}
+                    <div class="inline-block{% unless forloop.first %} mt-4{% endunless %}{% unless forloop.last %} mb-4{% endunless %}" {{ block.shopify_attributes }}>
+                      {%- render block -%}
+                    </div>
+
+                  {%- when 'subtotal-and-checkout' -%}
+                    <div {{ block.shopify_attributes }}>
+                      {{- subtotal_and_checkout -}}
+                    </div>
+                {%- endcase -%}
+              {%- else -%}
+                {{- subtotal_and_checkout -}}
+              {%- endfor -%}
             </div>
           </div>
         </div>
@@ -388,14 +406,26 @@
       "default": false
     },
     {
+      "visible_if": "{{ section.settings.show_shipping_calculator }}",
       "type": "text",
       "id": "shipping_calculator_default_country",
       "label": "Default country selection",
       "default": "United States"
     },
     {
+      "visible_if": "{{ section.settings.show_shipping_calculator }}",
       "type": "paragraph",
       "content": "If your customer is logged-in, the country in his default shipping address will be selected. If you are not sure about the spelling to use here, refer to your first checkout page dropdown."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "subtotal-and-checkout",
+      "name": "Subtotal and checkout",
+      "limit": 1
     }
   ]
 }
