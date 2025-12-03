@@ -14,60 +14,27 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement_VrcHbi": {
+        "announcement_TJp7HX": {
           "type": "announcement",
           "settings": {
-            "text": "Save 15% On Your First Order",
+            "text": "",
             "show_countdown": false,
-            "hide_on_end": false,
-            "end_date": "",
+            "hide_on_end": true,
+            "end_date": "12/1",
             "end_time": "",
             "number_font": "base",
-            "countdown_separator": "box",
+            "countdown_separator": "space",
             "use_custom_colors": false,
             "bg_color": "#4a4a4a",
             "bg_gradient": "",
             "text_color": "#ffffff"
           }
-        },
-        "announcement-1": {
-          "type": "announcement",
-          "settings": {
-            "text": "<a href=\"/collections/bnky-x-roxy\" title=\"BNKY x ROXY\">BNKY x ROXY AVAILABLE NOW</a>",
-            "show_countdown": false,
-            "hide_on_end": false,
-            "end_date": "",
-            "end_time": "",
-            "number_font": "base",
-            "countdown_separator": "box",
-            "use_custom_colors": false,
-            "bg_color": "#202020",
-            "bg_gradient": "",
-            "text_color": "#ffffff"
-          }
-        },
-        "announcement-2": {
-          "type": "announcement",
-          "settings": {
-            "text": "New <a href=\"/collections/beanies\" title=\"Infant and Toddler Beanies\">Fall Beanies</a> and <a href=\"/collections/fleece\" title=\"Fleece\">Fleece Available Now</a>",
-            "show_countdown": false,
-            "hide_on_end": false,
-            "end_date": "",
-            "end_time": "",
-            "number_font": "base",
-            "countdown_separator": "box",
-            "use_custom_colors": false,
-            "bg_color": "#f4f6f8",
-            "bg_gradient": "",
-            "text_color": "#4c4c4b"
-          }
         }
       },
       "block_order": [
-        "announcement_VrcHbi",
-        "announcement-1",
-        "announcement-2"
+        "announcement_TJp7HX"
       ],
+      "disabled": true,
       "settings": {
         "message_font_size": 14,
         "announcement_bar_col": "#f2f2f2",

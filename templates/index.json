@@ -9,16 +9,16 @@
  */
 {
   "sections": {
-    "image_with_text_overlay_CYJTCp": {
+    "image_with_text_overlay_PwjBQk": {
       "type": "image-with-text-overlay",
       "blocks": {
-        "subheading_cDTGgx": {
+        "subheading_Xg7Qi6": {
           "type": "subheading",
           "settings": {
             "subheading": ""
           }
         },
-        "heading_fF4qdh": {
+        "heading_6kcVPN": {
           "type": "heading",
           "settings": {
             "title": "",
@@ -28,7 +28,7 @@
             "use_h1": false
           }
         },
-        "text_wVgA9V": {
+        "text_UC4pyK": {
           "type": "text",
           "settings": {
             "text": "",
@@ -37,29 +37,92 @@
         }
       },
       "block_order": [
-        "subheading_cDTGgx",
-        "heading_fF4qdh",
-        "text_wVgA9V"
+        "subheading_Xg7Qi6",
+        "heading_6kcVPN",
+        "text_UC4pyK"
       ],
       "name": "Image with text overlay",
       "settings": {
-        "image": "shopify://shop_images/Screenshot_2025-10-27_at_4.06.19_PM.png",
+        "image": "shopify://shop_images/Screenshot_2025-12-02_at_1.19.59_AM.png",
         "height": "adapt",
         "height_desktop": 600,
         "height_mobile": 460,
-        "image_link": "shopify://collections/bnky-x-roxy",
+        "image_link": "shopify://collections/all-shirts",
         "full_width": true,
         "text_alignment": "center center",
         "mobile_overlay_under": false,
         "overlay_style": "shadow"
       }
     },
-    "featured_collection_fMAcaW": {
+    "featured_collection_BjpGCX": {
       "type": "featured-collection",
       "name": "Featured collection",
       "settings": {
-        "title": "BNKY x ROXY",
-        "collection": "bnky-x-roxy",
+        "title": "New T-Shirts",
+        "collection": "all-shirts",
+        "show_vendor": false,
+        "enable_carousel": false,
+        "enable_filter_size": true,
+        "enable_color_swatches_filter": true,
+        "grid": 4,
+        "rows": 1,
+        "color_scheme": "default",
+        "prod_thumb_shape": "shortest",
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
+    "image_with_text_overlay_iCJDHC": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_m4zWwE": {
+          "type": "subheading",
+          "settings": {
+            "subheading": ""
+          }
+        },
+        "heading_JfmkJV": {
+          "type": "heading",
+          "settings": {
+            "title": "",
+            "heading_max_width": 15,
+            "title_size": 84,
+            "title_size_mobile": 32,
+            "use_h1": false
+          }
+        },
+        "text_H6Ve3K": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_m4zWwE",
+        "heading_JfmkJV",
+        "text_H6Ve3K"
+      ],
+      "name": "Image with text overlay",
+      "settings": {
+        "image": "shopify://shop_images/Screenshot_2025-12-02_at_2.05.40_AM.png",
+        "height": "adapt",
+        "height_desktop": 600,
+        "height_mobile": 460,
+        "image_link": "shopify://collections/sunglasses",
+        "full_width": true,
+        "text_alignment": "center center",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "featured_collection_kq4yYh": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "title": "Sunglasses",
+        "collection": "sunglasses",
         "show_vendor": false,
         "enable_carousel": true,
         "enable_filter_size": false,
@@ -72,10 +135,10 @@
         "full_width": true
       }
     },
-    "video_9gdJnt": {
+    "video_QCJthV": {
       "type": "video",
       "blocks": {
-        "heading_GbL4QD": {
+        "heading_9896jG": {
           "type": "heading",
           "settings": {
             "title": "",
@@ -85,30 +148,90 @@
             "use_h1": false
           }
         },
-        "text_B4mFxx": {
+        "text_NdE6Vm": {
           "type": "text",
           "settings": {
             "text": "",
             "enlarge_text": true
           }
         },
-        "play_button_kj74Lk": {
+        "play_button_gGqcyn": {
           "type": "play-button",
           "settings": {}
         }
       },
       "block_order": [
-        "heading_GbL4QD",
-        "text_B4mFxx",
-        "play_button_kj74Lk"
+        "heading_9896jG",
+        "text_NdE6Vm",
+        "play_button_gGqcyn"
       ],
       "name": "Video",
       "settings": {
-        "video_shopify": "shopify://files/videos/Roxy Video 18seconds.mp4",
+        "video_shopify": "shopify://files/videos/EnglishHats_BinkyBro_V1 3.mp4",
+        "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "padding": 100,
+        "video_description": "video shows a snapback hating spinning around in the air.",
+        "placeholder_image": "shopify://shop_images/Screenshot_2025-10-20_at_11.53.05_AM.png",
+        "text_alignment": "center center",
+        "full_width": true,
+        "overlay_style": "shadow"
+      }
+    },
+    "featured_collection_fMAcaW": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "title": "SNAPBACKS",
+        "collection": "snapbacks",
+        "show_vendor": false,
+        "enable_carousel": false,
+        "enable_filter_size": true,
+        "enable_color_swatches_filter": false,
+        "grid": 4,
+        "rows": 1,
+        "color_scheme": "default",
+        "prod_thumb_shape": "shortest",
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
+    "video_xdXfjK": {
+      "type": "video",
+      "blocks": {
+        "heading_Fp3KpW": {
+          "type": "heading",
+          "settings": {
+            "title": "",
+            "heading_max_width": 15,
+            "title_size": 84,
+            "title_size_mobile": 32,
+            "use_h1": false
+          }
+        },
+        "text_KA3hfG": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "enlarge_text": true
+          }
+        },
+        "play_button_cRyW4f": {
+          "type": "play-button",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_Fp3KpW",
+        "text_KA3hfG",
+        "play_button_cRyW4f"
+      ],
+      "name": "Video",
+      "settings": {
+        "video_shopify": "shopify://files/videos/snowsuit walkthrough .mp4",
         "video_external": "",
         "padding": 100,
-        "video_description": "This video features an 8 year old in a snowsuit in a garage showcasing how it fits. There a short video clips in between the sizing clips to showcase the actual use of the suit on a real mountain.",
-        "placeholder_image": "shopify://shop_images/Screenshot_2025-10-27_at_4.23.47_PM.png",
+        "video_description": "a dad shows you how to get your young toddler the best way to get all of his ski clothes on. Showing how the binkybro snowsuit fits and the best way to get it on your kid.",
+        "placeholder_image": "shopify://shop_images/Screenshot_2025-11-18_at_9.41.47_PM.png",
         "text_alignment": "center center",
         "full_width": true,
         "overlay_style": "shadow"
@@ -118,13 +241,13 @@
       "type": "product-list",
       "name": "Product list",
       "settings": {
-        "title": "BNKY X ROXY SNOWSUITS",
+        "title": "SNOWSUITS",
         "product_list": [
-          "rxowssgr254001-orange-99-90-roxy-fire",
-          "rxowssgr254001-peach-99-90-roxy-georgia-peach",
-          "rxowssgr254001-purple-99-90-roxy-purple",
-          "rxowssgr254001-cheetah-99-90-roxy-cheetah",
-          "rxowssgr254001-blue-99-90-roxy-saltwater"
+          "byowssbo254001-white-99-90-bnky-stalactite",
+          "byowssbo254001-teal-99-90-bnky-dusty-teal",
+          "byowssbo254001-brown-99-90-bnky-chocolate",
+          "byowssbo254001-yellow-99-90-bnky-chartreuse",
+          "rxowssgr254001-orange-99-90-roxy-fire"
         ],
         "show_vendor": false,
         "enable_carousel": true,
@@ -133,74 +256,10 @@
         "full_width": true
       }
     },
-    "image_with_text_overlay_CzLnaB": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading_z4iNKC": {
-          "type": "subheading",
-          "settings": {
-            "subheading": ""
-          }
-        },
-        "heading_qqCHx6": {
-          "type": "heading",
-          "settings": {
-            "title": "",
-            "heading_max_width": 15,
-            "title_size": 84,
-            "title_size_mobile": 32,
-            "use_h1": false
-          }
-        },
-        "text_wmDQTf": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "enlarge_text": true
-          }
-        }
-      },
-      "block_order": [
-        "subheading_z4iNKC",
-        "heading_qqCHx6",
-        "text_wmDQTf"
-      ],
-      "name": "Image with text overlay",
-      "settings": {
-        "image": "shopify://shop_images/Screenshot_2025-10-09_at_12.17.36_AM.png",
-        "height": "adapt",
-        "height_desktop": 600,
-        "height_mobile": 460,
-        "image_link": "shopify://collections/snow",
-        "full_width": true,
-        "text_alignment": "center center",
-        "mobile_overlay_under": false,
-        "overlay_style": "shadow"
-      }
-    },
-    "featured_collection_VVWMyp": {
-      "type": "featured-collection",
-      "custom_css": [],
-      "name": "Featured collection",
-      "settings": {
-        "title": "2025 SnowSuits",
-        "collection": "snow",
-        "show_vendor": false,
-        "enable_carousel": false,
-        "enable_filter_size": false,
-        "enable_color_swatches_filter": false,
-        "grid": 4,
-        "rows": 1,
-        "color_scheme": "default",
-        "prod_thumb_shape": "shortest",
-        "show_view_all": true,
-        "full_width": true
-      }
-    },
-    "video_4dBatK": {
+    "video_Kf4Rzb": {
       "type": "video",
       "blocks": {
-        "heading_3NMAr4": {
+        "heading_HgUBCt": {
           "type": "heading",
           "settings": {
             "title": "",
@@ -210,96 +269,51 @@
             "use_h1": false
           }
         },
-        "text_ME6cAn": {
+        "text_hEpkqD": {
           "type": "text",
           "settings": {
             "text": "",
             "enlarge_text": true
           }
         },
-        "play_button_qTqDcf": {
+        "play_button_Myc6Da": {
           "type": "play-button",
           "settings": {}
         }
       },
       "block_order": [
-        "heading_3NMAr4",
-        "text_ME6cAn",
-        "play_button_qTqDcf"
+        "heading_HgUBCt",
+        "text_hEpkqD",
+        "play_button_Myc6Da"
       ],
-      "disabled": true,
       "name": "Video",
       "settings": {
-        "video_shopify": "shopify://files/videos/Ski training short.mp4",
-        "video_external": "https://www.youtube.com/watch?v=r2QBA6kcF9I",
+        "video_shopify": "shopify://files/videos/ski pants video.mp4",
+        "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
         "padding": 100,
-        "video_description": "There are three kids shown in this video. Each of them outlines a trick they are going to be working on for the day for the upcoming ski season. There is then a prompt to check out the full video on the BinkyBro youtube channel.",
-        "placeholder_image": "shopify://shop_images/Screenshot_2025-10-20_at_12.27.55_PM.png",
+        "video_description": "a 7 year old is standing on the back of a truck and is showcasing a line of baggy ski pants.",
+        "placeholder_image": "shopify://shop_images/Screenshot_2025-11-18_at_10.18.30_PM.png",
         "text_alignment": "center center",
         "full_width": true,
         "overlay_style": "shadow"
       }
     },
-    "image_with_text_overlay_WXyVNL": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading_Cq8hxX": {
-          "type": "subheading",
-          "settings": {
-            "subheading": ""
-          }
-        },
-        "heading_NFpRi4": {
-          "type": "heading",
-          "settings": {
-            "title": "",
-            "heading_max_width": 15,
-            "title_size": 84,
-            "title_size_mobile": 32,
-            "use_h1": false
-          }
-        },
-        "text_JdBKXb": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "enlarge_text": true
-          }
-        }
-      },
-      "block_order": [
-        "subheading_Cq8hxX",
-        "heading_NFpRi4",
-        "text_JdBKXb"
-      ],
-      "name": "Image with text overlay",
+    "product_list_hm4FT3": {
+      "type": "product-list",
+      "name": "Product list",
       "settings": {
-        "image": "shopify://shop_images/IMG_4705_copy_40f13535-5d64-4d2f-a64a-b4a1a9eac383.jpg",
-        "height": "adapt",
-        "height_desktop": 600,
-        "height_mobile": 460,
-        "image_link": "shopify://collections/fleece",
-        "full_width": true,
-        "text_alignment": "center center",
-        "mobile_overlay_under": false,
-        "overlay_style": "shadow"
-      }
-    },
-    "featured_collection_EFHYL9": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "title": "DreamCatcher Fleece",
-        "collection": "fleece",
+        "title": "Baggy Ski Pants",
+        "product_list": [
+          "byowsp254006-camo-banshee-invisible",
+          "byowsp254001-leopard-banshee-leopard",
+          "byowsp254004-orange-banshee-fire",
+          "byowsp254009-neon-yellow-banshee-neon-yellow",
+          "byowsp254002-bright-blue-banshee-azure"
+        ],
         "show_vendor": false,
-        "enable_carousel": false,
-        "enable_filter_size": false,
-        "enable_color_swatches_filter": false,
-        "grid": 4,
-        "rows": 1,
+        "enable_carousel": true,
+        "grid": 5,
         "color_scheme": "default",
-        "prod_thumb_shape": "shortest",
-        "show_view_all": true,
         "full_width": true
       }
     },
@@ -337,7 +351,7 @@
       ],
       "name": "Image with text overlay",
       "settings": {
-        "image": "shopify://shop_images/Screenshot_2025-10-27_at_5.10.38_PM.png",
+        "image": "shopify://shop_images/Screenshot_2025-12-02_at_2.12.59_AM.png",
         "height": "adapt",
         "height_desktop": 600,
         "height_mobile": 460,
@@ -352,7 +366,7 @@
       "type": "featured-collection",
       "name": "Featured collection",
       "settings": {
-        "title": "2025 Beanies",
+        "title": "BEANIES",
         "collection": "beanies",
         "show_vendor": false,
         "enable_carousel": false,
@@ -366,73 +380,10 @@
         "full_width": true
       }
     },
-    "image_with_text_overlay_aAXCWn": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading_Nhtqie": {
-          "type": "subheading",
-          "settings": {
-            "subheading": ""
-          }
-        },
-        "heading_VtHNpw": {
-          "type": "heading",
-          "settings": {
-            "title": "",
-            "heading_max_width": 15,
-            "title_size": 84,
-            "title_size_mobile": 32,
-            "use_h1": false
-          }
-        },
-        "text_bqtqAH": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "enlarge_text": true
-          }
-        }
-      },
-      "block_order": [
-        "subheading_Nhtqie",
-        "heading_VtHNpw",
-        "text_bqtqAH"
-      ],
-      "name": "Image with text overlay",
-      "settings": {
-        "image": "shopify://shop_images/IMG_4997_1.jpg",
-        "height": "adapt",
-        "height_desktop": 600,
-        "height_mobile": 460,
-        "image_link": "shopify://collections/hoodies",
-        "full_width": true,
-        "text_alignment": "center center",
-        "mobile_overlay_under": false,
-        "overlay_style": "shadow"
-      }
-    },
-    "featured_collection_8iG7xd": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "title": "Hoodies",
-        "collection": "hoodies",
-        "show_vendor": false,
-        "enable_carousel": true,
-        "enable_filter_size": false,
-        "enable_color_swatches_filter": false,
-        "grid": 5,
-        "rows": 1,
-        "color_scheme": "default",
-        "prod_thumb_shape": "shortest",
-        "show_view_all": true,
-        "full_width": true
-      }
-    },
-    "video_FneKfe": {
+    "video_3CbP84": {
       "type": "video",
       "blocks": {
-        "heading_bmPadN": {
+        "heading_6GbPLB": {
           "type": "heading",
           "settings": {
             "title": "",
@@ -442,30 +393,30 @@
             "use_h1": false
           }
         },
-        "text_6RWcLz": {
+        "text_XF4ACg": {
           "type": "text",
           "settings": {
             "text": "",
             "enlarge_text": true
           }
         },
-        "play_button_RFGYpb": {
+        "play_button_rw67Q7": {
           "type": "play-button",
           "settings": {}
         }
       },
       "block_order": [
-        "heading_bmPadN",
-        "text_6RWcLz",
-        "play_button_RFGYpb"
+        "heading_6GbPLB",
+        "text_XF4ACg",
+        "play_button_rw67Q7"
       ],
       "name": "Video",
       "settings": {
-        "video_shopify": "shopify://files/videos/EnglishHats_BinkyBro_V1 3.mp4",
+        "video_shopify": "shopify://files/videos/Roxy Video 18seconds.mp4",
         "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
         "padding": 100,
-        "video_description": "Two new BinkyBro hats are being shown. They are black and white with a camo brim. They have old english embroidery on the front panel that says BinkyBro. Music is playing in the background. There is no talking or commenting throughout the video.",
-        "placeholder_image": "shopify://shop_images/Screenshot_2025-10-20_at_11.53.05_AM.png",
+        "video_description": "A young girl is seen showcasing a BNKY snowsuit that is part of the binkybro and roxy winter collaboration.",
+        "placeholder_image": "shopify://shop_images/Screenshot_2025-10-27_at_4.23.47_PM.png",
         "text_alignment": "center center",
         "full_width": true,
         "overlay_style": "shadow"
@@ -474,8 +425,8 @@
     "featured_collection_99tqKC": {
       "type": "featured-collection",
       "settings": {
-        "title": "2024 Snapback Collection",
-        "collection": "snapbacks",
+        "title": "BNKY X ROXY",
+        "collection": "bnky-x-roxy",
         "show_vendor": false,
         "enable_carousel": false,
         "enable_filter_size": true,
@@ -529,133 +480,6 @@
         "text_alignment": "center center",
         "full_width": true,
         "overlay_style": "shadow"
-      }
-    },
-    "image_with_text_overlay_DG7pdE": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading_cBELFa": {
-          "type": "subheading",
-          "settings": {
-            "subheading": ""
-          }
-        },
-        "heading_dygDVU": {
-          "type": "heading",
-          "settings": {
-            "title": "",
-            "heading_max_width": 15,
-            "title_size": 84,
-            "title_size_mobile": 32,
-            "use_h1": false
-          }
-        },
-        "text_QiJCAR": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "enlarge_text": true
-          }
-        }
-      },
-      "block_order": [
-        "subheading_cBELFa",
-        "heading_dygDVU",
-        "text_QiJCAR"
-      ],
-      "name": "Image with text overlay",
-      "settings": {
-        "image": "shopify://shop_images/Screenshot_2025-10-06_at_3.31.20_PM.png",
-        "mobile_image": "shopify://shop_images/Mobile_1bd01468-b632-47bd-ae8d-deb3c8d5f6bc.png",
-        "height": "adapt",
-        "height_desktop": 600,
-        "height_mobile": 460,
-        "image_link": "",
-        "full_width": true,
-        "text_alignment": "center center",
-        "mobile_overlay_under": false,
-        "overlay_style": "shadow"
-      }
-    },
-    "featured_collection_R7VKCR": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "title": "Skate Jackets",
-        "collection": "jackets",
-        "show_vendor": false,
-        "enable_carousel": false,
-        "enable_filter_size": false,
-        "enable_color_swatches_filter": true,
-        "grid": 4,
-        "rows": 1,
-        "color_scheme": "default",
-        "prod_thumb_shape": "shortest",
-        "show_view_all": true,
-        "full_width": true
-      }
-    },
-    "image_with_text_overlay_pnx97f": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading_d7pjth": {
-          "type": "subheading",
-          "settings": {
-            "subheading": ""
-          }
-        },
-        "heading_z4q4qj": {
-          "type": "heading",
-          "settings": {
-            "title": "",
-            "heading_max_width": 15,
-            "title_size": 84,
-            "title_size_mobile": 32,
-            "use_h1": false
-          }
-        },
-        "text_3h9EWq": {
-          "type": "text",
-          "settings": {
-            "text": "",
-            "enlarge_text": true
-          }
-        }
-      },
-      "block_order": [
-        "subheading_d7pjth",
-        "heading_z4q4qj",
-        "text_3h9EWq"
-      ],
-      "name": "Image with text overlay",
-      "settings": {
-        "image": "shopify://shop_images/IMG_4114_copy.jpg",
-        "height": "full",
-        "height_desktop": 600,
-        "height_mobile": 460,
-        "image_link": "",
-        "full_width": true,
-        "text_alignment": "center center",
-        "mobile_overlay_under": false,
-        "overlay_style": "shadow"
-      }
-    },
-    "featured_collection_MwCqgr": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "title": "Skateboards",
-        "collection": "skateboard-decks",
-        "show_vendor": false,
-        "enable_carousel": true,
-        "enable_filter_size": false,
-        "enable_color_swatches_filter": true,
-        "grid": 5,
-        "rows": 1,
-        "color_scheme": "default",
-        "prod_thumb_shape": "shortest",
-        "show_view_all": true,
-        "full_width": true
       }
     },
     "image_with_text_BHFLdg": {
@@ -841,16 +665,10 @@
         "color_scheme": "default"
       }
     },
-    "image_with_text_overlay_hQMAW3": {
-      "type": "image-with-text-overlay",
+    "video_4dBatK": {
+      "type": "video",
       "blocks": {
-        "subheading_hgCr3z": {
-          "type": "subheading",
-          "settings": {
-            "subheading": ""
-          }
-        },
-        "heading_AWQBXA": {
+        "heading_3NMAr4": {
           "type": "heading",
           "settings": {
             "title": "",
@@ -860,58 +678,76 @@
             "use_h1": false
           }
         },
-        "text_tKUb9K": {
+        "text_ME6cAn": {
           "type": "text",
           "settings": {
             "text": "",
             "enlarge_text": true
           }
+        },
+        "play_button_qTqDcf": {
+          "type": "play-button",
+          "settings": {}
         }
       },
       "block_order": [
-        "subheading_hgCr3z",
-        "heading_AWQBXA",
-        "text_tKUb9K"
+        "heading_3NMAr4",
+        "text_ME6cAn",
+        "play_button_qTqDcf"
       ],
-      "name": "Image with text overlay",
+      "disabled": true,
+      "name": "Video",
       "settings": {
-        "image": "shopify://shop_images/footer-banner1920.jpg",
-        "height": "adapt",
-        "height_desktop": 600,
-        "height_mobile": 460,
-        "image_link": "",
-        "full_width": true,
+        "video_shopify": "shopify://files/videos/VibeyAd_BlackFriday_16x9_V1.mp4",
+        "video_external": "",
+        "padding": 100,
+        "video_description": "This video shows young kids surfing, skateboarding, skiing, and racing dirt bikes. The video ends with a prompt outlining that the black friday sale for BinkyBro is now live.",
+        "placeholder_image": "shopify://shop_images/Screenshot_2025-11-13_at_12.33.39_PM.png",
         "text_alignment": "center center",
-        "mobile_overlay_under": false,
+        "full_width": true,
         "overlay_style": "shadow"
+      }
+    },
+    "featured_collection_MwCqgr": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "title": "SKATEBOARD DECKS",
+        "collection": "skateboard-decks",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "enable_filter_size": false,
+        "enable_color_swatches_filter": true,
+        "grid": 5,
+        "rows": 1,
+        "color_scheme": "default",
+        "prod_thumb_shape": "shortest",
+        "show_view_all": true,
+        "full_width": true
       }
     }
   },
   "order": [
-    "image_with_text_overlay_CYJTCp",
+    "image_with_text_overlay_PwjBQk",
+    "featured_collection_BjpGCX",
+    "image_with_text_overlay_iCJDHC",
+    "featured_collection_kq4yYh",
+    "video_QCJthV",
     "featured_collection_fMAcaW",
-    "video_9gdJnt",
+    "video_xdXfjK",
     "product_list_fq9iEP",
-    "image_with_text_overlay_CzLnaB",
-    "featured_collection_VVWMyp",
-    "video_4dBatK",
-    "image_with_text_overlay_WXyVNL",
-    "featured_collection_EFHYL9",
+    "video_Kf4Rzb",
+    "product_list_hm4FT3",
     "image_with_text_overlay_NTxtjj",
     "featured_collection_HQYUBg",
-    "image_with_text_overlay_aAXCWn",
-    "featured_collection_8iG7xd",
-    "video_FneKfe",
+    "video_3CbP84",
     "featured_collection_99tqKC",
     "video_TiTbdn",
-    "image_with_text_overlay_DG7pdE",
-    "featured_collection_R7VKCR",
-    "image_with_text_overlay_pnx97f",
-    "featured_collection_MwCqgr",
     "image_with_text_BHFLdg",
     "video_AKHEqc",
     "rich_text_KDqGCQ",
     "logo_list_3hTrCi",
-    "image_with_text_overlay_hQMAW3"
+    "video_4dBatK",
+    "featured_collection_MwCqgr"
   ]
 }
