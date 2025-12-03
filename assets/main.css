@@ -4785,7 +4785,6 @@ shopify-accelerated-checkout[disabled],
   }
   .cart-form .cart-item-list-heading--price,
   .cart-form .cart-item__price {
-  .cart-form .cart-item__price {
     width: 140px;
     padding-inline-end: var(--column-gutter);
     text-align: end;
@@ -4797,7 +4796,6 @@ shopify-accelerated-checkout[disabled],
     text-align: center;
   }
   .cart-form .buttoned-input a,
-  .cart-form .buttoned-input input {
   .cart-form .buttoned-input input {
     height: 2.4em;
   }
@@ -4814,7 +4812,6 @@ shopify-accelerated-checkout[disabled],
     margin-top: 10px;
   }
   .cart-form .cart-item-list-heading--total,
-  .cart-form .cart-item__total {
   .cart-form .cart-item__total {
     display: block;
     width: 100px;
